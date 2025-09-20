@@ -29,6 +29,12 @@ int main(int argc, const char* argv[]) {
   std::ifstream stream;
   stream.open("../test/test.hello");
 
+  if (!stream.is_open())
+  {
+    std::cerr << "Failed to open file" << std::endl;
+    return 9;
+  }
+
   ANTLRInputStream   input(stream);
   HelloLexer         lexer(&input);
   CommonTokenStream  tokens(&lexer);
