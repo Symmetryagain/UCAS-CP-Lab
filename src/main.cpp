@@ -27,7 +27,7 @@ public:
 
 int main(int argc, const char* argv[]) {
   std::ifstream stream;
-  stream.open("../test.hello");
+  stream.open("../test/test.hello");
 
   ANTLRInputStream   input(stream);
   HelloLexer         lexer(&input);
