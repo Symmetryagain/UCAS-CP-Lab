@@ -27,7 +27,14 @@ public:
 
 int main(int argc, const char* argv[]) {
   std::ifstream stream;
-  stream.open("../test/test.hello");
+  if(argc > 1)
+  {
+	stream.open(argv[1]);
+  }
+  else
+  {
+	stream.open("../test/test.hello");
+  }
 
   if (!stream.is_open())
   {

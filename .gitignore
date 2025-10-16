@@ -16,3 +16,5 @@ grammar/*.tokens
 
 out
 scripts
+
+compile_commands.json
