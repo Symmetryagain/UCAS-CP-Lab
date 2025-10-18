@@ -5,12 +5,12 @@ project(Compiler LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
+set(CMAKE_BUILD_TYPE Debug)
 
 include_directories(deps/antlr4-runtime/)
 include_directories(grammar)
 # include_directories(src)
 include_directories(include)
-
 
 FILE(GLOB_RECURSE SOURCE_FILES "src/*.cpp" "grammar/*.cpp")
 
