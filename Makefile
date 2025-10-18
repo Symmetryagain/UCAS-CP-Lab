@@ -8,4 +8,7 @@ build: grammar
 	cmake -S . -B ./build
 	make -C ./build -j
 
-.PHONY: grammar build
+clean:
+	rm -rf ./build
+
+.PHONY: grammar build clean
