@@ -30,54 +30,58 @@ func_call			: Ident SBra func_r_params? SKet					;
 func_r_params		: func_r_param (Comma func_r_param)*				;
 func_r_param		: exp	;
 
-const_int_decl			: CONST INT const_int_def (Comma const_int_def)* Semi	;
-const_int_def			: const_int_var_def | const_int_arr_def	;
-const_int_var_def		: Ident Assign SignIntConst	;
-const_int_arr_def		: Ident(MBra IntConst MKet)+ Assign int_arr_init_braket;
-int_arr_init_braket		: LBra int_arr_init_list? LKet	;
-int_arr_init_list		: SignIntConst (Comma SignIntConst)*
-						| int_arr_init_braket (Comma int_arr_init_braket)*	;
-
-const_bool_decl			: CONST BOOL const_bool_def (Comma const_bool_def)* Semi;
-const_bool_def			: const_bool_var_def | const_bool_arr_def	;
-const_bool_var_def		: Ident Assign BoolConst	;
-const_bool_arr_def		: Ident(MBra IntConst MKet)+ Assign bool_arr_init_braket;
-bool_arr_init_braket	: LBra bool_arr_init_list? LKet	;
-bool_arr_init_list		: BoolConst (Comma BoolConst)*
-						| bool_arr_init_braket (Comma bool_arr_init_braket)*	;
-
-const_float_decl		: CONST FLOAT const_float_def (Comma const_float_def)* Semi;
-const_float_def			: const_float_var_def | const_float_arr_def	;
-const_float_var_def		: Ident Assign SignFloatConst	;
-const_float_arr_def		: Ident(MBra IntConst MKet)+ Assign float_arr_init_braket;
-float_arr_init_braket	: LBra float_arr_init_list? LKet	;
-float_arr_init_list		: SignFloatConst (Comma SignFloatConst)*	;
-
+const_int_decl			: CONST INT    const_int_def    (Comma const_int_def   )* Semi;
+const_bool_decl			: CONST BOOL   const_bool_def   (Comma const_bool_def  )* Semi;
+const_float_decl		: CONST FLOAT  const_float_def  (Comma const_float_def )* Semi;
 const_double_decl		: CONST DOUBLE const_double_def (Comma const_double_def)* Semi;
+
+const_int_def			: const_int_var_def    | const_int_arr_def		;
+const_bool_def			: const_bool_var_def   | const_bool_arr_def		;
+const_float_def			: const_float_var_def  | const_float_arr_def	;
 const_double_def		: const_double_var_def | const_double_arr_def	;
+
+const_int_var_def		: Ident Assign SignIntConst		;
+const_bool_var_def		: Ident Assign BoolConst		;
+const_float_var_def		: Ident Assign SignFloatConst	;
 const_double_var_def	: Ident Assign SignDoubleConst	;
-const_double_arr_def	: Ident(MBra IntConst MKet)+ Assign double_arr_init_braket;
+
+const_int_arr_def		: Ident(MBra IntConst MKet)+ Assign int_arr_init_braket		;
+const_bool_arr_def		: Ident(MBra IntConst MKet)+ Assign bool_arr_init_braket	;
+const_float_arr_def		: Ident(MBra IntConst MKet)+ Assign float_arr_init_braket	;
+const_double_arr_def	: Ident(MBra IntConst MKet)+ Assign double_arr_init_braket	;
+
+int_arr_init_braket		: LBra int_arr_init_list? LKet		;
+bool_arr_init_braket	: LBra bool_arr_init_list? LKet		;
+float_arr_init_braket	: LBra float_arr_init_list? LKet	;
 double_arr_init_braket	: LBra double_arr_init_list? LKet	;
-double_arr_init_list	: SignDoubleConst (Comma SignDoubleConst)*	;
 
-bool_decl		: BOOL bool_def (Comma bool_def)* Semi	;
-bool_def		: bool_var_def | bool_arr_def	;
-bool_var_def	: Ident	(Assign BoolConst)?	;
-bool_arr_def	: Ident(MBra IntConst MKet)+ (Assign bool_arr_init_braket)? Semi	;
+int_arr_init_list		: SignIntConst    (Comma SignIntConst   )*
+						| int_arr_init_braket    (Comma int_arr_init_braket   )*	;
+bool_arr_init_list		: BoolConst       (Comma BoolConst      )*
+						| bool_arr_init_braket   (Comma bool_arr_init_braket  )*	;
+float_arr_init_list		: SignFloatConst  (Comma SignFloatConst )*	
+						| float_arr_init_braket  (Comma float_arr_init_braket )*	;
+double_arr_init_list	: SignDoubleConst (Comma SignDoubleConst)*	
+						| double_arr_init_braket (Comma double_arr_init_braket)*	;
 
-int_decl		: INT int_def (Comma int_def)* Semi	;
-int_def			: int_var_def | int_arr_def	;
-int_var_def		: Ident	(Assign SignIntConst)?	;
-int_arr_def		: Ident(MBra IntConst MKet)+ (Assign int_arr_init_braket)? Semi	;
-
-float_decl		: FLOAT float_def (Comma float_def)* Semi	;
-float_def		: float_var_def | float_arr_def	;
-float_var_def	: Ident	(Assign SignFloatConst)?	;
-float_arr_def	: Ident(MBra IntConst MKet)+ (Assign float_arr_init_braket)? Semi	;
-
+int_decl		: INT int_def       (Comma int_def   )* Semi	;
+bool_decl		: BOOL bool_def     (Comma bool_def  )* Semi	;
+float_decl		: FLOAT float_def   (Comma float_def )* Semi	;
 double_decl		: DOUBLE double_def (Comma double_def)* Semi	;
+
+int_def			: int_var_def    | int_arr_def		;
+bool_def		: bool_var_def   | bool_arr_def		;
+float_def		: float_var_def  | float_arr_def	;
 double_def		: double_var_def | double_arr_def	;
+
+int_var_def		: Ident	(Assign SignIntConst   )?	;
+bool_var_def	: Ident	(Assign BoolConst      )?	;
+float_var_def	: Ident	(Assign SignFloatConst )?	;
 double_var_def	: Ident	(Assign SignDoubleConst)?	;
+
+int_arr_def		: Ident(MBra IntConst MKet)+ (Assign int_arr_init_braket   )? Semi	;
+bool_arr_def	: Ident(MBra IntConst MKet)+ (Assign bool_arr_init_braket  )? Semi	;
+float_arr_def	: Ident(MBra IntConst MKet)+ (Assign float_arr_init_braket )? Semi	;
 double_arr_def	: Ident(MBra IntConst MKet)+ (Assign double_arr_init_braket)? Semi	;
 
 block_int		: LBra item_int* LKet	;
