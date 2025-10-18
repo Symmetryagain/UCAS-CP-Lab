@@ -48,7 +48,7 @@ int main(int argc, const char* argv[]) {
   HelloParser        parser(&tokens);
 
   Analysis visitor;
-  visitor.visit( parser.r() );
+  visitor.visit( parser.comp_unit() );
 
   return 0;
 }

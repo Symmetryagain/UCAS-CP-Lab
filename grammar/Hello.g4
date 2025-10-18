@@ -252,9 +252,9 @@ V_Type		: INT | BOOL | FLOAT | DOUBLE ;
 // hidden
 
 LineComment		: '//' ~[\r\n]*		-> channel(HIDDEN)	;
-BlockComment	: '/*' .* 			-> channel(HIDDEN)	;
-NewLine			: '\r'|'\n'|'\r\n'	-> channel(HIDDEN)	;
-WhiteSpace		: '\t'|' '			-> channel(HIDDEN)	;
+BlockComment	: '/*' .*? '*/'		-> channel(HIDDEN)	;
+NewLine			:('\r'|'\n'|'\r\n')	-> channel(HIDDEN)	;
+WhiteSpace		:('\t'|' ')			-> channel(HIDDEN)	;
 
 // operators
 
