@@ -62,9 +62,9 @@ const_double_def		: const_double_var_def	# def_const_double_var
 						;
 
 const_int_var_def		: Ident Assign sign_int_const		;
-const_bool_var_def		: Ident Assign bool_const		;
-const_float_var_def		: Ident Assign SignFloatConst	;
-const_double_var_def	: Ident Assign SignDoubleConst	;
+const_bool_var_def		: Ident Assign bool_const			;
+const_float_var_def		: Ident Assign sign_float_const		;
+const_double_var_def	: Ident Assign sign_double_const	;
 
 const_int_arr_def		: Ident(MBra int_const MKet)+ Assign int_arr_init_braket		;
 const_bool_arr_def		: Ident(MBra int_const MKet)+ Assign bool_arr_init_braket	;
@@ -85,11 +85,11 @@ bool_arr_init_list_elem		: bool_const				# bool_arr_init_list_elem_bool
 							| bool_arr_init_braket		# bool_arr_init_list_elem_arr
 							;
 float_arr_init_list			: float_arr_init_list_elem	(Comma float_arr_init_list_elem )*	;
-float_arr_init_list_elem	: SignFloatConst			# float_arr_init_list_elem_float
+float_arr_init_list_elem	: sign_float_const			# float_arr_init_list_elem_float
 							| float_arr_init_braket		# float_arr_init_list_elem_arr
 							;
 double_arr_init_list		: double_arr_init_list_elem	(Comma double_arr_init_list_elem)*	;
-double_arr_init_list_elem	: SignDoubleConst			# double_arr_init_list_elem_double
+double_arr_init_list_elem	: sign_double_const			# double_arr_init_list_elem_double
 							| double_arr_init_braket	# double_arr_init_list_elem_arr
 							;
 
@@ -113,8 +113,8 @@ double_def		: double_var_def	# def_double_var
 
 int_var_def		: Ident	(Assign sign_int_const   )?	;
 bool_var_def	: Ident	(Assign bool_const      )?	;
-float_var_def	: Ident	(Assign SignFloatConst )?	;
-double_var_def	: Ident	(Assign SignDoubleConst)?	;
+float_var_def	: Ident	(Assign sign_float_const )?	;
+double_var_def	: Ident	(Assign sign_double_const)?	;
 
 int_arr_def		: Ident(MBra int_const MKet)+ (Assign int_arr_init_braket   )?	;
 bool_arr_def	: Ident(MBra int_const MKet)+ (Assign bool_arr_init_braket  )?	;
@@ -252,6 +252,7 @@ bool_exp_1	:            SBra bool_exp_8 SKet	# bool_1_8_braket
 			| bool_const 						# bool_1_bool_const
 			| func_call 						# bool_1_func_call
 			| Ident								# bool_1_ident
+			| bool_exp_1   MBra int_exp  MKet	# bool_1_array_index
 			;
 
 comp_int_6		: int_exp EQ int_exp		# comp_int_6_eq
@@ -277,9 +278,10 @@ int_exp_2	:            Plus  int_exp_2	# int_2_1_plus
 			|                  int_exp_1	# int_2_1_none
 			;
 int_exp_1	:             SBra int_exp_4 SKet	# int_1_4_braket
-			| int_const 							# int_1_int_const
+			| int_const 						# int_1_int_const
 			| func_call 						# int_1_func_call
 			| Ident								# int_1_ident
+			| int_exp_1   MBra int_exp   MKet	# int_1_array_index
 			;
 
 comp_float_6	: float_exp EQ float_exp		# comp_float_6_eq
@@ -307,6 +309,7 @@ float_exp_1		:               SBra float_exp_4 SKet	# float_1_4_braket
 				| FloatConst 							# float_1_float_const
 				| func_call 							# float_1_func_call
 				| Ident									# float_1_ident
+				| float_exp_1   MBra int_exp     MKet	# float_1_array_index
 				;
 
 comp_double_6	: double_exp EQ double_exp		# comp_double_6_eq
@@ -334,19 +337,30 @@ double_exp_1	:                SBra double_exp_4 SKet	# double_1_4_braket
 				| DoubleConst 							# double_1_double_const
 				| func_call 							# double_1_func_call
 				| Ident									# double_1_ident
+				| double_exp_1   MBra int_exp      MKet	# double_1_array_index
 				;
 
 int_const		: DecConst 			# dec_const
 				| OctConst 			# oct_const
 				| HexConst			# hex_const
 				;
-sign_int_const	: Plus  int_const	# plus_int_const
-				| Minus int_const	# minus_int_const
-				|       int_const	# none_int_const
-				;
-bool_const		: TRUE 				# true_const
-				| FALSE				# false_const
-				;
+
+sign_int_const		: Plus  int_const	# plus_int_const
+					| Minus int_const	# minus_int_const
+					|       int_const	# none_int_const
+					;
+bool_const			: TRUE 				# true_const
+					| FALSE				# false_const
+					;
+sign_float_const	: Plus  FloatConst		
+					| Minus FloatConst
+					|       FloatConst		
+					;
+
+sign_double_const	: Plus  DoubleConst		
+					| Minus DoubleConst
+					|       DoubleConst		
+					;
 
 TRUE		: 'true'		;
 FALSE		: 'false'		;
@@ -364,30 +378,26 @@ CONTINUE	: 'continue'	;
 RETURN		: 'return'		;
 
 // const
-FloatConst		: FractConst ExpPart+ [F|f]		
-				| [0-9]+     ExpPart  [F|f]	;
-DoubleConst		: FractConst ExpPart+		
-				| [0-9]+     ExpPart		;
-ExpPart			: [E|e] '+' [0-9]+
-				| [E|e] '-' [0-9]+
-				| [E|e]     [0-9]+	;
+FloatConst		: [0-9]+ '.' [0-9]+                   [Ff]
+				| [0-9]+ '.'                          [Ff]
+				|        '.' [0-9]+                   [Ff]
+				| [0-9]+ '.' [0-9]+ [Ee] [+-]? [0-9]+ [Ff]
+				| [0-9]+ '.'        [Ee] [+-]? [0-9]+ [Ff]
+				|        '.' [0-9]+ [Ee] [+-]? [0-9]+ [Ff]
+				| [0-9]+            [Ee] [+-]? [0-9]+ [Ff]
+				;
 
-FractConst		: [0-9]*'.' [0-9]+		
-				| [0-9]+'.'			;
-
+DoubleConst		: [0-9]+ '.' [0-9]+                   
+				| [0-9]+ '.'                          
+				|        '.' [0-9]+                   
+				| [0-9]+ '.' [0-9]+ [Ee] [+-]? [0-9]+ 
+				| [0-9]+ '.'        [Ee] [+-]? [0-9]+ 
+				|        '.' [0-9]+ [Ee] [+-]? [0-9]+ 
+				| [0-9]+            [Ee] [+-]? [0-9]+ 
+				;
 HexConst	: [0][x|X][0-9A-Fa-f]+	;
 DecConst	: [1-9]   [0-9]*		;
 OctConst	: [0]     [0-7]*		;
-
-SignFloatConst	: Plus  FloatConst		
-				| Minus FloatConst
-				|       FloatConst		
-				;
-
-SignDoubleConst	: Plus  DoubleConst		
-				| Minus DoubleConst
-				|       DoubleConst		
-				;
 
 Ident			: [A-Za-z_][0-9A-Za-z_]*	;
 
