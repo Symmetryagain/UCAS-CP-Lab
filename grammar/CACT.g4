@@ -1,7 +1,7 @@
 grammar CACT;
 
 @header {
-    #include <vector>
+#include <vector>
 }
 
 // Lexical Keywords
