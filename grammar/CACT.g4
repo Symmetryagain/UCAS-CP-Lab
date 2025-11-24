@@ -87,11 +87,11 @@ Comma : ',' ;
 expr  : expr_8
       ;
 
-expr_1  : Ident                   # expr_1_ident
-        | const                   # expr_1_constant
-        | SBra expr_8 SKet        # expr_1_braket
-        | expr_1 MBra expr_8 MKet # expr_1_array
-        | func_call               # expr_1_func_call
+expr_1  : Ident                     # expr_1_ident
+        | const                     # expr_1_constant
+        | SBra expr_8 SKet          # expr_1_braket
+        | Ident (MBra expr_8 MKet)* # expr_1_array
+        | func_call                 # expr_1_func_call
         ;
 
 num_const : intconst    # num_const_int

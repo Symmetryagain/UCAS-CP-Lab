@@ -3,7 +3,7 @@ all: grammar build
 grammar:
 	java -jar ./deps/antlr-4.13.1-complete.jar -Dlanguage=Cpp ./grammar/CACT.g4 -visitor -no-listener
 
-build: grammar
+build:
 	mkdir -p ./build
 	cmake -S . -B ./build
 	make -C ./build -j

@@ -812,7 +812,7 @@ int main(int argc, const char *argv[]) {
   std::cout << "True" << std::endl;
 
   Analyzer visitor;
-  visitor.visit(tree);
+  // visitor.visit(tree);
 
   return parser.getNumberOfSyntaxErrors() + lexer.getNumberOfSyntaxErrors();
 }
