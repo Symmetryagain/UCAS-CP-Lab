@@ -1309,6 +1309,7 @@ Analyzer::visitVar_def(CACTParser::Var_defContext *context) {
     assert(0);
     return nullptr;
   }
+  int total_size = 1;
   std::vector<size_t> array_size;
   array_size.clear();
   if (context->intconst().empty()) { // variant
@@ -1322,7 +1323,6 @@ Analyzer::visitVar_def(CACTParser::Var_defContext *context) {
     std::cout << "@var %" << name << std::endl;
   }
   else { // array 
-    int total_size = 1;
     for (int i = 0; i < (int)context->intconst().size(); ++i) {
       int sz = parse_int(context->intconst()[i]->getText());
       array_size.push_back(sz);
@@ -1345,6 +1345,16 @@ Analyzer::visitVar_def(CACTParser::Var_defContext *context) {
     context->array_signed_const()->offset = 0;
     context->array_signed_const()->at_top = true;
     context->array_signed_const()->accept(this);
+  }
+  else { // no value, assign to 0
+    if (context->intconst().empty()) { // variant
+      std::cout << "assign %" << name << " 0" << std::endl;
+    }
+    else { // array
+      for (int i = 0; i < total_size; ++i) {
+        std::cout << "assign %" << name << "[" << i << "] 0" << std::endl;
+      }
+    }
   }
   std::cerr << "Leave Var_def" << std::endl;
   return nullptr;
