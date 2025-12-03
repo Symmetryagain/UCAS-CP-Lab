@@ -32,13 +32,13 @@ void func_init(string name, int line, IdentType type, vector<string> params)
 
 void io_func_init()
 {
-	func_init("print_int", -1, IT_FUNC_VOID, {"%i_-1"});
-	func_init("print_float", -2, IT_FUNC_VOID, {"%f_-2"});
-	func_init("print_double", -3, IT_FUNC_VOID, {"%d_-3"});
-	func_init("print_bool", -4, IT_FUNC_VOID, {"%b_-4"});
-	func_init("get_int", -5, IT_FUNC_INT, {});
-	func_init("get_float", -6, IT_FUNC_FLOAT, {});
-	func_init("get_double", -7, IT_FUNC_DOUBLE, {});
+	func_init("%print_int", -1, IT_FUNC_VOID, {"%i_-1"});
+	func_init("%print_float", -2, IT_FUNC_VOID, {"%f_-2"});
+	func_init("%print_double", -3, IT_FUNC_VOID, {"%d_-3"});
+	func_init("%print_bool", -4, IT_FUNC_VOID, {"%b_-4"});
+	func_init("%get_int", -5, IT_FUNC_INT, {});
+	func_init("%get_float", -6, IT_FUNC_FLOAT, {});
+	func_init("%get_double", -7, IT_FUNC_DOUBLE, {});
 }
 
 void io_exec(Local_State &lstate, Value &val)
@@ -46,16 +46,16 @@ void io_exec(Local_State &lstate, Value &val)
 	switch(lstate.curline)
 	{
 	case -1:
-		cout << lstate.ltable["%i_-1"].val.ival << endl;
+		cout << "print int: " << lstate.ltable["%i_-1"].val.ival << endl;
 		break;
 	case -2:
-		cout << lstate.ltable["%f_-2"].val.fval << endl;
+		cout << "print float: " << lstate.ltable["%f_-2"].val.fval << endl;
 		break;
 	case -3:
-		cout << lstate.ltable["%d_-3"].val.dval << endl;
+		cout << "print double: " << lstate.ltable["%d_-3"].val.dval << endl;
 		break;
 	case -4:
-		cout << lstate.ltable["%b_-4"].val.bval << endl;
+		cout << "print bool: " << lstate.ltable["%b_-4"].val.bval << endl;
 		break;
 	case -5:
 		cin >> val.ival;
@@ -122,11 +122,11 @@ OpType get_op_type(string lstr)
 	{
 		return OP_VAR;
 	}
-	else if(tokens[0] == "And")
+	else if(tokens[0] == "DAnd")
 	{
 		return OP_AND;
 	}
-	else if(tokens[0] == "Or")
+	else if(tokens[0] == "DOr")
 	{
 		return OP_OR;
 	}
@@ -281,35 +281,35 @@ IdentType vtype_func_to_var(IdentType vtype)
 
 IdentType get_func_type_by_prefix(string func_name)
 {
-	if(func_name == "main")
+	if(func_name == "%main")
 	{
 		return IT_FUNC_INT;
 	}
-	else if(func_name == "print_int")
+	else if(func_name == "%print_int")
 	{
 		return IT_FUNC_VOID;
 	}
-	else if(func_name == "print_float")
+	else if(func_name == "%print_float")
 	{
 		return IT_FUNC_VOID;
 	}
-	else if(func_name == "print_double")
+	else if(func_name == "%print_double")
 	{
 		return IT_FUNC_VOID;
 	}
-	else if(func_name == "print_bool")
+	else if(func_name == "%print_bool")
 	{
 		return IT_FUNC_VOID;
 	}
-	else if(func_name == "get_int")
+	else if(func_name == "%get_int")
 	{
 		return IT_FUNC_INT;
 	}
-	else if(func_name == "get_float")
+	else if(func_name == "%get_float")
 	{
 		return IT_FUNC_FLOAT;
 	}
-	else if(func_name == "get_double")
+	else if(func_name == "%get_double")
 	{
 		return IT_FUNC_DOUBLE;
 	}
@@ -396,7 +396,7 @@ IdentType get_final_var_type_by_prefix(string var_name)
 
 string get_array_name(string rstr)
 {
-	cout << "get_array_name: " << rstr << endl;
+	cerr << "get_array_name: " << rstr << endl;
 	assert(rstr[0] == '%');
 	assert(rstr[1] == 'a');
 	size_t pos = rstr.find('[');
@@ -406,7 +406,7 @@ string get_array_name(string rstr)
 
 int get_array_index(Local_State lstate, string rstr)
 {
-	cout << "get_array_index: " << rstr << endl;
+	cerr << "get_array_index: " << rstr << endl;
 	assert(rstr[0] == '%');
 	assert(rstr[1] == 'a');
 	size_t pos1 = rstr.find('[');
@@ -420,7 +420,7 @@ int get_array_index(Local_State lstate, string rstr)
 
 void init_func_def(string lstr, int line)
 {
-	cout << "init_func_def: " << lstr << " " << line << endl;
+	cerr << "init_func_def: " << lstr << " " << line << endl;
 	//@func %i_1 ( %ai_2 , %i_3 , %i_4 )
 	vector<string> tokens = splitString(lstr);
 	assert(tokens[0] == "@func");
@@ -438,7 +438,7 @@ void init_func_def(string lstr, int line)
 
 Value get_val_int(Local_State lstate, string rstr)
 {
-	cout << "get_val_int: " << rstr << endl;
+	cerr << "get_val_int: " << rstr << endl;
 	Value val;
 	if(rstr[0] == '%')
 	{
@@ -477,13 +477,13 @@ Value get_val_int(Local_State lstate, string rstr)
 	{
 		val.ival = atoi(rstr.c_str());
 	}
-	cout << "get_val_int: " << val.ival << endl;
+	cerr << "get_val_int: " << val.ival << endl;
 	return val;
 }
 
 Value get_val_float(Local_State lstate, string rstr)
 {
-	cout << "get_val_float: " << rstr << endl;
+	cerr << "get_val_float: " << rstr << endl;
 	Value val;
 	if(rstr[0] == '%')
 	{
@@ -522,13 +522,13 @@ Value get_val_float(Local_State lstate, string rstr)
 	{
 		val.fval = atof(rstr.c_str());
 	}
-	cout << "get_val_float: " << val.fval << endl;
+	cerr << "get_val_float: " << val.fval << endl;
 	return val;
 }
 
 Value get_val_double(Local_State lstate, string rstr)
 {
-	cout << "get_val_double: " << rstr << endl;
+	cerr << "get_val_double: " << rstr << endl;
 	Value val;
 	if(rstr[0] == '%')
 	{
@@ -567,13 +567,13 @@ Value get_val_double(Local_State lstate, string rstr)
 	{
 		val.dval = atof(rstr.c_str());
 	}
-	cout << "get_val_double: " << val.dval << endl;
+	cerr << "get_val_double: " << val.dval << endl;
 	return val;
 }
 
 Value get_val_bool(Local_State lstate, string rstr)
 {
-	cout << "get_val_bool: " << rstr << endl;
+	cerr << "get_val_bool: " << rstr << endl;
 	Value val;
 	if(rstr[0] == '%')
 	{
@@ -612,7 +612,7 @@ Value get_val_bool(Local_State lstate, string rstr)
 	{
 		val.bval = (rstr == "true");
 	}
-	cout << "get_val_bool: " << val.bval << endl;
+	cerr << "get_val_bool: " << val.bval << endl;
 	return val;
 }
 
@@ -620,14 +620,14 @@ Value get_val_array(Local_State lstate, string rstr)
 {
 	assert(rstr[0] == '%');
 	assert(rstr[1] == 'a');
-	cout << "get_val_array: " << rstr << endl;
+	cerr << "get_val_array: " << rstr << endl;
 	if(gtable[rstr].val_type == IT_NONE)
 	{
 		assert(lstate.ltable[rstr].val_type == IT_ARRAY_INT ||
 		       lstate.ltable[rstr].val_type == IT_ARRAY_FLOAT ||
 		       lstate.ltable[rstr].val_type == IT_ARRAY_DOUBLE ||
 		       lstate.ltable[rstr].val_type == IT_ARRAY_BOOL);
-		cout << "get_val_array: " << lstate.ltable[rstr].val.aval << endl;
+		cerr << "get_val_array: " << lstate.ltable[rstr].val.aval << endl;
 		return lstate.ltable[rstr].val;
 	}
 	else
@@ -636,7 +636,7 @@ Value get_val_array(Local_State lstate, string rstr)
 		       gtable[rstr].val_type == IT_ARRAY_FLOAT ||
 		       gtable[rstr].val_type == IT_ARRAY_DOUBLE ||
 		       gtable[rstr].val_type == IT_ARRAY_BOOL);
-		cout << "get_val_array: " << gtable[rstr].val.aval << endl;
+		cerr << "get_val_array: " << gtable[rstr].val.aval << endl;
 		return gtable[rstr].val;
 	}
 }
@@ -665,7 +665,7 @@ Value get_val(IdentType ident_type, Local_State lstate, string rstr)
 
 void init_g_assign(string lstr)
 {
-	cout << "init_g_assign: " << lstr << endl;
+	cerr << "init_g_assign: " << lstr << endl;
 	vector<string> tokens = splitString(lstr);
 	assert(tokens[0] == "!global");
 	assert(tokens[1] == "assign");
@@ -690,7 +690,7 @@ void init_g_assign(string lstr)
 
 void init_g_array(string lstr)
 {
-	cout << "init_g_array: " << lstr << endl;
+	cerr << "init_g_array: " << lstr << endl;
 	vector<string> tokens = splitString(lstr);
 	assert(tokens[0] == "!global");
 	assert(tokens[1] == "@array");
@@ -706,7 +706,7 @@ void init_g_array(string lstr)
 
 void init_g_var(string lstr)
 {
-	cout << "init_g_var: " << lstr << endl;
+	cerr << "init_g_var: " << lstr << endl;
 	vector<string> tokens = splitString(lstr);
 	assert(tokens[0] == "!global");
 	assert(tokens[1] == "@var");
@@ -720,9 +720,9 @@ void init_g_var(string lstr)
 
 void local_assign(Local_State &lstate, string name, Value val, IdentType vtype)
 {
-	cout << "local_assign: " << name << " ";
+	cerr << "local_assign: " << name << " ";
 	print_val(val, vtype);
-	cout << endl;
+	cerr << endl;
 	assert(name[0] == '%');
 	switch(vtype)
 	{
@@ -732,20 +732,33 @@ void local_assign(Local_State &lstate, string name, Value val, IdentType vtype)
 	case IT_BOOL:
 		if(name[1] != 'a')
 		{
-			assert(gtable[name].val_type == IT_NONE);
-			assert(lstate.ltable[name].val_type == vtype);
-			lstate.ltable[name].val = val;
+			if(gtable[name].val_type != IT_NONE)
+			{
+				assert(gtable[name].val_type == vtype);
+				gtable[name].val = val;
+			}
+			else
+			{
+				assert(lstate.ltable[name].val_type == vtype);
+				lstate.ltable[name].val = val;
+			}
 		}
 		else
 		{
 			string arrname = get_array_name(name);
-			assert(gtable[arrname].val_type == IT_NONE);
-			assert(lstate.ltable[arrname].val_type == IT_ARRAY_INT ||
-			       lstate.ltable[arrname].val_type == IT_ARRAY_FLOAT ||
-			       lstate.ltable[arrname].val_type == IT_ARRAY_DOUBLE ||
-			       lstate.ltable[arrname].val_type == IT_ARRAY_BOOL);
-			int arrindex = get_array_index(lstate, name);
-			lstate.ltable[arrname].val.aval[arrindex] = val;
+			if(gtable[arrname].val_type != IT_NONE)
+			{
+				assert(vtype_array_to_var(gtable[arrname].val_type) == vtype);
+				int index                       = get_array_index(lstate, name);
+				gtable[arrname].val.aval[index] = val;
+			}
+			else
+			{
+				assert(vtype_array_to_var(lstate.ltable[arrname].val_type) ==
+				       vtype);
+				int index = get_array_index(lstate, name);
+				lstate.ltable[arrname].val.aval[index] = val;
+			}
 		}
 		break;
 	case IT_ARRAY_INT:
@@ -764,7 +777,7 @@ void local_assign(Local_State &lstate, string name, Value val, IdentType vtype)
 
 void init_assign(Local_State &lstate, string lstr)
 {
-	cout << "init_assign: " << lstr << endl;
+	cerr << "init_assign: " << lstr << endl;
 	lstate.curline++;
 	vector<string> tokens = splitString(lstr);
 	assert(tokens[0] == "assign");
@@ -778,7 +791,7 @@ void init_assign(Local_State &lstate, string lstr)
 
 void init_array(Local_State &lstate, string lstr)
 {
-	cout << "init_array: " << lstr << endl;
+	cerr << "init_array: " << lstr << endl;
 	lstate.curline++;
 	vector<string> tokens = splitString(lstr);
 	assert(tokens[0] == "@array");
@@ -795,7 +808,7 @@ void init_array(Local_State &lstate, string lstr)
 
 void init_var(Local_State &lstate, string lstr)
 {
-	cout << "init_var: " << lstr << endl;
+	cerr << "init_var: " << lstr << endl;
 	lstate.curline++;
 	vector<string> tokens = splitString(lstr);
 	assert(tokens[0] == "@var");
@@ -810,9 +823,9 @@ void init_var(Local_State &lstate, string lstr)
 
 void init_arg(Local_State &lstate, string name, Value val)
 {
-	cout << "init_arg: " << name << " ";
+	cerr << "init_arg: " << name << " ";
 	print_val(val, get_var_type_by_prefix(name));
-	cout << endl;
+	cerr << endl;
 	assert(gtable[name].val_type == IT_NONE);
 	assert(lstate.ltable[name].val_type == IT_NONE);
 	assert(name[0] == '%');
@@ -827,7 +840,7 @@ void gtable_init()
 	for(int i = 0; i < lstrs.size(); i++)
 	{
 		auto lstr = lstrs[i];
-		cout << "init: " << lstr << endl;
+		cerr << "init: " << lstr << endl;
 		switch(get_op_type(lstr))
 		{
 		case OP_FUNC_DEF:
@@ -848,15 +861,15 @@ void gtable_init()
 	}
 	for(auto it = gtable.begin(); it != gtable.end(); it++)
 	{
-		cout << "global: " << it->first << " " << it->second.val_type << endl;
+		cerr << "global: " << it->first << " " << it->second.val_type << endl;
 	}
 
-	assert(gtable["main"].val_type == IT_FUNC_INT);
+	assert(gtable["%main"].val_type == IT_FUNC_INT);
 }
 
 void add_label(Local_State &lstate, string lstr, int line)
 {
-	cout << "add_label: " << lstr << endl;
+	cerr << "add_label: " << lstr << endl;
 	vector<string> tokens = splitString(lstr);
 	assert(tokens[0] == "label");
 	string name                  = tokens[1];
@@ -905,22 +918,22 @@ void print_val(Value val, IdentType vtype)
 	switch(vtype)
 	{
 	case IT_INT:
-		cout << val.ival;
+		cerr << val.ival;
 		break;
 	case IT_FLOAT:
-		cout << val.fval;
+		cerr << val.fval;
 		break;
 	case IT_DOUBLE:
-		cout << val.dval;
+		cerr << val.dval;
 		break;
 	case IT_BOOL:
-		cout << (val.bval ? "true" : "false");
+		cerr << (val.bval ? "true" : "false");
 		break;
 	case IT_ARRAY_INT:
 	case IT_ARRAY_FLOAT:
 	case IT_ARRAY_DOUBLE:
 	case IT_ARRAY_BOOL:
-		cout << val.aval;
+		cerr << val.aval;
 		break;
 	default:
 		assert(false);
@@ -929,7 +942,7 @@ void print_val(Value val, IdentType vtype)
 
 Value func_call(string func_name, vector<Value> args)
 {
-	cout << "func_call: " << func_name << endl;
+	cerr << "func_call: " << func_name << endl;
 	assert(gtable[func_name].val_type == IT_FUNC_INT ||
 	       gtable[func_name].val_type == IT_FUNC_FLOAT ||
 	       gtable[func_name].val_type == IT_FUNC_DOUBLE ||
@@ -947,9 +960,9 @@ Value func_call(string func_name, vector<Value> args)
 	Value ret;
 	while(!func_exec(lstate, ret))
 		;
-	cout << "func_ret: ";
+	cerr << "func_ret: ";
 	print_val(ret, vtype_func_to_var(gtable[func_name].val_type));
-	cout << endl;
+	cerr << endl;
 	return ret;
 }
 
@@ -962,7 +975,7 @@ bool func_exec(Local_State &lstate, Value &ret)
 	}
 	assert(lstate.curline < lstrs.size());
 	string lstr = lstrs[lstate.curline];
-	cout << "func_exec: " << lstr << endl;
+	cerr << "func_exec: " << lstr << endl;
 	switch(get_op_type(lstr))
 	{
 	case OP_EMPTY:
@@ -1667,28 +1680,28 @@ void op_neg(Local_State &lstate, string lstr)
 void op_negi(Local_State &lstate, string lstr)
 {
 	vector<string> tokens = splitString(lstr);
-	int            src1   = get_val_int(lstate, tokens[1]).ival;
+	int            src1   = get_val_int(lstate, tokens[2]).ival;
 	Value          val;
 	val.ival = -src1;
-	local_assign(lstate, tokens[2], val, IT_INT);
+	local_assign(lstate, tokens[1], val, IT_INT);
 }
 
 void op_negf(Local_State &lstate, string lstr)
 {
 	vector<string> tokens = splitString(lstr);
-	float          src1   = get_val_float(lstate, tokens[1]).fval;
+	float          src1   = get_val_float(lstate, tokens[2]).fval;
 	Value          val;
 	val.fval = -src1;
-	local_assign(lstate, tokens[2], val, IT_FLOAT);
+	local_assign(lstate, tokens[1], val, IT_FLOAT);
 }
 
 void op_negd(Local_State &lstate, string lstr)
 {
 	vector<string> tokens = splitString(lstr);
-	double         src1   = get_val_double(lstate, tokens[1]).dval;
+	double         src1   = get_val_double(lstate, tokens[2]).dval;
 	Value          val;
 	val.dval = -src1;
-	local_assign(lstate, tokens[2], val, IT_DOUBLE);
+	local_assign(lstate, tokens[1], val, IT_DOUBLE);
 }
 
 void op_branch(Local_State &lstate, string lstr)
@@ -1723,7 +1736,7 @@ void op_func_call(Local_State &lstate, string lstr)
 			continue;
 		}
 		assert(args.size() < func_params[func_name].size());
-		cout << "parse arg:" << tokens[i]
+		cerr << "parse arg:" << tokens[i]
 		     << " to param:" << func_params[func_name][args.size()] << endl;
 		switch(get_var_type_by_prefix(func_params[func_name][args.size()]))
 		{

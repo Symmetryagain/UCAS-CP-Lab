@@ -110,7 +110,7 @@ Analyzer::visitExpr_1_array(CACTParser::Expr_1_arrayContext *context) {
       return nullptr;
     }
     std::cout << "Mul %" << tmp << " " << context->expr_8()[i]->res << " " << array_size[i] <<std::endl;
-    std::cout << "Add %" << offset << " " << offset << " " << tmp << std::endl;
+    std::cout << "Add %" << offset << " %" << offset << " %" << tmp << std::endl;
   }
   if (arr.arraySize().size() == context->expr_8().size()) { // not array
     context->array_size = {};
@@ -835,6 +835,7 @@ Analyzer::visitFunc_call_ident(CACTParser::Func_call_identContext *context) {
   else {
     func_call_Res = "%" + createVar(func.retvalType(), false);
     std::cout << "@var " << func_call_Res << std::endl;
+    context->res = func_call_Res;
   }
   for (int i = 0; i < (int)context->expr_8().size(); ++i) {
     context->expr_8()[i]->accept(this);
@@ -1056,7 +1057,7 @@ Analyzer::visitStmt_if(CACTParser::Stmt_ifContext *context) {
       context->stmt()[i]->has_return = false;
       context->stmt()[i]->accept(this);
       if (!context->stmt()[i]->has_return) has_return = false;
-      if (i == 0) std::cout << "branch " << leaveLabel << " 1 " << std::endl;
+      if (i == 0) std::cout << "branch " << leaveLabel << " true" << std::endl;
     }
     context->has_return = has_return;
   }
@@ -1095,7 +1096,7 @@ Analyzer::visitStmt_while(CACTParser::Stmt_whileContext *context) {
   context->stmt()->need_type = context->need_type;
   context->stmt()->has_return = false;
   context->stmt()->accept(this);
-  std::cout << "branch " << enterLabel << " 1" << std::endl;
+  std::cout << "branch " << enterLabel << " true" << std::endl;
   std::cout << "label " << leaveLabel << std::endl;
   //
   std::cerr << "Leave Stmt_while" << std::endl;
@@ -1111,7 +1112,7 @@ Analyzer::visitStmt_break(CACTParser::Stmt_breakContext *context) {
     assert(0);
     return nullptr;
   }
-  std::cout << "branch " << context->brk_target << " 1" << std::endl;
+  std::cout << "branch " << context->brk_target << " true" << std::endl;
   std::cerr << "Leave Stmt_break" << std::endl;
   return nullptr;
 }
@@ -1125,7 +1126,7 @@ Analyzer::visitStmt_continue(CACTParser::Stmt_continueContext *context) {
     assert(0);
     return nullptr;
   }
-  std::cout << "branch " << context->ctn_target << " 1" << std::endl;
+  std::cout << "branch " << context->ctn_target << " true" << std::endl;
   std::cerr << "Leave Stmt_continue" << std::endl;
   return nullptr;
 }
@@ -1344,14 +1345,17 @@ Analyzer::visitVar_def(CACTParser::Var_defContext *context) {
     context->array_signed_const()->varName = name;
     context->array_signed_const()->offset = 0;
     context->array_signed_const()->at_top = true;
+    context->array_signed_const()->is_global = context->is_global;
     context->array_signed_const()->accept(this);
   }
   else { // no value, assign to 0
     if (context->intconst().empty()) { // variant
+      if (context->is_global) std::cout << "!global ";
       std::cout << "assign %" << name << " 0" << std::endl;
     }
     else { // array
       for (int i = 0; i < total_size; ++i) {
+        if (context->is_global) std::cout << "!global ";
         std::cout << "assign %" << name << "[" << i << "] 0" << std::endl;
       }
     }
@@ -1403,6 +1407,7 @@ Analyzer::visitConst_def(CACTParser::Const_defContext *context) {
   context->array_signed_const()->varName = name;
   context->array_signed_const()->offset = 0;
   context->array_signed_const()->at_top = true;
+  context->array_signed_const()->is_global = context->is_global;
   context->array_signed_const()->accept(this);
   std::cerr << "Leave Const_def" << std::endl;
   return nullptr;
@@ -1425,9 +1430,10 @@ Analyzer::visitArray_signed_const_const(CACTParser::Array_signed_const_constCont
     return nullptr;
   }
   if (context->varName[0] == 'a') {
+	if (context->is_global) std::cout << "!global ";
     std::cout << "assign %" << context->varName << "[" << context->offset << "] " << context->signed_const()->value << std::endl;
-  }
-  else {
+  } else {
+    if (context->is_global) std::cout << "!global ";
     std::cout << "assign %" << context->varName << " " << context->signed_const()->value << std::endl;
   }
   std::cerr << "Leave Array_signed_const_const" << std::endl;
@@ -1469,6 +1475,7 @@ Analyzer::visitArray_signed_const_array(CACTParser::Array_signed_const_arrayCont
         context->array_signed_const()[i]->accept(this);
       }
       for (int i = (int)context->array_signed_const().size(); i < sz; ++i) {
+        if (context->is_global) std::cout << "!global ";
         std::cout << "assign %" << context->varName << "[" << i << "] 0" << std::endl;
       }
       return nullptr;
@@ -1497,6 +1504,7 @@ Analyzer::visitArray_signed_const_array(CACTParser::Array_signed_const_arrayCont
   if (context->array_signed_const().size() < context->array_size[0]) {
     for (int i = context->array_signed_const().size() * sz; i < (int)context->array_size[0] * sz; ++i) {
       int offset = context->offset + i;
+      if (context->is_global) std::cout << "!global ";
       std::cout << "assign %" << context->varName << "[" << offset << "] 0" << std::endl;
     }
   }
@@ -1546,13 +1554,7 @@ Analyzer::visitFunc_def(CACTParser::Func_defContext *context) {
     assert(0);
     return nullptr;
   }
-  bool special_flag = false;
-  for (int i = 0; i < 8; ++i)
-    if (funcName == special_funcname[i]) {
-      special_flag = true;
-      break;
-    }
-  if (!special_flag) funcName = "%" + funcName;
+  funcName = "%" + funcName;
   std::cout << "@func " << funcName << " ( ";
   for (int i = 0; i < (int)context->func_f_param().size(); ++i) {
     std::cout << context->func_f_param()[i]->code << " ";

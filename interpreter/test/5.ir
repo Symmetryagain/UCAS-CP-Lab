@@ -18,13 +18,13 @@ assign %i_7 0
 @var %i_10
 assign %i_9 0
 Mul %i_10 2 1
-Add %i_9 i_9 i_10
+Add %i_9 %i_9 %i_10
 @var %i_11
 assign %i_11 %ai_3[%i_9]
 @var %i_12
 Add %i_12 2 %i_11
 Mul %i_8 %i_12 1
-Add %i_7 i_7 i_8
+Add %i_7 %i_7 %i_8
 @var %i_13
 assign %i_13 %ai_1[%i_7]
 return %i_13
@@ -34,7 +34,7 @@ return %i_13
 @var %i_17
 assign %i_16 0
 Mul %i_17 0 1
-Add %i_16 i_16 i_17
+Add %i_16 %i_16 %i_17
 @var %i_18
 assign %i_18 %ai_1[%i_16]
 return %i_18
@@ -44,7 +44,7 @@ return %i_18
 assign %i_20 5
 return
 @endfunc
-@func main ( )
+@func %main ( )
 @array %ai_21 5
 assign %ai_21[0] 7
 assign %ai_21[1] 5
@@ -54,8 +54,11 @@ assign %ai_21[4] 8
 @var %d_22
 assign %d_22 1000.0
 @var %f_23
+assign %f_23 0
 @var %f_24
+assign %f_24 0
 @var %f_25
+assign %f_25 0
 @var %d_26
 assign %d_26 50.33
 @var %i_27
@@ -69,7 +72,7 @@ Mul %d_30 64.0 %d_22
 Add %d_31 %d_30 120.0
 call %i_27 %i_6 ( %ai_21 , %d_29 , %d_31 )
 @var %i_32
-Mul %i_32  5033
+Mul %i_32 %i_27 5033
 @var %i_33
 Add %i_33 %i_32 05
 @var %b_34
@@ -84,7 +87,7 @@ EQ %b_37 %f_24 %f_25
 @var %i_39
 assign %i_38 0
 Mul %i_39 1 1
-Add %i_38 i_38 i_39
+Add %i_38 %i_38 %i_39
 @var %i_40
 assign %i_40 %ai_21[%i_38]
 @var %b_41
@@ -101,11 +104,11 @@ assign %i_45 0
 @var %i_48
 assign %i_47 0
 Mul %i_48 2 1
-Add %i_47 i_47 i_48
+Add %i_47 %i_47 %i_48
 @var %i_49
 assign %i_49 %ai_21[%i_47]
 Mul %i_46 %i_49 2
-Add %i_45 i_45 i_46
+Add %i_45 %i_45 %i_46
 @var %ai_50
 Addr %ai_50 %ai_2 %i_45
 call %i_44 %i_15 ( %ai_50 )

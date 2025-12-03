@@ -1,5 +1,7 @@
 #include "interpreter.h"
+
 #include <algorithm>
+
 int main(int argc, char* argv[])
 {
 	if(argc < 2)
@@ -13,30 +15,31 @@ int main(int argc, char* argv[])
 		cerr << "Error: Could not open IR file " << argv[1] << endl;
 		return 1;
 	}
-	cout << "Reading IR file..." << endl;
+	cerr << "Reading IR file..." << endl;
 
 	string lstr;
 	while(getline(file, lstr))
 	{
 		lstrs.push_back(lstr);
-		cout << lstr << endl;
+		cerr << lstr << endl;
 	}
 	file.close();
 
-	cout << "IR file read successfully." << endl;
-	cout << "Number of lines: " << lstrs.size() << endl;
-	cout << "Starting initialization..." << endl;
+	cerr << "IR file read successfully." << endl;
+	cerr << "Number of lines: " << lstrs.size() << endl;
+	cerr << "Starting initialization..." << endl;
 
 	gtable_init();
 
-	cout << "Initialization complete." << endl;
-	cout << "Starting interpretation..." << endl;
+	cerr << "Initialization complete." << endl;
+	cerr << "Starting interpretation..." << endl;
 
 	Local_State main;
-	Value main_val = func_call("main", {});
+	Value       main_val = func_call("%main", {});
 
-	cout << "Interpretation complete." << endl;
-	cout << "Result: " << main_val.ival << endl;
+	cerr << "Interpretation complete." << endl;
+	cerr << "Result: ";
+	cout << main_val.ival << endl;
 
 	return 0;
 }

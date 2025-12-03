@@ -411,6 +411,7 @@ array_signed_const
                       std::string varName,
                       int offset,
                       bool at_top,
+					  bool is_global,
                     ]
                     : signed_const                                                # array_signed_const_const
                     | LBra (array_signed_const (Comma array_signed_const)*)? LKet # array_signed_const_array
