@@ -24,6 +24,6 @@ int main() {
     if (c == 1) c = c + 2;
     a = b + c;
   }
-  func(e[0][1], e[2]);
+  func(e[0][1], e[1]);
   return 0;
 }
