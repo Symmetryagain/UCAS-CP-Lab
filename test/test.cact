@@ -2,8 +2,17 @@ int func(int a, int b[]) {
   int c = - - - - 1;
   while(c == 1) {
     a=a+1;
-    break;
+    {
+      break;
+    }
     continue;
+  }
+  {
+    {
+      {
+        int c;
+      }
+    }
   }
   return 0;
   //break;
@@ -11,7 +20,7 @@ int func(int a, int b[]) {
   //return 1;
 }
 int a;
-int c[2][3] = {1};
+int c[2][3];
 int main() {
   int a=1,b=2,c=33;
   float d = - - -3.0f;
