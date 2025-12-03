@@ -20,7 +20,7 @@ std::any Analyzer::visitExpr_1_ident(CACTParser::Expr_1_identContext *context) {
   auto res = g_symtree.resolve(varName);
   if (!res.has_value()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -74,14 +74,14 @@ std::any Analyzer::visitExpr_1_array(CACTParser::Expr_1_arrayContext *context) {
   auto res = g_symtree.resolve(arrName);
   if (!res.has_value()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   Symbol arr = res.value();
   if (!arr.isArray()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -89,7 +89,7 @@ std::any Analyzer::visitExpr_1_array(CACTParser::Expr_1_arrayContext *context) {
   std::vector<size_t> array_size(arr.arraySize().size());
   if (arr.arraySize().size() < context->expr_8().size()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -107,7 +107,7 @@ std::any Analyzer::visitExpr_1_array(CACTParser::Expr_1_arrayContext *context) {
     if (context->expr_8()[i]->btype != Int ||
         !context->expr_8()[i]->array_size.empty()) {
       //
-      // exit(1);
+      exit(1);
       assert(0);
       return nullptr;
     }
@@ -293,7 +293,7 @@ std::any Analyzer::visitExpr_2_plus(CACTParser::Expr_2_plusContext *context) {
   if (context->expr_2()->btype == Bool ||
       !context->expr_2()->array_size.empty()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -313,7 +313,7 @@ std::any Analyzer::visitExpr_2_minus(CACTParser::Expr_2_minusContext *context) {
   if (context->expr_2()->btype == Bool ||
       !context->expr_2()->array_size.empty()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -334,7 +334,7 @@ std::any Analyzer::visitExpr_2_not(CACTParser::Expr_2_notContext *context) {
   if (context->expr_2()->btype != Bool ||
       !context->expr_2()->array_size.empty()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -355,20 +355,20 @@ Analyzer::visitExpr_3_divide(CACTParser::Expr_3_divideContext *context) {
   context->expr_3()->accept(this);
   if (context->expr_3()->btype != context->expr_2()->btype) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   if (context->expr_3()->btype == Bool || context->expr_2()->btype == Bool) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   if (!context->expr_3()->array_size.empty() ||
       !context->expr_2()->array_size.empty()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -390,20 +390,20 @@ std::any Analyzer::visitExpr_3_times(CACTParser::Expr_3_timesContext *context) {
   context->expr_3()->accept(this);
   if (context->expr_3()->btype != context->expr_2()->btype) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   if (context->expr_3()->btype == Bool || context->expr_2()->btype == Bool) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   if (!context->expr_3()->array_size.empty() ||
       !context->expr_2()->array_size.empty()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -426,14 +426,14 @@ Analyzer::visitExpr_3_remain(CACTParser::Expr_3_remainContext *context) {
   context->expr_3()->accept(this);
   if (context->expr_3()->btype != Int || context->expr_2()->btype != Int) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   if (!context->expr_3()->array_size.empty() ||
       !context->expr_2()->array_size.empty()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -465,20 +465,20 @@ std::any Analyzer::visitExpr_4_plus(CACTParser::Expr_4_plusContext *context) {
   context->expr_4()->accept(this);
   if (context->expr_4()->btype != context->expr_3()->btype) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   if (context->expr_4()->btype == Bool || context->expr_3()->btype == Bool) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   if (!context->expr_4()->array_size.empty() ||
       !context->expr_3()->array_size.empty()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -511,20 +511,20 @@ std::any Analyzer::visitExpr_4_minus(CACTParser::Expr_4_minusContext *context) {
   context->expr_4()->accept(this);
   if (context->expr_4()->btype != context->expr_3()->btype) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   if (context->expr_4()->btype == Bool || context->expr_3()->btype == Bool) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   if (!context->expr_4()->array_size.empty() ||
       !context->expr_3()->array_size.empty()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -546,20 +546,20 @@ std::any Analyzer::visitExpr_5_ge(CACTParser::Expr_5_geContext *context) {
   context->expr_5()->accept(this);
   if (context->expr_5()->btype != context->expr_4()->btype) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   if (context->expr_5()->btype == Bool || context->expr_4()->btype == Bool) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   if (!context->expr_5()->array_size.empty() ||
       !context->expr_4()->array_size.empty()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -581,20 +581,20 @@ std::any Analyzer::visitExpr_5_gt(CACTParser::Expr_5_gtContext *context) {
   context->expr_5()->accept(this);
   if (context->expr_5()->btype != context->expr_4()->btype) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   if (context->expr_5()->btype == Bool || context->expr_4()->btype == Bool) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   if (!context->expr_5()->array_size.empty() ||
       !context->expr_4()->array_size.empty()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -627,20 +627,20 @@ std::any Analyzer::visitExpr_5_le(CACTParser::Expr_5_leContext *context) {
   context->expr_5()->accept(this);
   if (context->expr_5()->btype != context->expr_4()->btype) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   if (context->expr_5()->btype == Bool || context->expr_4()->btype == Bool) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   if (!context->expr_5()->array_size.empty() ||
       !context->expr_4()->array_size.empty()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -662,20 +662,20 @@ std::any Analyzer::visitExpr_5_lt(CACTParser::Expr_5_ltContext *context) {
   context->expr_5()->accept(this);
   if (context->expr_5()->btype != context->expr_4()->btype) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   if (context->expr_5()->btype == Bool || context->expr_4()->btype == Bool) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   if (!context->expr_5()->array_size.empty() ||
       !context->expr_4()->array_size.empty()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -708,14 +708,14 @@ std::any Analyzer::visitExpr_6_ne(CACTParser::Expr_6_neContext *context) {
   context->expr_6()->accept(this);
   if (context->expr_6()->btype != context->expr_5()->btype) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   if (!context->expr_6()->array_size.empty() ||
       !context->expr_5()->array_size.empty()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -737,14 +737,14 @@ std::any Analyzer::visitExpr_6_eq(CACTParser::Expr_6_eqContext *context) {
   context->expr_6()->accept(this);
   if (context->expr_6()->btype != context->expr_5()->btype) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   if (!context->expr_6()->array_size.empty() ||
       !context->expr_5()->array_size.empty()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -777,14 +777,14 @@ std::any Analyzer::visitExpr_7_dand(CACTParser::Expr_7_dandContext *context) {
   context->expr_6()->accept(this);
   if (context->expr_7()->btype != Bool || context->expr_6()->btype != Bool) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   if (!context->expr_7()->array_size.empty() ||
       !context->expr_6()->array_size.empty()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -805,14 +805,14 @@ std::any Analyzer::visitExpr_8_dor(CACTParser::Expr_8_dorContext *context) {
   context->expr_7()->accept(this);
   if (context->expr_8()->btype != Bool || context->expr_7()->btype != Bool) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   if (!context->expr_8()->array_size.empty() ||
       !context->expr_7()->array_size.empty()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -845,7 +845,7 @@ Analyzer::visitFunc_call_ident(CACTParser::Func_call_identContext *context) {
   auto res = g_functable.resolve(name);
   if (!res.has_value()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -853,7 +853,7 @@ Analyzer::visitFunc_call_ident(CACTParser::Func_call_identContext *context) {
   context->btype = func.retvalType();
   if (func.params().size() != context->expr_8().size()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -869,14 +869,14 @@ Analyzer::visitFunc_call_ident(CACTParser::Func_call_identContext *context) {
     context->expr_8()[i]->accept(this);
     if (context->expr_8()[i]->btype != func.params()[i].bType) {
       //
-      // exit(1);
+      exit(1);
       assert(0);
       return nullptr;
     }
     if (context->expr_8()[i]->array_size.size() !=
         func.params()[i].arraySize.size()) {
       //
-      // exit(1);
+      exit(1);
       assert(0);
       return nullptr;
     }
@@ -885,7 +885,7 @@ Analyzer::visitFunc_call_ident(CACTParser::Func_call_identContext *context) {
           func.params()[i].arraySize[j] !=
               context->expr_8()[i]->array_size[j]) {
         //
-        // exit(1);
+        exit(1);
         assert(0);
         return nullptr;
       }
@@ -943,7 +943,7 @@ std::any Analyzer::visitStmt_assign(CACTParser::Stmt_assignContext *context) {
   context->expr_8()->accept(this);
   if (context->expr_8()->btype != context->l_value()->btype) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -959,20 +959,20 @@ std::any Analyzer::visitL_value(CACTParser::L_valueContext *context) {
   auto res = g_symtree.resolve(varName);
   if (!res.has_value()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   Symbol var = res.value();
   if (var.isConst()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   if (context->expr_8().size() != var.arraySize().size()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -980,7 +980,7 @@ std::any Analyzer::visitL_value(CACTParser::L_valueContext *context) {
     context->expr_8()[i]->accept(this);
     if (context->expr_8()[i]->btype != Int) {
       //
-      // exit(1);
+      exit(1);
       assert(0);
       return nullptr;
     }
@@ -1036,7 +1036,7 @@ std::any Analyzer::visitStmt_return(CACTParser::Stmt_returnContext *context) {
   if (context->need_type == Void) {
     if (context->expr_8() != nullptr) {
       //
-      // exit(1);
+      exit(1);
       assert(0);
       return nullptr;
     }
@@ -1045,7 +1045,7 @@ std::any Analyzer::visitStmt_return(CACTParser::Stmt_returnContext *context) {
     context->expr_8()->accept(this);
     if (context->expr_8()->btype != context->need_type) {
       //
-      // exit(1);
+      exit(1);
       assert(0);
       return nullptr;
     }
@@ -1060,7 +1060,7 @@ std::any Analyzer::visitStmt_if(CACTParser::Stmt_ifContext *context) {
   context->expr_8()->accept(this);
   if (context->expr_8()->btype != Bool) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -1107,7 +1107,7 @@ std::any Analyzer::visitStmt_while(CACTParser::Stmt_whileContext *context) {
   context->expr_8()->accept(this);
   if (context->expr_8()->btype != Bool) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -1131,7 +1131,7 @@ std::any Analyzer::visitStmt_break(CACTParser::Stmt_breakContext *context) {
   std::cerr << "Enter Stmt_break" << std::endl;
   if (context->brk_target.empty()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -1145,7 +1145,7 @@ Analyzer::visitStmt_continue(CACTParser::Stmt_continueContext *context) {
   std::cerr << "Enter Stmt_continue" << std::endl;
   if (context->ctn_target.empty()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -1320,7 +1320,7 @@ std::any Analyzer::visitVar_def(CACTParser::Var_defContext *context) {
   if (g_symtree.check(name)) {
     //
     // std::cout <<"!" << name << std::endl;
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -1330,7 +1330,7 @@ std::any Analyzer::visitVar_def(CACTParser::Var_defContext *context) {
   if (context->intconst().empty()) { // variant
     if (!g_symtree.define(context->need_type, name, false, false, {})) {
       //
-      // exit(1);
+      exit(1);
       assert(0);
       return nullptr;
     }
@@ -1345,7 +1345,7 @@ std::any Analyzer::visitVar_def(CACTParser::Var_defContext *context) {
     }
     if (!g_symtree.define(context->need_type, name, true, false, array_size)) {
       //
-      // exit(1);
+      exit(1);
       assert(0);
       return nullptr;
     }
@@ -1384,7 +1384,7 @@ std::any Analyzer::visitConst_def(CACTParser::Const_defContext *context) {
   std::string name = context->Ident()->getText();
   if (g_symtree.check(name)) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -1393,7 +1393,7 @@ std::any Analyzer::visitConst_def(CACTParser::Const_defContext *context) {
   if (context->intconst().empty()) { // variant
     if (!g_symtree.define(context->need_type, name, false, true, {})) {
       //
-      // exit(1);
+      exit(1);
       assert(0);
       return nullptr;
     }
@@ -1409,7 +1409,7 @@ std::any Analyzer::visitConst_def(CACTParser::Const_defContext *context) {
     }
     if (!g_symtree.define(context->need_type, name, true, true, array_size)) {
       //
-      // exit(1);
+      exit(1);
       assert(0);
       return nullptr;
     }
@@ -1433,14 +1433,14 @@ std::any Analyzer::visitArray_signed_const_const(
   std::cerr << "Enter Array_signed_const_const" << std::endl;
   if (!context->array_size.empty()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
   context->signed_const()->accept(this);
   if (context->need_type != context->signed_const()->btype) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -1464,7 +1464,7 @@ std::any Analyzer::visitArray_signed_const_array(
   std::cerr << "Enter Array_signed_const_array" << std::endl;
   if (context->array_size.empty()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -1482,7 +1482,7 @@ std::any Analyzer::visitArray_signed_const_array(
         sz *= context->array_size[i];
       if ((int)context->array_signed_const().size() > sz) {
         //
-        // exit(1);
+        exit(1);
         assert(0);
         return nullptr;
       }
@@ -1506,7 +1506,7 @@ std::any Analyzer::visitArray_signed_const_array(
   }
   if (context->array_signed_const().size() > context->array_size[0]) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -1549,14 +1549,14 @@ std::any Analyzer::visitFunc_def(CACTParser::Func_defContext *context) {
   // std::cout << "!!!" << funcName << " " << retType << std::endl;
   if (funcName == "main" && retType != Int) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
 
   if (g_functable.check(funcName)) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -1566,7 +1566,7 @@ std::any Analyzer::visitFunc_def(CACTParser::Func_defContext *context) {
   params.clear();
   if (funcName == "main" && !context->func_f_param().empty()) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -1576,7 +1576,7 @@ std::any Analyzer::visitFunc_def(CACTParser::Func_defContext *context) {
   }
   if (!g_functable.define(retType, funcName, params)) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -1593,7 +1593,7 @@ std::any Analyzer::visitFunc_def(CACTParser::Func_defContext *context) {
   context->block()->accept(this);
   if (retType != Void && !context->block()->has_return) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -1612,7 +1612,7 @@ std::any Analyzer::visitFunc_f_param(CACTParser::Func_f_paramContext *context) {
   array_size.clear();
   if (g_symtree.check(varName)) {
     //
-    // exit(1);
+    exit(1);
     assert(0);
     return nullptr;
   }
@@ -1627,7 +1627,7 @@ std::any Analyzer::visitFunc_f_param(CACTParser::Func_f_paramContext *context) {
     context->params = FuncParamsType(btype, true, array_size);
     if (!g_symtree.define(btype, varName, true, false, array_size)) {
       //
-      // exit(1);
+      exit(1);
       assert(0);
       return nullptr;
     }
@@ -1636,7 +1636,7 @@ std::any Analyzer::visitFunc_f_param(CACTParser::Func_f_paramContext *context) {
     context->params = FuncParamsType(btype, false);
     if (!g_symtree.define(btype, varName, false, false, array_size)) {
       //
-      // exit(1);
+      exit(1);
       assert(0);
       return nullptr;
     }
