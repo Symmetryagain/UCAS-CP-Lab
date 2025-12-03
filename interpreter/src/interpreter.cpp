@@ -46,16 +46,24 @@ void io_exec(Local_State &lstate, Value &val)
 	switch(lstate.curline)
 	{
 	case -1:
-		cout << "print int: " << lstate.ltable["%i_-1"].val.ival << endl;
+		cerr << "print int: ";
+		cout << lstate.ltable["%i_-1"].val.ival;
+		cerr << endl;
 		break;
 	case -2:
-		cout << "print float: " << lstate.ltable["%f_-2"].val.fval << endl;
+		cerr << "print float: ";
+		cout << lstate.ltable["%f_-2"].val.fval;
+		cerr << endl;
 		break;
 	case -3:
-		cout << "print double: " << lstate.ltable["%d_-3"].val.dval << endl;
+		cerr << "print double: ";
+		cout << lstate.ltable["%d_-3"].val.dval;
+		cerr << endl;
 		break;
 	case -4:
-		cout << "print bool: " << (lstate.ltable["%b_-4"].val.bval ? "true" : "false") << endl;
+		cerr << "print bool: ";
+		cout << (lstate.ltable["%b_-4"].val.bval ? "true" : "false") ;
+		cerr << endl;
 		break;
 	case -5:
 		cin >> val.ival;
