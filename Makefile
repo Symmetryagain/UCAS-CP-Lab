@@ -11,4 +11,6 @@ build:
 clean:
 	rm -rf ./build
 
-.PHONY: grammar build clean
+rebuild: clean grammar build
+
+.PHONY: grammar build clean rebuild

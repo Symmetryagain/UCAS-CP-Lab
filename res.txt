@@ -1,0 +1,1041 @@
+=== Token Stream ===
+Line 1:0 INT = 'int'
+Line 1:3 WhiteSpace = ' '
+Line 1:4 Ident = 'func'
+Line 1:8 SBra = '('
+Line 1:9 INT = 'int'
+Line 1:12 WhiteSpace = ' '
+Line 1:13 Ident = 'a'
+Line 1:14 Comma = ','
+Line 1:15 WhiteSpace = ' '
+Line 1:16 INT = 'int'
+Line 1:19 WhiteSpace = ' '
+Line 1:20 Ident = 'b'
+Line 1:21 MBra = '['
+Line 1:22 MKet = ']'
+Line 1:23 SKet = ')'
+Line 1:24 WhiteSpace = ' '
+Line 1:25 LBra = '{'
+Line 1:26 NewLine = '
+'
+Line 2:0 WhiteSpace = ' '
+Line 2:1 WhiteSpace = ' '
+Line 2:2 INT = 'int'
+Line 2:5 WhiteSpace = ' '
+Line 2:6 Ident = 'c'
+Line 2:7 WhiteSpace = ' '
+Line 2:8 Assign = '='
+Line 2:9 WhiteSpace = ' '
+Line 2:10 Minus = '-'
+Line 2:11 WhiteSpace = ' '
+Line 2:12 Minus = '-'
+Line 2:13 WhiteSpace = ' '
+Line 2:14 Minus = '-'
+Line 2:15 WhiteSpace = ' '
+Line 2:16 Minus = '-'
+Line 2:17 WhiteSpace = ' '
+Line 2:18 DecConst = '1'
+Line 2:19 Semi = ';'
+Line 2:20 NewLine = '
+'
+Line 3:0 WhiteSpace = ' '
+Line 3:1 WhiteSpace = ' '
+Line 3:2 WHILE = 'while'
+Line 3:7 SBra = '('
+Line 3:8 Ident = 'c'
+Line 3:9 WhiteSpace = ' '
+Line 3:10 EQ = '=='
+Line 3:12 WhiteSpace = ' '
+Line 3:13 DecConst = '1'
+Line 3:14 SKet = ')'
+Line 3:15 WhiteSpace = ' '
+Line 3:16 LBra = '{'
+Line 3:17 NewLine = '
+'
+Line 4:0 WhiteSpace = ' '
+Line 4:1 WhiteSpace = ' '
+Line 4:2 WhiteSpace = ' '
+Line 4:3 WhiteSpace = ' '
+Line 4:4 Ident = 'a'
+Line 4:5 Assign = '='
+Line 4:6 Ident = 'a'
+Line 4:7 Plus = '+'
+Line 4:8 DecConst = '1'
+Line 4:9 Semi = ';'
+Line 4:10 NewLine = '
+'
+Line 5:0 WhiteSpace = ' '
+Line 5:1 WhiteSpace = ' '
+Line 5:2 WhiteSpace = ' '
+Line 5:3 WhiteSpace = ' '
+Line 5:4 BREAK = 'break'
+Line 5:9 Semi = ';'
+Line 5:10 NewLine = '
+'
+Line 6:0 WhiteSpace = ' '
+Line 6:1 WhiteSpace = ' '
+Line 6:2 WhiteSpace = ' '
+Line 6:3 WhiteSpace = ' '
+Line 6:4 CONTINUE = 'continue'
+Line 6:12 Semi = ';'
+Line 6:13 NewLine = '
+'
+Line 7:0 WhiteSpace = ' '
+Line 7:1 WhiteSpace = ' '
+Line 7:2 LKet = '}'
+Line 7:3 NewLine = '
+'
+Line 8:0 WhiteSpace = ' '
+Line 8:1 WhiteSpace = ' '
+Line 8:2 RETURN = 'return'
+Line 8:8 WhiteSpace = ' '
+Line 8:9 OctConst = '0'
+Line 8:10 Semi = ';'
+Line 8:11 NewLine = '
+'
+Line 9:0 WhiteSpace = ' '
+Line 9:1 WhiteSpace = ' '
+Line 9:2 LineComment = '//break;'
+Line 9:10 NewLine = '
+'
+Line 10:0 WhiteSpace = ' '
+Line 10:1 WhiteSpace = ' '
+Line 10:2 LineComment = '//continue;'
+Line 10:13 NewLine = '
+'
+Line 11:0 WhiteSpace = ' '
+Line 11:1 WhiteSpace = ' '
+Line 11:2 LineComment = '//return 1;'
+Line 11:13 NewLine = '
+'
+Line 12:0 LKet = '}'
+Line 12:1 NewLine = '
+'
+Line 13:0 INT = 'int'
+Line 13:3 WhiteSpace = ' '
+Line 13:4 Ident = 'a'
+Line 13:5 Semi = ';'
+Line 13:6 NewLine = '
+'
+Line 14:0 INT = 'int'
+Line 14:3 WhiteSpace = ' '
+Line 14:4 Ident = 'c'
+Line 14:5 MBra = '['
+Line 14:6 DecConst = '2'
+Line 14:7 MKet = ']'
+Line 14:8 MBra = '['
+Line 14:9 DecConst = '3'
+Line 14:10 MKet = ']'
+Line 14:11 WhiteSpace = ' '
+Line 14:12 Assign = '='
+Line 14:13 WhiteSpace = ' '
+Line 14:14 LBra = '{'
+Line 14:15 DecConst = '1'
+Line 14:16 LKet = '}'
+Line 14:17 Semi = ';'
+Line 14:18 NewLine = '
+'
+Line 15:0 INT = 'int'
+Line 15:3 WhiteSpace = ' '
+Line 15:4 Ident = 'main'
+Line 15:8 SBra = '('
+Line 15:9 SKet = ')'
+Line 15:10 WhiteSpace = ' '
+Line 15:11 LBra = '{'
+Line 15:12 NewLine = '
+'
+Line 16:0 WhiteSpace = ' '
+Line 16:1 WhiteSpace = ' '
+Line 16:2 INT = 'int'
+Line 16:5 WhiteSpace = ' '
+Line 16:6 Ident = 'a'
+Line 16:7 Assign = '='
+Line 16:8 DecConst = '1'
+Line 16:9 Comma = ','
+Line 16:10 Ident = 'b'
+Line 16:11 Assign = '='
+Line 16:12 DecConst = '2'
+Line 16:13 Comma = ','
+Line 16:14 Ident = 'c'
+Line 16:15 Assign = '='
+Line 16:16 DecConst = '33'
+Line 16:18 Semi = ';'
+Line 16:19 NewLine = '
+'
+Line 17:0 WhiteSpace = ' '
+Line 17:1 WhiteSpace = ' '
+Line 17:2 FLOAT = 'float'
+Line 17:7 WhiteSpace = ' '
+Line 17:8 Ident = 'd'
+Line 17:9 WhiteSpace = ' '
+Line 17:10 Assign = '='
+Line 17:11 WhiteSpace = ' '
+Line 17:12 Minus = '-'
+Line 17:13 WhiteSpace = ' '
+Line 17:14 Minus = '-'
+Line 17:15 WhiteSpace = ' '
+Line 17:16 Minus = '-'
+Line 17:17 FloatConst = '3.0f'
+Line 17:21 Semi = ';'
+Line 17:22 NewLine = '
+'
+Line 18:0 WhiteSpace = ' '
+Line 18:1 WhiteSpace = ' '
+Line 18:2 INT = 'int'
+Line 18:5 WhiteSpace = ' '
+Line 18:6 Ident = 'e'
+Line 18:7 MBra = '['
+Line 18:8 DecConst = '2'
+Line 18:9 MKet = ']'
+Line 18:10 MBra = '['
+Line 18:11 DecConst = '3'
+Line 18:12 MKet = ']'
+Line 18:13 WhiteSpace = ' '
+Line 18:14 Assign = '='
+Line 18:15 WhiteSpace = ' '
+Line 18:16 LBra = '{'
+Line 18:17 OctConst = '072'
+Line 18:20 Comma = ','
+Line 18:21 WhiteSpace = ' '
+Line 18:22 OctConst = '0'
+Line 18:23 Comma = ','
+Line 18:24 WhiteSpace = ' '
+Line 18:25 DecConst = '1'
+Line 18:26 Comma = ','
+Line 18:27 WhiteSpace = ' '
+Line 18:28 DecConst = '2'
+Line 18:29 Comma = ','
+Line 18:30 WhiteSpace = ' '
+Line 18:31 DecConst = '7'
+Line 18:32 LKet = '}'
+Line 18:33 Semi = ';'
+Line 18:34 NewLine = '
+'
+Line 19:0 WhiteSpace = ' '
+Line 19:1 WhiteSpace = ' '
+Line 19:2 Ident = 'e'
+Line 19:3 MBra = '['
+Line 19:4 DecConst = '1'
+Line 19:5 MKet = ']'
+Line 19:6 MBra = '['
+Line 19:7 DecConst = '2'
+Line 19:8 MKet = ']'
+Line 19:9 WhiteSpace = ' '
+Line 19:10 Assign = '='
+Line 19:11 WhiteSpace = ' '
+Line 19:12 DecConst = '3'
+Line 19:13 Semi = ';'
+Line 19:14 NewLine = '
+'
+Line 20:0 WhiteSpace = ' '
+Line 20:1 WhiteSpace = ' '
+Line 20:2 IF = 'if'
+Line 20:4 WhiteSpace = ' '
+Line 20:5 SBra = '('
+Line 20:6 Ident = 'a'
+Line 20:7 WhiteSpace = ' '
+Line 20:8 EQ = '=='
+Line 20:10 WhiteSpace = ' '
+Line 20:11 DecConst = '1'
+Line 20:12 WhiteSpace = ' '
+Line 20:13 DOr = '||'
+Line 20:15 WhiteSpace = ' '
+Line 20:16 Ident = 'b'
+Line 20:17 WhiteSpace = ' '
+Line 20:18 EQ = '=='
+Line 20:20 WhiteSpace = ' '
+Line 20:21 DecConst = '2'
+Line 20:22 SKet = ')'
+Line 20:23 WhiteSpace = ' '
+Line 20:24 LBra = '{'
+Line 20:25 NewLine = '
+'
+Line 21:0 WhiteSpace = ' '
+Line 21:1 WhiteSpace = ' '
+Line 21:2 WhiteSpace = ' '
+Line 21:3 WhiteSpace = ' '
+Line 21:4 Ident = 'a'
+Line 21:5 WhiteSpace = ' '
+Line 21:6 Assign = '='
+Line 21:7 WhiteSpace = ' '
+Line 21:8 Ident = 'a'
+Line 21:9 WhiteSpace = ' '
+Line 21:10 Plus = '+'
+Line 21:11 WhiteSpace = ' '
+Line 21:12 DecConst = '1'
+Line 21:13 Semi = ';'
+Line 21:14 NewLine = '
+'
+Line 22:0 WhiteSpace = ' '
+Line 22:1 WhiteSpace = ' '
+Line 22:2 LKet = '}'
+Line 22:3 NewLine = '
+'
+Line 23:0 WhiteSpace = ' '
+Line 23:1 WhiteSpace = ' '
+Line 23:2 ELSE = 'else'
+Line 23:6 WhiteSpace = ' '
+Line 23:7 LBra = '{'
+Line 23:8 NewLine = '
+'
+Line 24:0 WhiteSpace = ' '
+Line 24:1 WhiteSpace = ' '
+Line 24:2 WhiteSpace = ' '
+Line 24:3 WhiteSpace = ' '
+Line 24:4 IF = 'if'
+Line 24:6 WhiteSpace = ' '
+Line 24:7 SBra = '('
+Line 24:8 Ident = 'c'
+Line 24:9 WhiteSpace = ' '
+Line 24:10 EQ = '=='
+Line 24:12 WhiteSpace = ' '
+Line 24:13 DecConst = '1'
+Line 24:14 SKet = ')'
+Line 24:15 WhiteSpace = ' '
+Line 24:16 Ident = 'c'
+Line 24:17 WhiteSpace = ' '
+Line 24:18 Assign = '='
+Line 24:19 WhiteSpace = ' '
+Line 24:20 Ident = 'c'
+Line 24:21 WhiteSpace = ' '
+Line 24:22 Plus = '+'
+Line 24:23 WhiteSpace = ' '
+Line 24:24 DecConst = '2'
+Line 24:25 Semi = ';'
+Line 24:26 NewLine = '
+'
+Line 25:0 WhiteSpace = ' '
+Line 25:1 WhiteSpace = ' '
+Line 25:2 WhiteSpace = ' '
+Line 25:3 WhiteSpace = ' '
+Line 25:4 Ident = 'a'
+Line 25:5 WhiteSpace = ' '
+Line 25:6 Assign = '='
+Line 25:7 WhiteSpace = ' '
+Line 25:8 Ident = 'b'
+Line 25:9 WhiteSpace = ' '
+Line 25:10 Plus = '+'
+Line 25:11 WhiteSpace = ' '
+Line 25:12 Ident = 'c'
+Line 25:13 Semi = ';'
+Line 25:14 NewLine = '
+'
+Line 26:0 WhiteSpace = ' '
+Line 26:1 WhiteSpace = ' '
+Line 26:2 LKet = '}'
+Line 26:3 NewLine = '
+'
+Line 27:0 WhiteSpace = ' '
+Line 27:1 WhiteSpace = ' '
+Line 27:2 Ident = 'func'
+Line 27:6 SBra = '('
+Line 27:7 Ident = 'e'
+Line 27:8 MBra = '['
+Line 27:9 OctConst = '0'
+Line 27:10 MKet = ']'
+Line 27:11 MBra = '['
+Line 27:12 DecConst = '1'
+Line 27:13 MKet = ']'
+Line 27:14 Comma = ','
+Line 27:15 WhiteSpace = ' '
+Line 27:16 Ident = 'e'
+Line 27:17 MBra = '['
+Line 27:18 DecConst = '2'
+Line 27:19 MKet = ']'
+Line 27:20 SKet = ')'
+Line 27:21 Semi = ';'
+Line 27:22 NewLine = '
+'
+Line 28:0 WhiteSpace = ' '
+Line 28:1 WhiteSpace = ' '
+Line 28:2 RETURN = 'return'
+Line 28:8 WhiteSpace = ' '
+Line 28:9 OctConst = '0'
+Line 28:10 Semi = ';'
+Line 28:11 NewLine = '
+'
+Line 29:0 LKet = '}'
+=== Parse Tree ===
+(comp_units (comp_unit (func_def (type int) func ( (func_f_param (type int) a) , (func_f_param (type int) b [ ]) ) (block { (block_item (decl (decl_var (type int) (var_def c = (array_signed_const (signed_const (signed_num_const - (signed_num_const - (signed_num_const - (signed_num_const - (signed_num_const (num_const (intconst 1)))))))))) ;))) (block_item (stmt (stmt_while while ( (expr_8 (expr_7 (expr_6 (expr_6 (expr_5 (expr_4 (expr_3 (expr_2 (expr_1 c)))))) == (expr_5 (expr_4 (expr_3 (expr_2 (expr_1 (const (num_const (intconst 1))))))))))) ) (stmt (stmt_block (block { (block_item (stmt (stmt_assign (l_value a) = (expr_8 (expr_7 (expr_6 (expr_5 (expr_4 (expr_4 (expr_3 (expr_2 (expr_1 a)))) + (expr_3 (expr_2 (expr_1 (const (num_const (intconst 1))))))))))) ;))) (block_item (stmt (stmt_break break ;))) (block_item (stmt (stmt_continue continue ;))) })))))) (block_item (stmt (stmt_return return (expr_8 (expr_7 (expr_6 (expr_5 (expr_4 (expr_3 (expr_2 (expr_1 (const (num_const (intconst 0))))))))))) ;))) }))) (comp_units (comp_unit (decl (decl_var (type int) (var_def a) ;))) (comp_units (comp_unit (decl (decl_var (type int) (var_def c [ (intconst 2) ] [ (intconst 3) ] = (array_signed_const { (array_signed_const (signed_const (signed_num_const (num_const (intconst 1))))) })) ;))) (comp_units (comp_unit (func_def (type int) main ( ) (block { (block_item (decl (decl_var (type int) (var_def a = (array_signed_const (signed_const (signed_num_const (num_const (intconst 1)))))) , (var_def b = (array_signed_const (signed_const (signed_num_const (num_const (intconst 2)))))) , (var_def c = (array_signed_const (signed_const (signed_num_const (num_const (intconst 33)))))) ;))) (block_item (decl (decl_var (type float) (var_def d = (array_signed_const (signed_const (signed_num_const - (signed_num_const - (signed_num_const - (signed_num_const (num_const 3.0f)))))))) ;))) (block_item (decl (decl_var (type int) (var_def e [ (intconst 2) ] [ (intconst 3) ] = (array_signed_const { (array_signed_const (signed_const (signed_num_const (num_const (intconst 072))))) , (array_signed_const (signed_const (signed_num_const (num_const (intconst 0))))) , (array_signed_const (signed_const (signed_num_const (num_const (intconst 1))))) , (array_signed_const (signed_const (signed_num_const (num_const (intconst 2))))) , (array_signed_const (signed_const (signed_num_const (num_const (intconst 7))))) })) ;))) (block_item (stmt (stmt_assign (l_value e [ (expr_8 (expr_7 (expr_6 (expr_5 (expr_4 (expr_3 (expr_2 (expr_1 (const (num_const (intconst 1))))))))))) ] [ (expr_8 (expr_7 (expr_6 (expr_5 (expr_4 (expr_3 (expr_2 (expr_1 (const (num_const (intconst 2))))))))))) ]) = (expr_8 (expr_7 (expr_6 (expr_5 (expr_4 (expr_3 (expr_2 (expr_1 (const (num_const (intconst 3))))))))))) ;))) (block_item (stmt (stmt_if if ( (expr_8 (expr_8 (expr_7 (expr_6 (expr_6 (expr_5 (expr_4 (expr_3 (expr_2 (expr_1 a)))))) == (expr_5 (expr_4 (expr_3 (expr_2 (expr_1 (const (num_const (intconst 1))))))))))) || (expr_7 (expr_6 (expr_6 (expr_5 (expr_4 (expr_3 (expr_2 (expr_1 b)))))) == (expr_5 (expr_4 (expr_3 (expr_2 (expr_1 (const (num_const (intconst 2))))))))))) ) (stmt (stmt_block (block { (block_item (stmt (stmt_assign (l_value a) = (expr_8 (expr_7 (expr_6 (expr_5 (expr_4 (expr_4 (expr_3 (expr_2 (expr_1 a)))) + (expr_3 (expr_2 (expr_1 (const (num_const (intconst 1))))))))))) ;))) }))) else (stmt (stmt_block (block { (block_item (stmt (stmt_if if ( (expr_8 (expr_7 (expr_6 (expr_6 (expr_5 (expr_4 (expr_3 (expr_2 (expr_1 c)))))) == (expr_5 (expr_4 (expr_3 (expr_2 (expr_1 (const (num_const (intconst 1))))))))))) ) (stmt (stmt_assign (l_value c) = (expr_8 (expr_7 (expr_6 (expr_5 (expr_4 (expr_4 (expr_3 (expr_2 (expr_1 c)))) + (expr_3 (expr_2 (expr_1 (const (num_const (intconst 2))))))))))) ;))))) (block_item (stmt (stmt_assign (l_value a) = (expr_8 (expr_7 (expr_6 (expr_5 (expr_4 (expr_4 (expr_3 (expr_2 (expr_1 b)))) + (expr_3 (expr_2 (expr_1 c)))))))) ;))) })))))) (block_item (stmt (stmt_expr (expr_8 (expr_7 (expr_6 (expr_5 (expr_4 (expr_3 (expr_2 (expr_1 (func_call func ( (expr_8 (expr_7 (expr_6 (expr_5 (expr_4 (expr_3 (expr_2 (expr_1 e [ (expr_8 (expr_7 (expr_6 (expr_5 (expr_4 (expr_3 (expr_2 (expr_1 (const (num_const (intconst 0))))))))))) ] [ (expr_8 (expr_7 (expr_6 (expr_5 (expr_4 (expr_3 (expr_2 (expr_1 (const (num_const (intconst 1))))))))))) ])))))))) , (expr_8 (expr_7 (expr_6 (expr_5 (expr_4 (expr_3 (expr_2 (expr_1 e [ (expr_8 (expr_7 (expr_6 (expr_5 (expr_4 (expr_3 (expr_2 (expr_1 (const (num_const (intconst 2))))))))))) ])))))))) )))))))))) ;))) (block_item (stmt (stmt_return return (expr_8 (expr_7 (expr_6 (expr_5 (expr_4 (expr_3 (expr_2 (expr_1 (const (num_const (intconst 0))))))))))) ;))) }))) (comp_units <EOF>)))))
+
+=== Detailed AST ===
+└── comp_units
+    ├── comp_unit
+    │   └── func_def
+    │       ├── type
+    │       │   └── int
+    │       ├── func
+    │       ├── (
+    │       ├── func_f_param
+    │       │   ├── type
+    │       │   │   └── int
+    │       │   └── a
+    │       ├── ,
+    │       ├── func_f_param
+    │       │   ├── type
+    │       │   │   └── int
+    │       │   ├── b
+    │       │   ├── [
+    │       │   └── ]
+    │       ├── )
+    │       └── block
+    │           ├── {
+    │           ├── block_item
+    │           │   └── decl
+    │           │       └── decl_var
+    │           │           ├── type
+    │           │           │   └── int
+    │           │           ├── var_def
+    │           │           │   ├── c
+    │           │           │   ├── =
+    │           │           │   └── array_signed_const
+    │           │           │       └── signed_const
+    │           │           │           └── signed_num_const
+    │           │           │               ├── -
+    │           │           │               └── signed_num_const
+    │           │           │                   ├── -
+    │           │           │                   └── signed_num_const
+    │           │           │                       ├── -
+    │           │           │                       └── signed_num_const
+    │           │           │                           ├── -
+    │           │           │                           └── signed_num_const
+    │           │           │                               └── num_const
+    │           │           │                                   └── intconst
+    │           │           │                                       └── 1
+    │           │           └── ;
+    │           ├── block_item
+    │           │   └── stmt
+    │           │       └── stmt_while
+    │           │           ├── while
+    │           │           ├── (
+    │           │           ├── expr_8
+    │           │           │   └── expr_7
+    │           │           │       └── expr_6
+    │           │           │           ├── expr_6
+    │           │           │           │   └── expr_5
+    │           │           │           │       └── expr_4
+    │           │           │           │           └── expr_3
+    │           │           │           │               └── expr_2
+    │           │           │           │                   └── expr_1
+    │           │           │           │                       └── c
+    │           │           │           ├── ==
+    │           │           │           └── expr_5
+    │           │           │               └── expr_4
+    │           │           │                   └── expr_3
+    │           │           │                       └── expr_2
+    │           │           │                           └── expr_1
+    │           │           │                               └── const
+    │           │           │                                   └── num_const
+    │           │           │                                       └── intconst
+    │           │           │                                           └── 1
+    │           │           ├── )
+    │           │           └── stmt
+    │           │               └── stmt_block
+    │           │                   └── block
+    │           │                       ├── {
+    │           │                       ├── block_item
+    │           │                       │   └── stmt
+    │           │                       │       └── stmt_assign
+    │           │                       │           ├── l_value
+    │           │                       │           │   └── a
+    │           │                       │           ├── =
+    │           │                       │           ├── expr_8
+    │           │                       │           │   └── expr_7
+    │           │                       │           │       └── expr_6
+    │           │                       │           │           └── expr_5
+    │           │                       │           │               └── expr_4
+    │           │                       │           │                   ├── expr_4
+    │           │                       │           │                   │   └── expr_3
+    │           │                       │           │                   │       └── expr_2
+    │           │                       │           │                   │           └── expr_1
+    │           │                       │           │                   │               └── a
+    │           │                       │           │                   ├── +
+    │           │                       │           │                   └── expr_3
+    │           │                       │           │                       └── expr_2
+    │           │                       │           │                           └── expr_1
+    │           │                       │           │                               └── const
+    │           │                       │           │                                   └── num_const
+    │           │                       │           │                                       └── intconst
+    │           │                       │           │                                           └── 1
+    │           │                       │           └── ;
+    │           │                       ├── block_item
+    │           │                       │   └── stmt
+    │           │                       │       └── stmt_break
+    │           │                       │           ├── break
+    │           │                       │           └── ;
+    │           │                       ├── block_item
+    │           │                       │   └── stmt
+    │           │                       │       └── stmt_continue
+    │           │                       │           ├── continue
+    │           │                       │           └── ;
+    │           │                       └── }
+    │           ├── block_item
+    │           │   └── stmt
+    │           │       └── stmt_return
+    │           │           ├── return
+    │           │           ├── expr_8
+    │           │           │   └── expr_7
+    │           │           │       └── expr_6
+    │           │           │           └── expr_5
+    │           │           │               └── expr_4
+    │           │           │                   └── expr_3
+    │           │           │                       └── expr_2
+    │           │           │                           └── expr_1
+    │           │           │                               └── const
+    │           │           │                                   └── num_const
+    │           │           │                                       └── intconst
+    │           │           │                                           └── 0
+    │           │           └── ;
+    │           └── }
+    └── comp_units
+        ├── comp_unit
+        │   └── decl
+        │       └── decl_var
+        │           ├── type
+        │           │   └── int
+        │           ├── var_def
+        │           │   └── a
+        │           └── ;
+        └── comp_units
+            ├── comp_unit
+            │   └── decl
+            │       └── decl_var
+            │           ├── type
+            │           │   └── int
+            │           ├── var_def
+            │           │   ├── c
+            │           │   ├── [
+            │           │   ├── intconst
+            │           │   │   └── 2
+            │           │   ├── ]
+            │           │   ├── [
+            │           │   ├── intconst
+            │           │   │   └── 3
+            │           │   ├── ]
+            │           │   ├── =
+            │           │   └── array_signed_const
+            │           │       ├── {
+            │           │       ├── array_signed_const
+            │           │       │   └── signed_const
+            │           │       │       └── signed_num_const
+            │           │       │           └── num_const
+            │           │       │               └── intconst
+            │           │       │                   └── 1
+            │           │       └── }
+            │           └── ;
+            └── comp_units
+                ├── comp_unit
+                │   └── func_def
+                │       ├── type
+                │       │   └── int
+                │       ├── main
+                │       ├── (
+                │       ├── )
+                │       └── block
+                │           ├── {
+                │           ├── block_item
+                │           │   └── decl
+                │           │       └── decl_var
+                │           │           ├── type
+                │           │           │   └── int
+                │           │           ├── var_def
+                │           │           │   ├── a
+                │           │           │   ├── =
+                │           │           │   └── array_signed_const
+                │           │           │       └── signed_const
+                │           │           │           └── signed_num_const
+                │           │           │               └── num_const
+                │           │           │                   └── intconst
+                │           │           │                       └── 1
+                │           │           ├── ,
+                │           │           ├── var_def
+                │           │           │   ├── b
+                │           │           │   ├── =
+                │           │           │   └── array_signed_const
+                │           │           │       └── signed_const
+                │           │           │           └── signed_num_const
+                │           │           │               └── num_const
+                │           │           │                   └── intconst
+                │           │           │                       └── 2
+                │           │           ├── ,
+                │           │           ├── var_def
+                │           │           │   ├── c
+                │           │           │   ├── =
+                │           │           │   └── array_signed_const
+                │           │           │       └── signed_const
+                │           │           │           └── signed_num_const
+                │           │           │               └── num_const
+                │           │           │                   └── intconst
+                │           │           │                       └── 33
+                │           │           └── ;
+                │           ├── block_item
+                │           │   └── decl
+                │           │       └── decl_var
+                │           │           ├── type
+                │           │           │   └── float
+                │           │           ├── var_def
+                │           │           │   ├── d
+                │           │           │   ├── =
+                │           │           │   └── array_signed_const
+                │           │           │       └── signed_const
+                │           │           │           └── signed_num_const
+                │           │           │               ├── -
+                │           │           │               └── signed_num_const
+                │           │           │                   ├── -
+                │           │           │                   └── signed_num_const
+                │           │           │                       ├── -
+                │           │           │                       └── signed_num_const
+                │           │           │                           └── num_const
+                │           │           │                               └── 3.0f
+                │           │           └── ;
+                │           ├── block_item
+                │           │   └── decl
+                │           │       └── decl_var
+                │           │           ├── type
+                │           │           │   └── int
+                │           │           ├── var_def
+                │           │           │   ├── e
+                │           │           │   ├── [
+                │           │           │   ├── intconst
+                │           │           │   │   └── 2
+                │           │           │   ├── ]
+                │           │           │   ├── [
+                │           │           │   ├── intconst
+                │           │           │   │   └── 3
+                │           │           │   ├── ]
+                │           │           │   ├── =
+                │           │           │   └── array_signed_const
+                │           │           │       ├── {
+                │           │           │       ├── array_signed_const
+                │           │           │       │   └── signed_const
+                │           │           │       │       └── signed_num_const
+                │           │           │       │           └── num_const
+                │           │           │       │               └── intconst
+                │           │           │       │                   └── 072
+                │           │           │       ├── ,
+                │           │           │       ├── array_signed_const
+                │           │           │       │   └── signed_const
+                │           │           │       │       └── signed_num_const
+                │           │           │       │           └── num_const
+                │           │           │       │               └── intconst
+                │           │           │       │                   └── 0
+                │           │           │       ├── ,
+                │           │           │       ├── array_signed_const
+                │           │           │       │   └── signed_const
+                │           │           │       │       └── signed_num_const
+                │           │           │       │           └── num_const
+                │           │           │       │               └── intconst
+                │           │           │       │                   └── 1
+                │           │           │       ├── ,
+                │           │           │       ├── array_signed_const
+                │           │           │       │   └── signed_const
+                │           │           │       │       └── signed_num_const
+                │           │           │       │           └── num_const
+                │           │           │       │               └── intconst
+                │           │           │       │                   └── 2
+                │           │           │       ├── ,
+                │           │           │       ├── array_signed_const
+                │           │           │       │   └── signed_const
+                │           │           │       │       └── signed_num_const
+                │           │           │       │           └── num_const
+                │           │           │       │               └── intconst
+                │           │           │       │                   └── 7
+                │           │           │       └── }
+                │           │           └── ;
+                │           ├── block_item
+                │           │   └── stmt
+                │           │       └── stmt_assign
+                │           │           ├── l_value
+                │           │           │   ├── e
+                │           │           │   ├── [
+                │           │           │   ├── expr_8
+                │           │           │   │   └── expr_7
+                │           │           │   │       └── expr_6
+                │           │           │   │           └── expr_5
+                │           │           │   │               └── expr_4
+                │           │           │   │                   └── expr_3
+                │           │           │   │                       └── expr_2
+                │           │           │   │                           └── expr_1
+                │           │           │   │                               └── const
+                │           │           │   │                                   └── num_const
+                │           │           │   │                                       └── intconst
+                │           │           │   │                                           └── 1
+                │           │           │   ├── ]
+                │           │           │   ├── [
+                │           │           │   ├── expr_8
+                │           │           │   │   └── expr_7
+                │           │           │   │       └── expr_6
+                │           │           │   │           └── expr_5
+                │           │           │   │               └── expr_4
+                │           │           │   │                   └── expr_3
+                │           │           │   │                       └── expr_2
+                │           │           │   │                           └── expr_1
+                │           │           │   │                               └── const
+                │           │           │   │                                   └── num_const
+                │           │           │   │                                       └── intconst
+                │           │           │   │                                           └── 2
+                │           │           │   └── ]
+                │           │           ├── =
+                │           │           ├── expr_8
+                │           │           │   └── expr_7
+                │           │           │       └── expr_6
+                │           │           │           └── expr_5
+                │           │           │               └── expr_4
+                │           │           │                   └── expr_3
+                │           │           │                       └── expr_2
+                │           │           │                           └── expr_1
+                │           │           │                               └── const
+                │           │           │                                   └── num_const
+                │           │           │                                       └── intconst
+                │           │           │                                           └── 3
+                │           │           └── ;
+                │           ├── block_item
+                │           │   └── stmt
+                │           │       └── stmt_if
+                │           │           ├── if
+                │           │           ├── (
+                │           │           ├── expr_8
+                │           │           │   ├── expr_8
+                │           │           │   │   └── expr_7
+                │           │           │   │       └── expr_6
+                │           │           │   │           ├── expr_6
+                │           │           │   │           │   └── expr_5
+                │           │           │   │           │       └── expr_4
+                │           │           │   │           │           └── expr_3
+                │           │           │   │           │               └── expr_2
+                │           │           │   │           │                   └── expr_1
+                │           │           │   │           │                       └── a
+                │           │           │   │           ├── ==
+                │           │           │   │           └── expr_5
+                │           │           │   │               └── expr_4
+                │           │           │   │                   └── expr_3
+                │           │           │   │                       └── expr_2
+                │           │           │   │                           └── expr_1
+                │           │           │   │                               └── const
+                │           │           │   │                                   └── num_const
+                │           │           │   │                                       └── intconst
+                │           │           │   │                                           └── 1
+                │           │           │   ├── ||
+                │           │           │   └── expr_7
+                │           │           │       └── expr_6
+                │           │           │           ├── expr_6
+                │           │           │           │   └── expr_5
+                │           │           │           │       └── expr_4
+                │           │           │           │           └── expr_3
+                │           │           │           │               └── expr_2
+                │           │           │           │                   └── expr_1
+                │           │           │           │                       └── b
+                │           │           │           ├── ==
+                │           │           │           └── expr_5
+                │           │           │               └── expr_4
+                │           │           │                   └── expr_3
+                │           │           │                       └── expr_2
+                │           │           │                           └── expr_1
+                │           │           │                               └── const
+                │           │           │                                   └── num_const
+                │           │           │                                       └── intconst
+                │           │           │                                           └── 2
+                │           │           ├── )
+                │           │           ├── stmt
+                │           │           │   └── stmt_block
+                │           │           │       └── block
+                │           │           │           ├── {
+                │           │           │           ├── block_item
+                │           │           │           │   └── stmt
+                │           │           │           │       └── stmt_assign
+                │           │           │           │           ├── l_value
+                │           │           │           │           │   └── a
+                │           │           │           │           ├── =
+                │           │           │           │           ├── expr_8
+                │           │           │           │           │   └── expr_7
+                │           │           │           │           │       └── expr_6
+                │           │           │           │           │           └── expr_5
+                │           │           │           │           │               └── expr_4
+                │           │           │           │           │                   ├── expr_4
+                │           │           │           │           │                   │   └── expr_3
+                │           │           │           │           │                   │       └── expr_2
+                │           │           │           │           │                   │           └── expr_1
+                │           │           │           │           │                   │               └── a
+                │           │           │           │           │                   ├── +
+                │           │           │           │           │                   └── expr_3
+                │           │           │           │           │                       └── expr_2
+                │           │           │           │           │                           └── expr_1
+                │           │           │           │           │                               └── const
+                │           │           │           │           │                                   └── num_const
+                │           │           │           │           │                                       └── intconst
+                │           │           │           │           │                                           └── 1
+                │           │           │           │           └── ;
+                │           │           │           └── }
+                │           │           ├── else
+                │           │           └── stmt
+                │           │               └── stmt_block
+                │           │                   └── block
+                │           │                       ├── {
+                │           │                       ├── block_item
+                │           │                       │   └── stmt
+                │           │                       │       └── stmt_if
+                │           │                       │           ├── if
+                │           │                       │           ├── (
+                │           │                       │           ├── expr_8
+                │           │                       │           │   └── expr_7
+                │           │                       │           │       └── expr_6
+                │           │                       │           │           ├── expr_6
+                │           │                       │           │           │   └── expr_5
+                │           │                       │           │           │       └── expr_4
+                │           │                       │           │           │           └── expr_3
+                │           │                       │           │           │               └── expr_2
+                │           │                       │           │           │                   └── expr_1
+                │           │                       │           │           │                       └── c
+                │           │                       │           │           ├── ==
+                │           │                       │           │           └── expr_5
+                │           │                       │           │               └── expr_4
+                │           │                       │           │                   └── expr_3
+                │           │                       │           │                       └── expr_2
+                │           │                       │           │                           └── expr_1
+                │           │                       │           │                               └── const
+                │           │                       │           │                                   └── num_const
+                │           │                       │           │                                       └── intconst
+                │           │                       │           │                                           └── 1
+                │           │                       │           ├── )
+                │           │                       │           └── stmt
+                │           │                       │               └── stmt_assign
+                │           │                       │                   ├── l_value
+                │           │                       │                   │   └── c
+                │           │                       │                   ├── =
+                │           │                       │                   ├── expr_8
+                │           │                       │                   │   └── expr_7
+                │           │                       │                   │       └── expr_6
+                │           │                       │                   │           └── expr_5
+                │           │                       │                   │               └── expr_4
+                │           │                       │                   │                   ├── expr_4
+                │           │                       │                   │                   │   └── expr_3
+                │           │                       │                   │                   │       └── expr_2
+                │           │                       │                   │                   │           └── expr_1
+                │           │                       │                   │                   │               └── c
+                │           │                       │                   │                   ├── +
+                │           │                       │                   │                   └── expr_3
+                │           │                       │                   │                       └── expr_2
+                │           │                       │                   │                           └── expr_1
+                │           │                       │                   │                               └── const
+                │           │                       │                   │                                   └── num_const
+                │           │                       │                   │                                       └── intconst
+                │           │                       │                   │                                           └── 2
+                │           │                       │                   └── ;
+                │           │                       ├── block_item
+                │           │                       │   └── stmt
+                │           │                       │       └── stmt_assign
+                │           │                       │           ├── l_value
+                │           │                       │           │   └── a
+                │           │                       │           ├── =
+                │           │                       │           ├── expr_8
+                │           │                       │           │   └── expr_7
+                │           │                       │           │       └── expr_6
+                │           │                       │           │           └── expr_5
+                │           │                       │           │               └── expr_4
+                │           │                       │           │                   ├── expr_4
+                │           │                       │           │                   │   └── expr_3
+                │           │                       │           │                   │       └── expr_2
+                │           │                       │           │                   │           └── expr_1
+                │           │                       │           │                   │               └── b
+                │           │                       │           │                   ├── +
+                │           │                       │           │                   └── expr_3
+                │           │                       │           │                       └── expr_2
+                │           │                       │           │                           └── expr_1
+                │           │                       │           │                               └── c
+                │           │                       │           └── ;
+                │           │                       └── }
+                │           ├── block_item
+                │           │   └── stmt
+                │           │       └── stmt_expr
+                │           │           ├── expr_8
+                │           │           │   └── expr_7
+                │           │           │       └── expr_6
+                │           │           │           └── expr_5
+                │           │           │               └── expr_4
+                │           │           │                   └── expr_3
+                │           │           │                       └── expr_2
+                │           │           │                           └── expr_1
+                │           │           │                               └── func_call
+                │           │           │                                   ├── func
+                │           │           │                                   ├── (
+                │           │           │                                   ├── expr_8
+                │           │           │                                   │   └── expr_7
+                │           │           │                                   │       └── expr_6
+                │           │           │                                   │           └── expr_5
+                │           │           │                                   │               └── expr_4
+                │           │           │                                   │                   └── expr_3
+                │           │           │                                   │                       └── expr_2
+                │           │           │                                   │                           └── expr_1
+                │           │           │                                   │                               ├── e
+                │           │           │                                   │                               ├── [
+                │           │           │                                   │                               ├── expr_8
+                │           │           │                                   │                               │   └── expr_7
+                │           │           │                                   │                               │       └── expr_6
+                │           │           │                                   │                               │           └── expr_5
+                │           │           │                                   │                               │               └── expr_4
+                │           │           │                                   │                               │                   └── expr_3
+                │           │           │                                   │                               │                       └── expr_2
+                │           │           │                                   │                               │                           └── expr_1
+                │           │           │                                   │                               │                               └── const
+                │           │           │                                   │                               │                                   └── num_const
+                │           │           │                                   │                               │                                       └── intconst
+                │           │           │                                   │                               │                                           └── 0
+                │           │           │                                   │                               ├── ]
+                │           │           │                                   │                               ├── [
+                │           │           │                                   │                               ├── expr_8
+                │           │           │                                   │                               │   └── expr_7
+                │           │           │                                   │                               │       └── expr_6
+                │           │           │                                   │                               │           └── expr_5
+                │           │           │                                   │                               │               └── expr_4
+                │           │           │                                   │                               │                   └── expr_3
+                │           │           │                                   │                               │                       └── expr_2
+                │           │           │                                   │                               │                           └── expr_1
+                │           │           │                                   │                               │                               └── const
+                │           │           │                                   │                               │                                   └── num_const
+                │           │           │                                   │                               │                                       └── intconst
+                │           │           │                                   │                               │                                           └── 1
+                │           │           │                                   │                               └── ]
+                │           │           │                                   ├── ,
+                │           │           │                                   ├── expr_8
+                │           │           │                                   │   └── expr_7
+                │           │           │                                   │       └── expr_6
+                │           │           │                                   │           └── expr_5
+                │           │           │                                   │               └── expr_4
+                │           │           │                                   │                   └── expr_3
+                │           │           │                                   │                       └── expr_2
+                │           │           │                                   │                           └── expr_1
+                │           │           │                                   │                               ├── e
+                │           │           │                                   │                               ├── [
+                │           │           │                                   │                               ├── expr_8
+                │           │           │                                   │                               │   └── expr_7
+                │           │           │                                   │                               │       └── expr_6
+                │           │           │                                   │                               │           └── expr_5
+                │           │           │                                   │                               │               └── expr_4
+                │           │           │                                   │                               │                   └── expr_3
+                │           │           │                                   │                               │                       └── expr_2
+                │           │           │                                   │                               │                           └── expr_1
+                │           │           │                                   │                               │                               └── const
+                │           │           │                                   │                               │                                   └── num_const
+                │           │           │                                   │                               │                                       └── intconst
+                │           │           │                                   │                               │                                           └── 2
+                │           │           │                                   │                               └── ]
+                │           │           │                                   └── )
+                │           │           └── ;
+                │           ├── block_item
+                │           │   └── stmt
+                │           │       └── stmt_return
+                │           │           ├── return
+                │           │           ├── expr_8
+                │           │           │   └── expr_7
+                │           │           │       └── expr_6
+                │           │           │           └── expr_5
+                │           │           │               └── expr_4
+                │           │           │                   └── expr_3
+                │           │           │                       └── expr_2
+                │           │           │                           └── expr_1
+                │           │           │                               └── const
+                │           │           │                                   └── num_const
+                │           │           │                                       └── intconst
+                │           │           │                                           └── 0
+                │           │           └── ;
+                │           └── }
+                └── comp_units
+                    └── <EOF>
+=== End ===
+Number of errors: 0
+True
+@func %i_3 ( %i_1 , %ai_2 )
+@var %i_4
+assign %i_4 1
+label l_5
+@var %b_7
+EQ %b_7 %i_4 1
+@var %b_8
+Not %b_8 %b_7
+branch l_6 %b_8
+@var %i_9
+Add %i_9 %i_1 1
+assign %i_1 %i_9
+branch l_6 1
+branch l_5 1
+branch l_5 1
+label l_6
+return 0
+@endfunc
+!global @var %i_10
+!global @array %ai_11 6
+assign %ai_11[0] 1
+assign %ai_11[1] 0
+assign %ai_11[2] 0
+assign %ai_11[3] 0
+assign %ai_11[4] 0
+assign %ai_11[5] 0
+@func main ( )
+@var %i_12
+assign %i_12 1
+@var %i_13
+assign %i_13 2
+@var %i_14
+assign %i_14 33
+@var %f_15
+assign %f_15 -3.0f
+@array %ai_16 6
+assign %ai_16[0] 072
+assign %ai_16[1] 0
+assign %ai_16[2] 1
+assign %ai_16[3] 2
+assign %ai_16[4] 7
+assign %ai_16[5] 0
+@var %i_17
+@var %i_18
+assign %i_17 2
+Mul %i_18 1 3
+Add %i_17 %i_17 %i_18
+assign %ai_16[%i_17] 3
+@var %b_19
+EQ %b_19 %i_12 1
+@var %b_20
+EQ %b_20 %i_13 2
+@var %b_21
+DOr %b_21 %b_19 %b_20
+@var %b_22
+Not %b_22 %b_21
+branch l_24 %b_22
+@var %i_25
+Add %i_25 %i_12 1
+assign %i_12 %i_25
+branch l_23 1 
+label l_24
+@var %b_26
+EQ %b_26 %i_14 1
+@var %b_27
+Not %b_27 %b_26
+branch l_28 %b_27
+@var %i_29
+Add %i_29 %i_14 2
+assign %i_14 %i_29
+label l_28
+@var %i_30
+Add %i_30 %i_13 %i_14
+assign %i_12 %i_30
+label l_23
+@var %i_31
+@var %i_32
+@var %i_33
+assign %i_32 0
+Mul %i_33 0 3
+Add %i_32 i_32 i_33
+Mul %i_33 1 1
+Add %i_32 i_32 i_33
+@var %i_34
+assign %i_34 %ai_16[%i_32]
+@var %i_35
+@var %i_36
+assign %i_35 0
+Mul %i_36 2 3
+Add %i_35 i_35 i_36
+@var %ai_37
+Addr %ai_37 %ai_16 %i_35
+call %i_31 %i_3 ( %i_34 , %ai_37 )
+return 0
+@endfunc
