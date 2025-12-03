@@ -3,8 +3,8 @@ all:
 clean:
 	rm interpreter
 test: all
-	./interpreter ./test/test12.ir 
+	./interpreter ./test/test076.ir 
 gdb: all
-	gdb --args ./interpreter ./test/test12.ir 
+	gdb --args ./interpreter ./test/test076.ir 
 
 .phony: all clean test gdb

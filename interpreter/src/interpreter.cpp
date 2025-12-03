@@ -801,7 +801,7 @@ void init_var(Local_State &lstate, string lstr)
 	assert(tokens[0] == "@var");
 	assert(tokens[1][0] == '%');
 	string name = tokens[1];
-	assert(lstate.ltable[name].val_type == IT_NONE);
+	// assert(lstate.ltable[name].val_type == IT_NONE);
 	assert(gtable[name].val_type == IT_NONE);
 	IdentType vtype              = get_var_type_by_prefix(tokens[1]);
 	lstate.ltable[name].name     = name;
