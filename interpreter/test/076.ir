@@ -1,0 +1,41 @@
+@func %i_2 ( %i_1 )
+@var %b_3
+EQ i %b_3 %i_1 1
+@var %b_4
+Not %b_4 %b_3
+branch l_6 %b_4
+return %i_1
+branch l_5 true
+label l_6
+@var %i_7
+@var %i_8
+Sub i %i_8 %i_1 1
+call %i_7 %i_2 ( %i_8 )
+@var %i_9
+Mul i %i_9 %i_1 %i_7
+return %i_9
+label l_5
+@endfunc
+@func %main ( )
+@var %i_10
+assign %i_10 0
+@var %i_11
+assign %i_11 0
+@var %i_12
+call %i_12 %get_int ( )
+assign %i_10 %i_12
+@var %b_13
+GT i %b_13 %i_10 1
+@var %b_14
+Not %b_14 %b_13
+branch l_16 %b_14
+@var %i_17
+call %i_17 %i_2 ( %i_10 )
+assign %i_11 %i_17
+branch l_15 true
+label l_16
+assign %i_11 1
+label l_15
+call void %print_int ( %i_11 )
+return 0
+@endfunc

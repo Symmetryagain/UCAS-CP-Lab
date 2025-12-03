@@ -17,14 +17,14 @@ assign %i_7 0
 @var %i_9
 @var %i_10
 assign %i_9 0
-Mul %i_10 2 1
-Add %i_9 %i_9 %i_10
+Mul i %i_10 2 1
+Add i %i_9 %i_9 %i_10
 @var %i_11
 assign %i_11 %ai_3[%i_9]
 @var %i_12
-Add %i_12 2 %i_11
-Mul %i_8 %i_12 1
-Add %i_7 %i_7 %i_8
+Add i %i_12 2 %i_11
+Mul i %i_8 %i_12 1
+Add i %i_7 %i_7 %i_8
 @var %i_13
 assign %i_13 %ai_1[%i_7]
 return %i_13
@@ -33,8 +33,8 @@ return %i_13
 @var %i_16
 @var %i_17
 assign %i_16 0
-Mul %i_17 0 1
-Add %i_16 %i_16 %i_17
+Mul i %i_17 0 1
+Add i %i_16 %i_16 %i_17
 @var %i_18
 assign %i_18 %ai_1[%i_16]
 return %i_18
@@ -63,35 +63,35 @@ assign %f_25 0
 assign %d_26 50.33
 @var %i_27
 @var %d_28
-Mul %d_28 64.0 %d_22
+Mul d %d_28 64.0 %d_22
 @var %d_29
-Add %d_29 %d_28 520.0
+Add d %d_29 %d_28 520.0
 @var %d_30
-Mul %d_30 64.0 %d_22
+Mul d %d_30 64.0 %d_22
 @var %d_31
-Add %d_31 %d_30 120.0
+Add d %d_31 %d_30 120.0
 call %i_27 %i_6 ( %ai_21 , %d_29 , %d_31 )
 @var %i_32
-Mul %i_32 %i_27 5033
+Mul i %i_32 %i_27 5033
 @var %i_33
-Add %i_33 %i_32 05
+Add i %i_33 %i_32 05
 @var %b_34
-LT %b_34 5.0f %f_23
+LT f %b_34 5.0f %f_23
 @var %b_35
-LE %b_35 %d_26 7.0
+LE d %b_35 %d_26 7.0
 @var %b_36
 DAnd %b_36 %b_34 %b_35
 @var %b_37
-EQ %b_37 %f_24 %f_25
+EQ f %b_37 %f_24 %f_25
 @var %i_38
 @var %i_39
 assign %i_38 0
-Mul %i_39 1 1
-Add %i_38 %i_38 %i_39
+Mul i %i_39 1 1
+Add i %i_38 %i_38 %i_39
 @var %i_40
 assign %i_40 %ai_21[%i_38]
 @var %b_41
-EQ %b_41 %i_40 7
+EQ i %b_41 %i_40 7
 @var %b_42
 DAnd %b_42 %b_37 %b_41
 @var %b_43
@@ -103,12 +103,12 @@ assign %i_45 0
 @var %i_47
 @var %i_48
 assign %i_47 0
-Mul %i_48 2 1
-Add %i_47 %i_47 %i_48
+Mul i %i_48 2 1
+Add i %i_47 %i_47 %i_48
 @var %i_49
 assign %i_49 %ai_21[%i_47]
-Mul %i_46 %i_49 2
-Add %i_45 %i_45 %i_46
+Mul i %i_46 %i_49 2
+Add i %i_45 %i_45 %i_46
 @var %ai_50
 Addr %ai_50 %ai_2 %i_45
 call %i_44 %i_15 ( %ai_50 )

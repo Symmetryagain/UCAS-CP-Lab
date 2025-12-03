@@ -1,0 +1,59 @@
+@func %d_2 ( %d_1 )
+@var %d_3
+assign %d_3 1.0
+@var %d_4
+assign %d_4 0.0
+@var %d_5
+assign %d_5 0
+label l_6
+@var %b_8
+LE d %b_8 %d_3 %d_1
+@var %b_9
+Not %b_9 %b_8
+branch l_7 %b_9
+@var %d_10
+Div d %d_10 %d_3 %d_1
+assign %d_5 %d_10
+@var %d_11
+Mul d %d_11 %d_5 %d_5
+@var %d_12
+Add d %d_12 1.0 %d_11
+@var %d_13
+Div d %d_13 1.0 %d_12
+@var %d_14
+Add d %d_14 %d_4 %d_13
+assign %d_4 %d_14
+@var %d_15
+Add d %d_15 %d_3 1.0
+assign %d_3 %d_15
+branch l_6 true
+label l_7
+@var %d_16
+Mul d %d_16 4.0 %d_4
+@var %d_17
+Div d %d_17 %d_16 %d_1
+return %d_17
+@endfunc
+@func %main ( )
+@var %d_18
+assign %d_18 0
+@var %d_19
+assign %d_19 0
+@var %d_20
+call %d_20 %get_double ( )
+assign %d_18 %d_20
+@var %b_21
+GT d %b_21 %d_18 0.0
+@var %b_22
+Not %b_22 %b_21
+branch l_24 %b_22
+@var %d_25
+call %d_25 %d_2 ( %d_18 )
+assign %d_19 %d_25
+call void %print_double ( %d_19 )
+return 0
+branch l_23 true
+label l_24
+return 1
+label l_23
+@endfunc

@@ -5,12 +5,12 @@ assign %i_1 0
 call %i_2 %get_int ( )
 assign %i_1 %i_2
 @var %b_3
-LE %b_3 %i_1 0
+LE i %b_3 %i_1 0
 @var %b_4
 Not %b_4 %b_3
 branch l_5 %b_4
 @var %i_6
-Neg %i_6 1
+Neg i %i_6 1
 return %i_6
 label l_5
 @var %i_7
@@ -21,7 +21,7 @@ assign %i_8 0
 assign %i_9 0
 label l_10
 @var %b_12
-LE %b_12 %i_7 %i_1
+LE i %b_12 %i_7 %i_1
 @var %b_13
 Not %b_13 %b_12
 branch l_11 %b_13
@@ -29,35 +29,35 @@ assign %i_8 1
 assign %i_9 0
 label l_14
 @var %b_16
-LT %b_16 %i_8 %i_7
+LT i %b_16 %i_8 %i_7
 @var %b_17
 Not %b_17 %b_16
 branch l_15 %b_17
 @var %i_18
 Rem %i_18 %i_7 %i_8
 @var %b_19
-EQ %b_19 %i_18 0
+EQ i %b_19 %i_18 0
 @var %b_20
 Not %b_20 %b_19
 branch l_21 %b_20
 @var %i_22
-Add %i_22 %i_9 %i_8
+Add i %i_22 %i_9 %i_8
 assign %i_9 %i_22
 label l_21
 @var %i_23
-Add %i_23 %i_8 1
+Add i %i_23 %i_8 1
 assign %i_8 %i_23
 branch l_14 true
 label l_15
 @var %b_24
-EQ %b_24 %i_9 %i_7
+EQ i %b_24 %i_9 %i_7
 @var %b_25
 Not %b_25 %b_24
 branch l_26 %b_25
 call void %print_int ( %i_7 )
 label l_26
 @var %i_27
-Add %i_27 %i_7 1
+Add i %i_27 %i_7 1
 assign %i_7 %i_27
 branch l_10 true
 label l_11

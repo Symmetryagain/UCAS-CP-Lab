@@ -1,0 +1,111 @@
+@func %i_4 ( %ai_1 , %i_2 , %i_3 )
+@var %i_5
+assign %i_5 0
+assign %i_5 0
+label l_6
+@var %b_8
+LT i %b_8 %i_5 %i_2
+@var %b_9
+Not %b_9 %b_8
+branch l_7 %b_9
+@var %i_10
+@var %i_11
+assign %i_10 0
+Mul i %i_11 %i_5 1
+Add i %i_10 %i_10 %i_11
+@var %i_12
+assign %i_12 %ai_1[%i_10]
+@var %b_13
+EQ i %b_13 %i_12 %i_3
+@var %b_14
+Not %b_14 %b_13
+branch l_16 %b_14
+@var %i_17
+@var %i_18
+assign %i_17 %i_5
+@var %i_19
+@var %i_20
+assign %i_19 0
+@var %i_21
+Sub i %i_21 %i_2 1
+Mul i %i_20 %i_21 1
+Add i %i_19 %i_19 %i_20
+@var %i_22
+assign %i_22 %ai_1[%i_19]
+assign %ai_1[%i_17] %i_22
+@var %i_23
+Sub i %i_23 %i_2 1
+assign %i_2 %i_23
+branch l_15 true
+label l_16
+@var %i_24
+Add i %i_24 %i_5 1
+assign %i_5 %i_24
+label l_15
+branch l_6 true
+label l_7
+return %i_2
+@endfunc
+@func %main ( )
+@var %i_25
+assign %i_25 0
+@array %ai_26 10
+assign %ai_26[0] 0
+assign %ai_26[1] 0
+assign %ai_26[2] 0
+assign %ai_26[3] 0
+assign %ai_26[4] 0
+assign %ai_26[5] 0
+assign %ai_26[6] 0
+assign %ai_26[7] 0
+assign %ai_26[8] 0
+assign %ai_26[9] 0
+@var %i_27
+@var %i_28
+assign %i_27 0
+assign %ai_26[%i_27] 3
+@var %i_29
+@var %i_30
+assign %i_29 1
+assign %ai_26[%i_29] 3
+@var %i_31
+@var %i_32
+assign %i_31 2
+assign %ai_26[%i_31] 9
+@var %i_33
+@var %i_34
+assign %i_33 3
+assign %ai_26[%i_33] 0
+@var %i_35
+@var %i_36
+assign %i_35 4
+assign %ai_26[%i_35] 0
+@var %i_37
+@var %i_38
+assign %i_37 5
+assign %ai_26[%i_37] 1
+@var %i_39
+@var %i_40
+assign %i_39 6
+assign %ai_26[%i_39] 1
+@var %i_41
+@var %i_42
+assign %i_41 7
+assign %ai_26[%i_41] 5
+@var %i_43
+@var %i_44
+assign %i_43 8
+assign %ai_26[%i_43] 7
+@var %i_45
+@var %i_46
+assign %i_45 9
+assign %ai_26[%i_45] 8
+assign %i_25 10
+@var %i_47
+assign %i_47 0
+assign %i_47 3
+@var %i_48
+call %i_48 %i_4 ( %ai_26 , %i_25 , %i_47 )
+assign %i_25 %i_48
+return %i_25
+@endfunc

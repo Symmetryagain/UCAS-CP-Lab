@@ -1,0 +1,9 @@
+@func %main ( )
+@var %i_1
+assign %i_1 50
+@var %i_2
+assign %i_2 33
+@var %i_3
+Add i %i_3 %i_1 %i_2
+return %i_3
+@endfunc

@@ -1,0 +1,156 @@
+@func %i_3 ( %ai_1 , %i_2 )
+@var %b_4
+EQ i %b_4 %i_2 0
+@var %b_5
+Not %b_5 %b_4
+branch l_6 %b_5
+return 0
+label l_6
+@var %i_7
+assign %i_7 0
+@var %i_8
+Sub i %i_8 %i_2 1
+assign %i_7 %i_8
+label l_9
+@var %i_11
+Neg i %i_11 1
+@var %b_12
+GT i %b_12 %i_7 %i_11
+@var %i_13
+@var %i_14
+assign %i_13 0
+Mul i %i_14 %i_7 1
+Add i %i_13 %i_13 %i_14
+@var %i_15
+assign %i_15 %ai_1[%i_13]
+@var %b_16
+EQ i %b_16 %i_15 0
+@var %b_17
+DAnd %b_17 %b_12 %b_16
+@var %b_18
+Not %b_18 %b_17
+branch l_10 %b_18
+@var %i_19
+Sub i %i_19 %i_7 1
+assign %i_7 %i_19
+branch l_9 true
+label l_10
+@var %i_20
+Neg i %i_20 1
+@var %b_21
+EQ i %b_21 %i_7 %i_20
+@var %b_22
+Not %b_22 %b_21
+branch l_23 %b_22
+return 0
+label l_23
+@var %i_24
+assign %i_24 0
+assign %i_24 %i_7
+label l_25
+@var %i_27
+Neg i %i_27 1
+@var %b_28
+GT i %b_28 %i_24 %i_27
+@var %b_29
+Not %b_29 %b_28
+branch l_26 %b_29
+@var %i_30
+@var %i_31
+assign %i_30 0
+Mul i %i_31 %i_24 1
+Add i %i_30 %i_30 %i_31
+@var %i_32
+assign %i_32 %ai_1[%i_30]
+@var %b_33
+EQ i %b_33 %i_32 0
+@var %b_34
+Not %b_34 %b_33
+branch l_35 %b_34
+@var %i_36
+Sub i %i_36 %i_2 1
+@var %i_37
+Sub i %i_37 %i_36 %i_7
+@var %i_38
+Sub i %i_38 %i_2 %i_24
+@var %i_39
+Sub i %i_39 %i_38 1
+@var %i_40
+Sub i %i_40 %i_39 %i_37
+return %i_40
+label l_35
+@var %i_41
+Sub i %i_41 %i_24 1
+assign %i_24 %i_41
+branch l_25 true
+label l_26
+@var %i_42
+Sub i %i_42 %i_7 %i_24
+return %i_42
+@endfunc
+@func %main ( )
+@var %i_43
+assign %i_43 0
+@array %ai_44 10
+assign %ai_44[0] 0
+assign %ai_44[1] 0
+assign %ai_44[2] 0
+assign %ai_44[3] 0
+assign %ai_44[4] 0
+assign %ai_44[5] 0
+assign %ai_44[6] 0
+assign %ai_44[7] 0
+assign %ai_44[8] 0
+assign %ai_44[9] 0
+@var %i_45
+@var %i_46
+assign %i_45 0
+@var %i_47
+Neg i %i_47 4
+assign %ai_44[%i_45] %i_47
+@var %i_48
+@var %i_49
+assign %i_48 1
+assign %ai_44[%i_48] 3
+@var %i_50
+@var %i_51
+assign %i_50 2
+assign %ai_44[%i_50] 9
+@var %i_52
+@var %i_53
+assign %i_52 3
+@var %i_54
+Neg i %i_54 2
+assign %ai_44[%i_52] %i_54
+@var %i_55
+@var %i_56
+assign %i_55 4
+assign %ai_44[%i_55] 0
+@var %i_57
+@var %i_58
+assign %i_57 5
+assign %ai_44[%i_57] 1
+@var %i_59
+@var %i_60
+assign %i_59 6
+@var %i_61
+Neg i %i_61 6
+assign %ai_44[%i_59] %i_61
+@var %i_62
+@var %i_63
+assign %i_62 7
+assign %ai_44[%i_62] 5
+@var %i_64
+@var %i_65
+assign %i_64 8
+assign %ai_44[%i_64] 7
+@var %i_66
+@var %i_67
+assign %i_66 9
+assign %ai_44[%i_66] 8
+assign %i_43 10
+@var %i_68
+call %i_68 %i_3 ( %ai_44 , %i_43 )
+assign %i_43 %i_68
+return %i_43
+@endfunc

@@ -1,0 +1,1137 @@
+Reading IR file...
+!global @array %ab_1 8
+!global assign %ab_1[0] true
+!global assign %ab_1[1] true
+!global assign %ab_1[2] true
+!global assign %ab_1[3] false
+!global assign %ab_1[4] true
+!global assign %ab_1[5] true
+!global assign %ab_1[6] false
+!global assign %ab_1[7] false
+@func %main ( )
+@var %i_2
+assign %i_2 0
+@var %i_3
+assign %i_3 0
+assign %i_2 0
+label l_4
+@var %b_6
+LT i %b_6 %i_2 4
+@var %b_7
+Not %b_7 %b_6
+branch l_5 %b_7
+assign %i_3 0
+label l_8
+@var %b_10
+LT i %b_10 %i_3 2
+@var %b_11
+Not %b_11 %b_10
+branch l_9 %b_11
+@var %i_12
+@var %i_13
+assign %i_12 0
+Mul i %i_13 %i_2 2
+Add i %i_12 %i_12 %i_13
+Mul i %i_13 %i_3 1
+Add i %i_12 %i_12 %i_13
+@var %b_14
+assign %b_14 %ab_1[%i_12]
+call void %print_bool ( %b_14 )
+@var %i_15
+Add i %i_15 %i_3 1
+assign %i_3 %i_15
+branch l_8 true
+label l_9
+@var %i_16
+Add i %i_16 %i_2 1
+assign %i_2 %i_16
+branch l_4 true
+label l_5
+return 0
+@endfunc
+IR file read successfully.
+Number of lines: 50
+Starting initialization...
+init: !global @array %ab_1 8
+init_g_array: !global @array %ab_1 8
+get_val_int: 8
+get_val_int: 8
+init: !global assign %ab_1[0] true
+init_g_assign: !global assign %ab_1[0] true
+get_array_name: %ab_1[0]
+get_array_index: %ab_1[0]
+get_val_int: 0
+get_val_int: 0
+get_val_bool: true
+get_val_bool: 1
+init: !global assign %ab_1[1] true
+init_g_assign: !global assign %ab_1[1] true
+get_array_name: %ab_1[1]
+get_array_index: %ab_1[1]
+get_val_int: 1
+get_val_int: 1
+get_val_bool: true
+get_val_bool: 1
+init: !global assign %ab_1[2] true
+init_g_assign: !global assign %ab_1[2] true
+get_array_name: %ab_1[2]
+get_array_index: %ab_1[2]
+get_val_int: 2
+get_val_int: 2
+get_val_bool: true
+get_val_bool: 1
+init: !global assign %ab_1[3] false
+init_g_assign: !global assign %ab_1[3] false
+get_array_name: %ab_1[3]
+get_array_index: %ab_1[3]
+get_val_int: 3
+get_val_int: 3
+get_val_bool: false
+get_val_bool: 0
+init: !global assign %ab_1[4] true
+init_g_assign: !global assign %ab_1[4] true
+get_array_name: %ab_1[4]
+get_array_index: %ab_1[4]
+get_val_int: 4
+get_val_int: 4
+get_val_bool: true
+get_val_bool: 1
+init: !global assign %ab_1[5] true
+init_g_assign: !global assign %ab_1[5] true
+get_array_name: %ab_1[5]
+get_array_index: %ab_1[5]
+get_val_int: 5
+get_val_int: 5
+get_val_bool: true
+get_val_bool: 1
+init: !global assign %ab_1[6] false
+init_g_assign: !global assign %ab_1[6] false
+get_array_name: %ab_1[6]
+get_array_index: %ab_1[6]
+get_val_int: 6
+get_val_int: 6
+get_val_bool: false
+get_val_bool: 0
+init: !global assign %ab_1[7] false
+init_g_assign: !global assign %ab_1[7] false
+get_array_name: %ab_1[7]
+get_array_index: %ab_1[7]
+get_val_int: 7
+get_val_int: 7
+get_val_bool: false
+get_val_bool: 0
+init: @func %main ( )
+init_func_def: @func %main ( ) 9
+init: @var %i_2
+init: assign %i_2 0
+init: @var %i_3
+init: assign %i_3 0
+init: assign %i_2 0
+init: label l_4
+init: @var %b_6
+init: LT i %b_6 %i_2 4
+init: @var %b_7
+init: Not %b_7 %b_6
+init: branch l_5 %b_7
+init: assign %i_3 0
+init: label l_8
+init: @var %b_10
+init: LT i %b_10 %i_3 2
+init: @var %b_11
+init: Not %b_11 %b_10
+init: branch l_9 %b_11
+init: @var %i_12
+init: @var %i_13
+init: assign %i_12 0
+init: Mul i %i_13 %i_2 2
+init: Add i %i_12 %i_12 %i_13
+init: Mul i %i_13 %i_3 1
+init: Add i %i_12 %i_12 %i_13
+init: @var %b_14
+init: assign %b_14 %ab_1[%i_12]
+init: call void %print_bool ( %b_14 )
+init: @var %i_15
+init: Add i %i_15 %i_3 1
+init: assign %i_3 %i_15
+init: branch l_8 true
+init: label l_9
+init: @var %i_16
+init: Add i %i_16 %i_2 1
+init: assign %i_2 %i_16
+init: branch l_4 true
+init: label l_5
+init: return 0
+init: @endfunc
+global: %ab_1 9
+global: %get_double 12
+global: %get_float 11
+global: %get_int 10
+global: %main 10
+global: %print_bool 14
+global: %print_double 14
+global: %print_float 14
+global: %print_int 14
+Initialization complete.
+Starting interpretation...
+func_call: %main
+add_label: label l_4
+add_label: label l_8
+add_label: label l_9
+add_label: label l_5
+func_exec: @func %main ( )
+func_exec: @var %i_2
+init_var: @var %i_2
+func_exec: assign %i_2 0
+init_assign: assign %i_2 0
+get_val_int: 0
+get_val_int: 0
+local_assign: %i_2 0
+func_exec: @var %i_3
+init_var: @var %i_3
+func_exec: assign %i_3 0
+init_assign: assign %i_3 0
+get_val_int: 0
+get_val_int: 0
+local_assign: %i_3 0
+func_exec: assign %i_2 0
+init_assign: assign %i_2 0
+get_val_int: 0
+get_val_int: 0
+local_assign: %i_2 0
+func_exec: label l_4
+func_exec: @var %b_6
+init_var: @var %b_6
+func_exec: LT i %b_6 %i_2 4
+get_val_int: %i_2
+get_val_int: 0
+get_val_int: 4
+get_val_int: 4
+local_assign: %b_6 true
+func_exec: @var %b_7
+init_var: @var %b_7
+func_exec: Not %b_7 %b_6
+get_val_bool: %b_6
+get_val_bool: 1
+local_assign: %b_7 false
+func_exec: branch l_5 %b_7
+get_val_bool: %b_7
+get_val_bool: 0
+func_exec: assign %i_3 0
+init_assign: assign %i_3 0
+get_val_int: 0
+get_val_int: 0
+local_assign: %i_3 0
+func_exec: label l_8
+func_exec: @var %b_10
+init_var: @var %b_10
+func_exec: LT i %b_10 %i_3 2
+get_val_int: %i_3
+get_val_int: 0
+get_val_int: 2
+get_val_int: 2
+local_assign: %b_10 true
+func_exec: @var %b_11
+init_var: @var %b_11
+func_exec: Not %b_11 %b_10
+get_val_bool: %b_10
+get_val_bool: 1
+local_assign: %b_11 false
+func_exec: branch l_9 %b_11
+get_val_bool: %b_11
+get_val_bool: 0
+func_exec: @var %i_12
+init_var: @var %i_12
+func_exec: @var %i_13
+init_var: @var %i_13
+func_exec: assign %i_12 0
+init_assign: assign %i_12 0
+get_val_int: 0
+get_val_int: 0
+local_assign: %i_12 0
+func_exec: Mul i %i_13 %i_2 2
+get_val_int: %i_2
+get_val_int: 0
+get_val_int: 2
+get_val_int: 2
+local_assign: %i_13 0
+func_exec: Add i %i_12 %i_12 %i_13
+get_val_int: %i_12
+get_val_int: 0
+get_val_int: %i_13
+get_val_int: 0
+local_assign: %i_12 0
+func_exec: Mul i %i_13 %i_3 1
+get_val_int: %i_3
+get_val_int: 0
+get_val_int: 1
+get_val_int: 1
+local_assign: %i_13 0
+func_exec: Add i %i_12 %i_12 %i_13
+get_val_int: %i_12
+get_val_int: 0
+get_val_int: %i_13
+get_val_int: 0
+local_assign: %i_12 0
+func_exec: @var %b_14
+init_var: @var %b_14
+func_exec: assign %b_14 %ab_1[%i_12]
+init_assign: assign %b_14 %ab_1[%i_12]
+get_val_bool: %ab_1[%i_12]
+get_array_name: %ab_1[%i_12]
+get_array_index: %ab_1[%i_12]
+get_val_int: %i_12
+get_val_int: 0
+get_val_bool: 1
+local_assign: %b_14 true
+func_exec: call void %print_bool ( %b_14 )
+parse arg:%b_14 to param:%b_-4
+get_val_bool: %b_14
+get_val_bool: 1
+func_call: %print_bool
+init_arg: %b_-4 true
+func_ret: 2001471536
+func_exec: @var %i_15
+init_var: @var %i_15
+func_exec: Add i %i_15 %i_3 1
+get_val_int: %i_3
+get_val_int: 0
+get_val_int: 1
+get_val_int: 1
+local_assign: %i_15 1
+func_exec: assign %i_3 %i_15
+init_assign: assign %i_3 %i_15
+get_val_int: %i_15
+get_val_int: 1
+local_assign: %i_3 1
+func_exec: branch l_8 true
+get_val_bool: true
+get_val_bool: 1
+func_exec: label l_8
+func_exec: @var %b_10
+init_var: @var %b_10
+func_exec: LT i %b_10 %i_3 2
+get_val_int: %i_3
+get_val_int: 1
+get_val_int: 2
+get_val_int: 2
+local_assign: %b_10 true
+func_exec: @var %b_11
+init_var: @var %b_11
+func_exec: Not %b_11 %b_10
+get_val_bool: %b_10
+get_val_bool: 1
+local_assign: %b_11 false
+func_exec: branch l_9 %b_11
+get_val_bool: %b_11
+get_val_bool: 0
+func_exec: @var %i_12
+init_var: @var %i_12
+func_exec: @var %i_13
+init_var: @var %i_13
+func_exec: assign %i_12 0
+init_assign: assign %i_12 0
+get_val_int: 0
+get_val_int: 0
+local_assign: %i_12 0
+func_exec: Mul i %i_13 %i_2 2
+get_val_int: %i_2
+get_val_int: 0
+get_val_int: 2
+get_val_int: 2
+local_assign: %i_13 0
+func_exec: Add i %i_12 %i_12 %i_13
+get_val_int: %i_12
+get_val_int: 0
+get_val_int: %i_13
+get_val_int: 0
+local_assign: %i_12 0
+func_exec: Mul i %i_13 %i_3 1
+get_val_int: %i_3
+get_val_int: 1
+get_val_int: 1
+get_val_int: 1
+local_assign: %i_13 1
+func_exec: Add i %i_12 %i_12 %i_13
+get_val_int: %i_12
+get_val_int: 0
+get_val_int: %i_13
+get_val_int: 1
+local_assign: %i_12 1
+func_exec: @var %b_14
+init_var: @var %b_14
+func_exec: assign %b_14 %ab_1[%i_12]
+init_assign: assign %b_14 %ab_1[%i_12]
+get_val_bool: %ab_1[%i_12]
+get_array_name: %ab_1[%i_12]
+get_array_index: %ab_1[%i_12]
+get_val_int: %i_12
+get_val_int: 1
+get_val_bool: 1
+local_assign: %b_14 true
+func_exec: call void %print_bool ( %b_14 )
+parse arg:%b_14 to param:%b_-4
+get_val_bool: %b_14
+get_val_bool: 1
+func_call: %print_bool
+init_arg: %b_-4 true
+func_ret: 2001471536
+func_exec: @var %i_15
+init_var: @var %i_15
+func_exec: Add i %i_15 %i_3 1
+get_val_int: %i_3
+get_val_int: 1
+get_val_int: 1
+get_val_int: 1
+local_assign: %i_15 2
+func_exec: assign %i_3 %i_15
+init_assign: assign %i_3 %i_15
+get_val_int: %i_15
+get_val_int: 2
+local_assign: %i_3 2
+func_exec: branch l_8 true
+get_val_bool: true
+get_val_bool: 1
+func_exec: label l_8
+func_exec: @var %b_10
+init_var: @var %b_10
+func_exec: LT i %b_10 %i_3 2
+get_val_int: %i_3
+get_val_int: 2
+get_val_int: 2
+get_val_int: 2
+local_assign: %b_10 false
+func_exec: @var %b_11
+init_var: @var %b_11
+func_exec: Not %b_11 %b_10
+get_val_bool: %b_10
+get_val_bool: 0
+local_assign: %b_11 true
+func_exec: branch l_9 %b_11
+get_val_bool: %b_11
+get_val_bool: 1
+func_exec: label l_9
+func_exec: @var %i_16
+init_var: @var %i_16
+func_exec: Add i %i_16 %i_2 1
+get_val_int: %i_2
+get_val_int: 0
+get_val_int: 1
+get_val_int: 1
+local_assign: %i_16 1
+func_exec: assign %i_2 %i_16
+init_assign: assign %i_2 %i_16
+get_val_int: %i_16
+get_val_int: 1
+local_assign: %i_2 1
+func_exec: branch l_4 true
+get_val_bool: true
+get_val_bool: 1
+func_exec: label l_4
+func_exec: @var %b_6
+init_var: @var %b_6
+func_exec: LT i %b_6 %i_2 4
+get_val_int: %i_2
+get_val_int: 1
+get_val_int: 4
+get_val_int: 4
+local_assign: %b_6 true
+func_exec: @var %b_7
+init_var: @var %b_7
+func_exec: Not %b_7 %b_6
+get_val_bool: %b_6
+get_val_bool: 1
+local_assign: %b_7 false
+func_exec: branch l_5 %b_7
+get_val_bool: %b_7
+get_val_bool: 0
+func_exec: assign %i_3 0
+init_assign: assign %i_3 0
+get_val_int: 0
+get_val_int: 0
+local_assign: %i_3 0
+func_exec: label l_8
+func_exec: @var %b_10
+init_var: @var %b_10
+func_exec: LT i %b_10 %i_3 2
+get_val_int: %i_3
+get_val_int: 0
+get_val_int: 2
+get_val_int: 2
+local_assign: %b_10 true
+func_exec: @var %b_11
+init_var: @var %b_11
+func_exec: Not %b_11 %b_10
+get_val_bool: %b_10
+get_val_bool: 1
+local_assign: %b_11 false
+func_exec: branch l_9 %b_11
+get_val_bool: %b_11
+get_val_bool: 0
+func_exec: @var %i_12
+init_var: @var %i_12
+func_exec: @var %i_13
+init_var: @var %i_13
+func_exec: assign %i_12 0
+init_assign: assign %i_12 0
+get_val_int: 0
+get_val_int: 0
+local_assign: %i_12 0
+func_exec: Mul i %i_13 %i_2 2
+get_val_int: %i_2
+get_val_int: 1
+get_val_int: 2
+get_val_int: 2
+local_assign: %i_13 2
+func_exec: Add i %i_12 %i_12 %i_13
+get_val_int: %i_12
+get_val_int: 0
+get_val_int: %i_13
+get_val_int: 2
+local_assign: %i_12 2
+func_exec: Mul i %i_13 %i_3 1
+get_val_int: %i_3
+get_val_int: 0
+get_val_int: 1
+get_val_int: 1
+local_assign: %i_13 0
+func_exec: Add i %i_12 %i_12 %i_13
+get_val_int: %i_12
+get_val_int: 2
+get_val_int: %i_13
+get_val_int: 0
+local_assign: %i_12 2
+func_exec: @var %b_14
+init_var: @var %b_14
+func_exec: assign %b_14 %ab_1[%i_12]
+init_assign: assign %b_14 %ab_1[%i_12]
+get_val_bool: %ab_1[%i_12]
+get_array_name: %ab_1[%i_12]
+get_array_index: %ab_1[%i_12]
+get_val_int: %i_12
+get_val_int: 2
+get_val_bool: 1
+local_assign: %b_14 true
+func_exec: call void %print_bool ( %b_14 )
+parse arg:%b_14 to param:%b_-4
+get_val_bool: %b_14
+get_val_bool: 1
+func_call: %print_bool
+init_arg: %b_-4 true
+func_ret: 2001471536
+func_exec: @var %i_15
+init_var: @var %i_15
+func_exec: Add i %i_15 %i_3 1
+get_val_int: %i_3
+get_val_int: 0
+get_val_int: 1
+get_val_int: 1
+local_assign: %i_15 1
+func_exec: assign %i_3 %i_15
+init_assign: assign %i_3 %i_15
+get_val_int: %i_15
+get_val_int: 1
+local_assign: %i_3 1
+func_exec: branch l_8 true
+get_val_bool: true
+get_val_bool: 1
+func_exec: label l_8
+func_exec: @var %b_10
+init_var: @var %b_10
+func_exec: LT i %b_10 %i_3 2
+get_val_int: %i_3
+get_val_int: 1
+get_val_int: 2
+get_val_int: 2
+local_assign: %b_10 true
+func_exec: @var %b_11
+init_var: @var %b_11
+func_exec: Not %b_11 %b_10
+get_val_bool: %b_10
+get_val_bool: 1
+local_assign: %b_11 false
+func_exec: branch l_9 %b_11
+get_val_bool: %b_11
+get_val_bool: 0
+func_exec: @var %i_12
+init_var: @var %i_12
+func_exec: @var %i_13
+init_var: @var %i_13
+func_exec: assign %i_12 0
+init_assign: assign %i_12 0
+get_val_int: 0
+get_val_int: 0
+local_assign: %i_12 0
+func_exec: Mul i %i_13 %i_2 2
+get_val_int: %i_2
+get_val_int: 1
+get_val_int: 2
+get_val_int: 2
+local_assign: %i_13 2
+func_exec: Add i %i_12 %i_12 %i_13
+get_val_int: %i_12
+get_val_int: 0
+get_val_int: %i_13
+get_val_int: 2
+local_assign: %i_12 2
+func_exec: Mul i %i_13 %i_3 1
+get_val_int: %i_3
+get_val_int: 1
+get_val_int: 1
+get_val_int: 1
+local_assign: %i_13 1
+func_exec: Add i %i_12 %i_12 %i_13
+get_val_int: %i_12
+get_val_int: 2
+get_val_int: %i_13
+get_val_int: 1
+local_assign: %i_12 3
+func_exec: @var %b_14
+init_var: @var %b_14
+func_exec: assign %b_14 %ab_1[%i_12]
+init_assign: assign %b_14 %ab_1[%i_12]
+get_val_bool: %ab_1[%i_12]
+get_array_name: %ab_1[%i_12]
+get_array_index: %ab_1[%i_12]
+get_val_int: %i_12
+get_val_int: 3
+get_val_bool: 0
+local_assign: %b_14 false
+func_exec: call void %print_bool ( %b_14 )
+parse arg:%b_14 to param:%b_-4
+get_val_bool: %b_14
+get_val_bool: 0
+func_call: %print_bool
+init_arg: %b_-4 false
+func_ret: 2001471536
+func_exec: @var %i_15
+init_var: @var %i_15
+func_exec: Add i %i_15 %i_3 1
+get_val_int: %i_3
+get_val_int: 1
+get_val_int: 1
+get_val_int: 1
+local_assign: %i_15 2
+func_exec: assign %i_3 %i_15
+init_assign: assign %i_3 %i_15
+get_val_int: %i_15
+get_val_int: 2
+local_assign: %i_3 2
+func_exec: branch l_8 true
+get_val_bool: true
+get_val_bool: 1
+func_exec: label l_8
+func_exec: @var %b_10
+init_var: @var %b_10
+func_exec: LT i %b_10 %i_3 2
+get_val_int: %i_3
+get_val_int: 2
+get_val_int: 2
+get_val_int: 2
+local_assign: %b_10 false
+func_exec: @var %b_11
+init_var: @var %b_11
+func_exec: Not %b_11 %b_10
+get_val_bool: %b_10
+get_val_bool: 0
+local_assign: %b_11 true
+func_exec: branch l_9 %b_11
+get_val_bool: %b_11
+get_val_bool: 1
+func_exec: label l_9
+func_exec: @var %i_16
+init_var: @var %i_16
+func_exec: Add i %i_16 %i_2 1
+get_val_int: %i_2
+get_val_int: 1
+get_val_int: 1
+get_val_int: 1
+local_assign: %i_16 2
+func_exec: assign %i_2 %i_16
+init_assign: assign %i_2 %i_16
+get_val_int: %i_16
+get_val_int: 2
+local_assign: %i_2 2
+func_exec: branch l_4 true
+get_val_bool: true
+get_val_bool: 1
+func_exec: label l_4
+func_exec: @var %b_6
+init_var: @var %b_6
+func_exec: LT i %b_6 %i_2 4
+get_val_int: %i_2
+get_val_int: 2
+get_val_int: 4
+get_val_int: 4
+local_assign: %b_6 true
+func_exec: @var %b_7
+init_var: @var %b_7
+func_exec: Not %b_7 %b_6
+get_val_bool: %b_6
+get_val_bool: 1
+local_assign: %b_7 false
+func_exec: branch l_5 %b_7
+get_val_bool: %b_7
+get_val_bool: 0
+func_exec: assign %i_3 0
+init_assign: assign %i_3 0
+get_val_int: 0
+get_val_int: 0
+local_assign: %i_3 0
+func_exec: label l_8
+func_exec: @var %b_10
+init_var: @var %b_10
+func_exec: LT i %b_10 %i_3 2
+get_val_int: %i_3
+get_val_int: 0
+get_val_int: 2
+get_val_int: 2
+local_assign: %b_10 true
+func_exec: @var %b_11
+init_var: @var %b_11
+func_exec: Not %b_11 %b_10
+get_val_bool: %b_10
+get_val_bool: 1
+local_assign: %b_11 false
+func_exec: branch l_9 %b_11
+get_val_bool: %b_11
+get_val_bool: 0
+func_exec: @var %i_12
+init_var: @var %i_12
+func_exec: @var %i_13
+init_var: @var %i_13
+func_exec: assign %i_12 0
+init_assign: assign %i_12 0
+get_val_int: 0
+get_val_int: 0
+local_assign: %i_12 0
+func_exec: Mul i %i_13 %i_2 2
+get_val_int: %i_2
+get_val_int: 2
+get_val_int: 2
+get_val_int: 2
+local_assign: %i_13 4
+func_exec: Add i %i_12 %i_12 %i_13
+get_val_int: %i_12
+get_val_int: 0
+get_val_int: %i_13
+get_val_int: 4
+local_assign: %i_12 4
+func_exec: Mul i %i_13 %i_3 1
+get_val_int: %i_3
+get_val_int: 0
+get_val_int: 1
+get_val_int: 1
+local_assign: %i_13 0
+func_exec: Add i %i_12 %i_12 %i_13
+get_val_int: %i_12
+get_val_int: 4
+get_val_int: %i_13
+get_val_int: 0
+local_assign: %i_12 4
+func_exec: @var %b_14
+init_var: @var %b_14
+func_exec: assign %b_14 %ab_1[%i_12]
+init_assign: assign %b_14 %ab_1[%i_12]
+get_val_bool: %ab_1[%i_12]
+get_array_name: %ab_1[%i_12]
+get_array_index: %ab_1[%i_12]
+get_val_int: %i_12
+get_val_int: 4
+get_val_bool: 1
+local_assign: %b_14 true
+func_exec: call void %print_bool ( %b_14 )
+parse arg:%b_14 to param:%b_-4
+get_val_bool: %b_14
+get_val_bool: 1
+func_call: %print_bool
+init_arg: %b_-4 true
+func_ret: 2001471536
+func_exec: @var %i_15
+init_var: @var %i_15
+func_exec: Add i %i_15 %i_3 1
+get_val_int: %i_3
+get_val_int: 0
+get_val_int: 1
+get_val_int: 1
+local_assign: %i_15 1
+func_exec: assign %i_3 %i_15
+init_assign: assign %i_3 %i_15
+get_val_int: %i_15
+get_val_int: 1
+local_assign: %i_3 1
+func_exec: branch l_8 true
+get_val_bool: true
+get_val_bool: 1
+func_exec: label l_8
+func_exec: @var %b_10
+init_var: @var %b_10
+func_exec: LT i %b_10 %i_3 2
+get_val_int: %i_3
+get_val_int: 1
+get_val_int: 2
+get_val_int: 2
+local_assign: %b_10 true
+func_exec: @var %b_11
+init_var: @var %b_11
+func_exec: Not %b_11 %b_10
+get_val_bool: %b_10
+get_val_bool: 1
+local_assign: %b_11 false
+func_exec: branch l_9 %b_11
+get_val_bool: %b_11
+get_val_bool: 0
+func_exec: @var %i_12
+init_var: @var %i_12
+func_exec: @var %i_13
+init_var: @var %i_13
+func_exec: assign %i_12 0
+init_assign: assign %i_12 0
+get_val_int: 0
+get_val_int: 0
+local_assign: %i_12 0
+func_exec: Mul i %i_13 %i_2 2
+get_val_int: %i_2
+get_val_int: 2
+get_val_int: 2
+get_val_int: 2
+local_assign: %i_13 4
+func_exec: Add i %i_12 %i_12 %i_13
+get_val_int: %i_12
+get_val_int: 0
+get_val_int: %i_13
+get_val_int: 4
+local_assign: %i_12 4
+func_exec: Mul i %i_13 %i_3 1
+get_val_int: %i_3
+get_val_int: 1
+get_val_int: 1
+get_val_int: 1
+local_assign: %i_13 1
+func_exec: Add i %i_12 %i_12 %i_13
+get_val_int: %i_12
+get_val_int: 4
+get_val_int: %i_13
+get_val_int: 1
+local_assign: %i_12 5
+func_exec: @var %b_14
+init_var: @var %b_14
+func_exec: assign %b_14 %ab_1[%i_12]
+init_assign: assign %b_14 %ab_1[%i_12]
+get_val_bool: %ab_1[%i_12]
+get_array_name: %ab_1[%i_12]
+get_array_index: %ab_1[%i_12]
+get_val_int: %i_12
+get_val_int: 5
+get_val_bool: 1
+local_assign: %b_14 true
+func_exec: call void %print_bool ( %b_14 )
+parse arg:%b_14 to param:%b_-4
+get_val_bool: %b_14
+get_val_bool: 1
+func_call: %print_bool
+init_arg: %b_-4 true
+func_ret: 2001471536
+func_exec: @var %i_15
+init_var: @var %i_15
+func_exec: Add i %i_15 %i_3 1
+get_val_int: %i_3
+get_val_int: 1
+get_val_int: 1
+get_val_int: 1
+local_assign: %i_15 2
+func_exec: assign %i_3 %i_15
+init_assign: assign %i_3 %i_15
+get_val_int: %i_15
+get_val_int: 2
+local_assign: %i_3 2
+func_exec: branch l_8 true
+get_val_bool: true
+get_val_bool: 1
+func_exec: label l_8
+func_exec: @var %b_10
+init_var: @var %b_10
+func_exec: LT i %b_10 %i_3 2
+get_val_int: %i_3
+get_val_int: 2
+get_val_int: 2
+get_val_int: 2
+local_assign: %b_10 false
+func_exec: @var %b_11
+init_var: @var %b_11
+func_exec: Not %b_11 %b_10
+get_val_bool: %b_10
+get_val_bool: 0
+local_assign: %b_11 true
+func_exec: branch l_9 %b_11
+get_val_bool: %b_11
+get_val_bool: 1
+func_exec: label l_9
+func_exec: @var %i_16
+init_var: @var %i_16
+func_exec: Add i %i_16 %i_2 1
+get_val_int: %i_2
+get_val_int: 2
+get_val_int: 1
+get_val_int: 1
+local_assign: %i_16 3
+func_exec: assign %i_2 %i_16
+init_assign: assign %i_2 %i_16
+get_val_int: %i_16
+get_val_int: 3
+local_assign: %i_2 3
+func_exec: branch l_4 true
+get_val_bool: true
+get_val_bool: 1
+func_exec: label l_4
+func_exec: @var %b_6
+init_var: @var %b_6
+func_exec: LT i %b_6 %i_2 4
+get_val_int: %i_2
+get_val_int: 3
+get_val_int: 4
+get_val_int: 4
+local_assign: %b_6 true
+func_exec: @var %b_7
+init_var: @var %b_7
+func_exec: Not %b_7 %b_6
+get_val_bool: %b_6
+get_val_bool: 1
+local_assign: %b_7 false
+func_exec: branch l_5 %b_7
+get_val_bool: %b_7
+get_val_bool: 0
+func_exec: assign %i_3 0
+init_assign: assign %i_3 0
+get_val_int: 0
+get_val_int: 0
+local_assign: %i_3 0
+func_exec: label l_8
+func_exec: @var %b_10
+init_var: @var %b_10
+func_exec: LT i %b_10 %i_3 2
+get_val_int: %i_3
+get_val_int: 0
+get_val_int: 2
+get_val_int: 2
+local_assign: %b_10 true
+func_exec: @var %b_11
+init_var: @var %b_11
+func_exec: Not %b_11 %b_10
+get_val_bool: %b_10
+get_val_bool: 1
+local_assign: %b_11 false
+func_exec: branch l_9 %b_11
+get_val_bool: %b_11
+get_val_bool: 0
+func_exec: @var %i_12
+init_var: @var %i_12
+func_exec: @var %i_13
+init_var: @var %i_13
+func_exec: assign %i_12 0
+init_assign: assign %i_12 0
+get_val_int: 0
+get_val_int: 0
+local_assign: %i_12 0
+func_exec: Mul i %i_13 %i_2 2
+get_val_int: %i_2
+get_val_int: 3
+get_val_int: 2
+get_val_int: 2
+local_assign: %i_13 6
+func_exec: Add i %i_12 %i_12 %i_13
+get_val_int: %i_12
+get_val_int: 0
+get_val_int: %i_13
+get_val_int: 6
+local_assign: %i_12 6
+func_exec: Mul i %i_13 %i_3 1
+get_val_int: %i_3
+get_val_int: 0
+get_val_int: 1
+get_val_int: 1
+local_assign: %i_13 0
+func_exec: Add i %i_12 %i_12 %i_13
+get_val_int: %i_12
+get_val_int: 6
+get_val_int: %i_13
+get_val_int: 0
+local_assign: %i_12 6
+func_exec: @var %b_14
+init_var: @var %b_14
+func_exec: assign %b_14 %ab_1[%i_12]
+init_assign: assign %b_14 %ab_1[%i_12]
+get_val_bool: %ab_1[%i_12]
+get_array_name: %ab_1[%i_12]
+get_array_index: %ab_1[%i_12]
+get_val_int: %i_12
+get_val_int: 6
+get_val_bool: 0
+local_assign: %b_14 false
+func_exec: call void %print_bool ( %b_14 )
+parse arg:%b_14 to param:%b_-4
+get_val_bool: %b_14
+get_val_bool: 0
+func_call: %print_bool
+init_arg: %b_-4 false
+func_ret: 2001471536
+func_exec: @var %i_15
+init_var: @var %i_15
+func_exec: Add i %i_15 %i_3 1
+get_val_int: %i_3
+get_val_int: 0
+get_val_int: 1
+get_val_int: 1
+local_assign: %i_15 1
+func_exec: assign %i_3 %i_15
+init_assign: assign %i_3 %i_15
+get_val_int: %i_15
+get_val_int: 1
+local_assign: %i_3 1
+func_exec: branch l_8 true
+get_val_bool: true
+get_val_bool: 1
+func_exec: label l_8
+func_exec: @var %b_10
+init_var: @var %b_10
+func_exec: LT i %b_10 %i_3 2
+get_val_int: %i_3
+get_val_int: 1
+get_val_int: 2
+get_val_int: 2
+local_assign: %b_10 true
+func_exec: @var %b_11
+init_var: @var %b_11
+func_exec: Not %b_11 %b_10
+get_val_bool: %b_10
+get_val_bool: 1
+local_assign: %b_11 false
+func_exec: branch l_9 %b_11
+get_val_bool: %b_11
+get_val_bool: 0
+func_exec: @var %i_12
+init_var: @var %i_12
+func_exec: @var %i_13
+init_var: @var %i_13
+func_exec: assign %i_12 0
+init_assign: assign %i_12 0
+get_val_int: 0
+get_val_int: 0
+local_assign: %i_12 0
+func_exec: Mul i %i_13 %i_2 2
+get_val_int: %i_2
+get_val_int: 3
+get_val_int: 2
+get_val_int: 2
+local_assign: %i_13 6
+func_exec: Add i %i_12 %i_12 %i_13
+get_val_int: %i_12
+get_val_int: 0
+get_val_int: %i_13
+get_val_int: 6
+local_assign: %i_12 6
+func_exec: Mul i %i_13 %i_3 1
+get_val_int: %i_3
+get_val_int: 1
+get_val_int: 1
+get_val_int: 1
+local_assign: %i_13 1
+func_exec: Add i %i_12 %i_12 %i_13
+get_val_int: %i_12
+get_val_int: 6
+get_val_int: %i_13
+get_val_int: 1
+local_assign: %i_12 7
+func_exec: @var %b_14
+init_var: @var %b_14
+func_exec: assign %b_14 %ab_1[%i_12]
+init_assign: assign %b_14 %ab_1[%i_12]
+get_val_bool: %ab_1[%i_12]
+get_array_name: %ab_1[%i_12]
+get_array_index: %ab_1[%i_12]
+get_val_int: %i_12
+get_val_int: 7
+get_val_bool: 0
+local_assign: %b_14 false
+func_exec: call void %print_bool ( %b_14 )
+parse arg:%b_14 to param:%b_-4
+get_val_bool: %b_14
+get_val_bool: 0
+func_call: %print_bool
+init_arg: %b_-4 false
+func_ret: 2001471536
+func_exec: @var %i_15
+init_var: @var %i_15
+func_exec: Add i %i_15 %i_3 1
+get_val_int: %i_3
+get_val_int: 1
+get_val_int: 1
+get_val_int: 1
+local_assign: %i_15 2
+func_exec: assign %i_3 %i_15
+init_assign: assign %i_3 %i_15
+get_val_int: %i_15
+get_val_int: 2
+local_assign: %i_3 2
+func_exec: branch l_8 true
+get_val_bool: true
+get_val_bool: 1
+func_exec: label l_8
+func_exec: @var %b_10
+init_var: @var %b_10
+func_exec: LT i %b_10 %i_3 2
+get_val_int: %i_3
+get_val_int: 2
+get_val_int: 2
+get_val_int: 2
+local_assign: %b_10 false
+func_exec: @var %b_11
+init_var: @var %b_11
+func_exec: Not %b_11 %b_10
+get_val_bool: %b_10
+get_val_bool: 0
+local_assign: %b_11 true
+func_exec: branch l_9 %b_11
+get_val_bool: %b_11
+get_val_bool: 1
+func_exec: label l_9
+func_exec: @var %i_16
+init_var: @var %i_16
+func_exec: Add i %i_16 %i_2 1
+get_val_int: %i_2
+get_val_int: 3
+get_val_int: 1
+get_val_int: 1
+local_assign: %i_16 4
+func_exec: assign %i_2 %i_16
+init_assign: assign %i_2 %i_16
+get_val_int: %i_16
+get_val_int: 4
+local_assign: %i_2 4
+func_exec: branch l_4 true
+get_val_bool: true
+get_val_bool: 1
+func_exec: label l_4
+func_exec: @var %b_6
+init_var: @var %b_6
+func_exec: LT i %b_6 %i_2 4
+get_val_int: %i_2
+get_val_int: 4
+get_val_int: 4
+get_val_int: 4
+local_assign: %b_6 false
+func_exec: @var %b_7
+init_var: @var %b_7
+func_exec: Not %b_7 %b_6
+get_val_bool: %b_6
+get_val_bool: 0
+local_assign: %b_7 true
+func_exec: branch l_5 %b_7
+get_val_bool: %b_7
+get_val_bool: 1
+func_exec: label l_5
+func_exec: return 0
+get_val_int: 0
+get_val_int: 0
+func_ret: 0
+Interpretation complete.
+Result: 
