@@ -390,6 +390,7 @@ block
 
 var_def   
           locals [
+			bool is_global,
             Btype need_type,
           ]
           : Ident (MBra intconst MKet)* (Assign array_signed_const)?
@@ -397,6 +398,7 @@ var_def
 
 const_def 
           locals [
+			bool is_global,
             Btype need_type,
           ] 
           : Ident (MBra intconst MKet)*  Assign array_signed_const

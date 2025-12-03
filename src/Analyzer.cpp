@@ -1218,7 +1218,8 @@ Analyzer::visitDecl_var(CACTParser::Decl_varContext *context) {
   std::cerr << "Enter Decl_var" << std::endl;
   Btype btype = str_to_type(context->type()->getText());
   for (int i = 0; i < (int)context->var_def().size(); ++i) {
-    if (context->is_global) std::cout << "!global ";
+    // if (context->is_global) std::cout << "!global ";
+    context->var_def()[i]->is_global = context->is_global;
     context->var_def()[i]->need_type = btype;
     context->var_def()[i]->accept(this);
   }
@@ -1231,7 +1232,8 @@ Analyzer::visitDecl_const(CACTParser::Decl_constContext *context) {
   std::cerr << "Enter Decl_const" << std::endl;
   Btype btype = str_to_type(context->type()->getText());
   for (int i = 0; i < (int)context->const_def().size(); ++i) {
-    if (context->is_global) std::cout << "!global ";
+    // if (context->is_global) std::cout << "!global ";
+    context->const_def()[i]->is_global = context->is_global;
     context->const_def()[i]->need_type = btype;
     context->const_def()[i]->accept(this);
   }
@@ -1302,7 +1304,7 @@ Analyzer::visitVar_def(CACTParser::Var_defContext *context) {
   std::string name = context->Ident()->getText();
   if (g_symtree.check(name)) {
     //
-    std::cout <<"!" << name << std::endl;
+    // std::cout <<"!" << name << std::endl;
     // exit(1);
     assert(0);
     return nullptr;
@@ -1316,6 +1318,7 @@ Analyzer::visitVar_def(CACTParser::Var_defContext *context) {
       assert(0);
       return nullptr;
     }
+    if (context->is_global) std::cout << "!global ";
     std::cout << "@var %" << name << std::endl;
   }
   else { // array 
@@ -1331,6 +1334,7 @@ Analyzer::visitVar_def(CACTParser::Var_defContext *context) {
       assert(0);
       return nullptr;
     }
+    if (context->is_global) std::cout << "!global ";
     std::cout << "@array %" << name << " " << total_size << std::endl;
   }
   
@@ -1365,6 +1369,7 @@ Analyzer::visitConst_def(CACTParser::Const_defContext *context) {
       assert(0);
       return nullptr;
     }
+    if (context->is_global) std::cout << "!global ";
     std::cout << "@var %" << name << std::endl;
   }
   else { // array 
@@ -1380,6 +1385,7 @@ Analyzer::visitConst_def(CACTParser::Const_defContext *context) {
       assert(0);
       return nullptr;
     }
+    if (context->is_global) std::cout << "!global ";
     std::cout << "@array %" << name << " " << total_size << std::endl;
   }
   context->array_signed_const()->need_type = context->need_type;

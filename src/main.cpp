@@ -17,25 +17,25 @@ extern std::vector<FuncParamsType> special_funcParams[];
 void printTree(antlr4::tree::ParseTree *tree,
                const std::vector<std::string> &ruleNames,
                const std::string &indent = "", bool isLast = true) {
-  std::cout << indent;
+  std::cerr << indent;
 
   if (isLast) {
-    std::cout << "└── ";
+    std::cerr << "└── ";
   } else {
-    std::cout << "├── ";
+    std::cerr << "├── ";
   }
 
   // 打印节点信息
   if (tree->children.empty()) {
     // 叶子节点（终结符）
-    std::cout << tree->toString() << std::endl;
+    std::cerr << tree->toString() << std::endl;
   } else {
     // 内部节点（非终结符）
     auto *ctx = dynamic_cast<antlr4::ParserRuleContext *>(tree);
     if (ctx) {
-      std::cout << ruleNames[ctx->getRuleIndex()] << std::endl;
+      std::cerr << ruleNames[ctx->getRuleIndex()] << std::endl;
     } else {
-      std::cout << "Unknown" << std::endl;
+      std::cerr << "Unknown" << std::endl;
     }
   }
 
@@ -66,11 +66,11 @@ int main(int argc, const char *argv[]) {
   CommonTokenStream tokens(&lexer);
 
   // 打印所有Token
-  std::cout << "=== Token Stream ===" << std::endl;
+  std::cerr << "=== Token Stream ===" << std::endl;
   tokens.fill();
   for (auto token : tokens.getTokens()) {
     if (token->getType() != antlr4::Token::EOF) {
-      std::cout << "Line " << token->getLine() << ":"
+      std::cerr << "Line " << token->getLine() << ":"
                 << token->getCharPositionInLine() << " "
                 << lexer.getVocabulary().getSymbolicName(token->getType())
                 << " = '" << token->getText() << "'" << std::endl;
@@ -83,32 +83,32 @@ int main(int argc, const char *argv[]) {
   auto tree = parser.comp_units();
 
   // 打印解析树
-  std::cout << "=== Parse Tree ===" << std::endl;
-  std::cout << tree->toStringTree(&parser) << std::endl;
+  std::cerr << "=== Parse Tree ===" << std::endl;
+  std::cerr << tree->toStringTree(&parser) << std::endl;
 
-  std::cout << "\n=== Detailed AST ===" << std::endl;
+  std::cerr << "\n=== Detailed AST ===" << std::endl;
   printTree(tree, parser.getRuleNames());
 
   if (lexer.getNumberOfSyntaxErrors() > 0) {
-    std::cout << "lex error: " << lexer.getNumberOfSyntaxErrors() << std::endl;
-    std::cout << "False" << std::endl;
+    std::cerr << "lex error: " << lexer.getNumberOfSyntaxErrors() << std::endl;
+    std::cerr << "False" << std::endl;
     return 1;
   }
 
   if (parser.getNumberOfSyntaxErrors() > 0) {
-    std::cout << "syntax error: " << parser.getNumberOfSyntaxErrors()
+    std::cerr << "syntax error: " << parser.getNumberOfSyntaxErrors()
               << std::endl;
-    std::cout << "False" << std::endl;
+    std::cerr << "False" << std::endl;
     return 2;
   }
 
-  std::cout << "=== End ===" << std::endl;
-  std::cout << "Number of errors: "
+  std::cerr << "=== End ===" << std::endl;
+  std::cerr << "Number of errors: "
             << lexer.getNumberOfSyntaxErrors() +
                    parser.getNumberOfSyntaxErrors()
             << std::endl;
 
-  std::cout << "True" << std::endl;
+  std::cerr << "True" << std::endl;
 
   Analyzer visitor;
   g_symtree.enterScope();
