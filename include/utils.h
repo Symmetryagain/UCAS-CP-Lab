@@ -4,6 +4,7 @@
 #include "btype.h"
 #include "tree/ParseTree.h"
 #include <bits/stdc++.h>
+#include "Analyzer.h"
 
 Btype str_to_type(const std::string &s);
 int parse_int(const std::string &s);
@@ -12,5 +13,6 @@ std::string createVar(const Btype &b, bool is_array);
 void printTree(antlr4::tree::ParseTree *tree,
                const std::vector<std::string> &ruleNames,
                const std::string &indent, bool isLast);
+void printTokens(CACTLexer &lexer, antlr4::CommonTokenStream &tokens);
 
 #endif 

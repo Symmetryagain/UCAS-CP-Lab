@@ -16,6 +16,8 @@ grammar/*.tokens
 
 test/ir_files
 
+interpreter/interpreter
+
 out
 scripts
 

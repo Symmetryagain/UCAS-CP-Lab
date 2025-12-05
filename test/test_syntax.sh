@@ -4,7 +4,7 @@
 for file in `ls ../test/samples_lex_and_syntax/*.cact`
 do
 	echo -e "\033[;36mTesting $file...\033[0m"
-	OPT=`../build/compiler  $file 2>reserr.txt` # 2>&1 redirects stderr to stdout
+	OPT=`../build/compiler $file --syntax 2>&1` 
 	if [ $? -eq 0 ]; then
 		echo -e "\033[;32m True!\033[0m"
 		if [[ $file == *[0-9]"_false"* ]]; then	# use double brackets for substring matching
