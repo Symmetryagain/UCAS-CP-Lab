@@ -20,3 +20,15 @@ do
 		fi
 	fi
 done
+
+for file in `ls ../test/samples_codegen_functional/*.cact`
+do
+	echo -e "\033[;36mTesting $file...\033[0m"
+	OPT=`../build/compiler  $file 2>&1` # 2>&1 redirects stderr to stdout
+	if [ $? -eq 0 ]; then
+		echo -e "\033[;32m True!\033[0m"
+	else
+		echo "**Error!"
+    exit 1
+	fi
+done

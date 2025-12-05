@@ -1,9 +1,9 @@
 #include <iostream>
 
 // #include "antlr4-runtime.h"
-#include "tree/ErrorNode.h"
+// #include "tree/ErrorNode.h"
 #include "tree/ParseTree.h"
-
+#include "utils.h"
 #include "Analyzer.h"
 
 using namespace antlr4;
@@ -12,40 +12,6 @@ extern FuncTable g_functable;
 extern std::string special_funcname[];
 extern Btype special_funcType[];
 extern std::vector<FuncParamsType> special_funcParams[];
-
-// 添加树形打印功能
-void printTree(antlr4::tree::ParseTree *tree,
-               const std::vector<std::string> &ruleNames,
-               const std::string &indent = "", bool isLast = true) {
-  std::cerr << indent;
-
-  if (isLast) {
-    std::cerr << "└── ";
-  } else {
-    std::cerr << "├── ";
-  }
-
-  // 打印节点信息
-  if (tree->children.empty()) {
-    // 叶子节点（终结符）
-    std::cerr << tree->toString() << std::endl;
-  } else {
-    // 内部节点（非终结符）
-    auto *ctx = dynamic_cast<antlr4::ParserRuleContext *>(tree);
-    if (ctx) {
-      std::cerr << ruleNames[ctx->getRuleIndex()] << std::endl;
-    } else {
-      std::cerr << "Unknown" << std::endl;
-    }
-  }
-
-  // 递归打印子节点
-  std::string newIndent = indent + (isLast ? "    " : "│   ");
-  for (size_t i = 0; i < tree->children.size(); i++) {
-    printTree(tree->children[i], ruleNames, newIndent,
-              i == tree->children.size() - 1);
-  }
-}
 
 int main(int argc, const char *argv[]) {
   std::ifstream stream;
@@ -82,12 +48,12 @@ int main(int argc, const char *argv[]) {
   // 获取解析树
   auto tree = parser.comp_units();
 
-  // 打印解析树
-  std::cerr << "=== Parse Tree ===" << std::endl;
-  std::cerr << tree->toStringTree(&parser) << std::endl;
+  // Print parser tree
+  // std::cerr << "=== Parse Tree ===" << std::endl;
+  // std::cerr << tree->toStringTree(&parser) << std::endl;
 
-  std::cerr << "\n=== Detailed AST ===" << std::endl;
-  printTree(tree, parser.getRuleNames());
+  // std::cerr << "\n=== Detailed AST ===" << std::endl;
+  // printTree(tree, parser.getRuleNames(), "", true);
 
   if (lexer.getNumberOfSyntaxErrors() > 0) {
     std::cerr << "lex error: " << lexer.getNumberOfSyntaxErrors() << std::endl;

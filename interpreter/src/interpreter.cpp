@@ -46,24 +46,24 @@ void io_exec(Local_State &lstate, Value &val)
 	switch(lstate.curline)
 	{
 	case -1:
-		cerr << "print int: ";
-		cout << lstate.ltable["%i_-1"].val.ival;
-		cerr << endl;
+		cerr << "print int: " << lstate.ltable["%i_-1"].val.ival << endl;
+		cout << lstate.ltable["%i_-1"].val.ival << endl;
 		break;
 	case -2:
-		cerr << "print float: ";
-		cout << lstate.ltable["%f_-2"].val.fval;
-		cerr << endl;
+		// cerr << "print float: " << lstate.ltable["%f_-2"].val.fval << endl;
+    fprintf(stderr, "print float: %.6f\n", lstate.ltable["%f_-2"].val.fval);
+		// cout << lstate.ltable["%f_-2"].val.fval << endl;
+    fprintf(stdout, "%.6f\n", lstate.ltable["%f_-2"].val.fval);
 		break;
 	case -3:
-		cerr << "print double: ";
-		cout << lstate.ltable["%d_-3"].val.dval;
-		cerr << endl;
+		// cerr << "print double: " << lstate.ltable["%d_-3"].val.dval << endl;
+    fprintf(stderr, "print double: %.6lf\n", lstate.ltable["%d_-3"].val.dval);
+		// cout << lstate.ltable["%d_-3"].val.dval << endl;
+    fprintf(stdout, "%.6lf\n", lstate.ltable["%d_-3"].val.dval);
 		break;
 	case -4:
-		cerr << "print bool: ";
-		cout << (lstate.ltable["%b_-4"].val.bval ? "true" : "false") ;
-		cerr << endl;
+		cerr << "print bool: " << (lstate.ltable["%b_-4"].val.bval ? "true" : "false") << endl;
+		cout << (lstate.ltable["%b_-4"].val.bval ? "true" : "false") << endl;
 		break;
 	case -5:
 		cin >> val.ival;
@@ -483,7 +483,8 @@ Value get_val_int(Local_State lstate, string rstr)
 	}
 	else
 	{
-		val.ival = atoi(rstr.c_str());
+		// val.ival = atoi(rstr.c_str());
+    val.ival = std::stoi(rstr, nullptr, 0);
 	}
 	cerr << "get_val_int: " << val.ival << endl;
 	return val;

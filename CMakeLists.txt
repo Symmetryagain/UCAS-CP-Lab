@@ -9,7 +9,6 @@ set(CMAKE_BUILD_TYPE Debug)
 
 include_directories(deps/antlr4-runtime/)
 include_directories(grammar)
-# include_directories(src)
 include_directories(include)
 
 FILE(GLOB_RECURSE SOURCE_FILES "src/*.cpp" "grammar/*.cpp")

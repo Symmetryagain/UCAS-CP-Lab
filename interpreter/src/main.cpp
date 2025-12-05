@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
 	while(getline(file, lstr))
 	{
 		lstrs.push_back(lstr);
-		cerr << lstr << endl;
+		// cerr << lstr << endl;
 	}
 	file.close();
 
@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
 	Value       main_val = func_call("%main", {});
 
 	cerr << "Interpretation complete." << endl;
-	cerr << "Result: ";
+	cerr << "Result: " << main_val.ival << endl;
 	cout << main_val.ival << endl;
 
 	return 0;

@@ -1,5 +1,7 @@
 #include "SymTable.h"
 #include "FuncTable.h"
+#include "tree/ParseTree.h"
+#include "Analyzer.h"
 
 int g_count = 0;
 std::string btype_string[] = {"", "i", "f", "d", "b", "v", ""};
@@ -31,31 +33,3 @@ std::vector<FuncParamsType> special_funcParams[] = {
   {FuncParamsType(Bool, false)},
   {}, {}, {}
 };
-
-Btype str_to_type(const std::string &s) {
-  if (s == "int") return Int;
-  else if (s == "float") return Float;
-  else if (s == "double") return Double;
-  else if (s == "bool") return Bool;
-  else if (s == "void") return Void;
-  else {
-    // 
-    assert(1);
-    return Void;
-  }
-}
-
-int parse_int(const std::string &s) {
-  return std::stoi(s, nullptr, 0);
-}
-
-std::string createLabel() {
-  ++g_count;
-  return "l_" + std::to_string(g_count);
-}
-
-std::string createVar(const Btype &b, bool is_array) {
-  ++g_count;
-  if (!is_array) return btype_string[b] + "_" + std::to_string(g_count);
-  else return "a" + btype_string[b] + "_" + std::to_string(g_count);
-}
