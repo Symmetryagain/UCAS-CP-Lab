@@ -10,12 +10,16 @@ do
 		if [[ $file == *[0-9]"_false"* ]]; then	# use double brackets for substring matching
 			echo "**Error!"
 			echo $OPT
+      exit 1
 		fi
 	else
 		echo -e "\033[;31m False!\033[0m"
 		if [[ $file == *[0-9]"_true"* ]]; then
 			echo "**Error!"
 			echo $OPT
+      exit 1
 		fi
 	fi
 done
+
+echo -e "\033[;32m All tests passed!\033[0m"

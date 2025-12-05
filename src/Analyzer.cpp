@@ -97,11 +97,12 @@ std::any Analyzer::visitExpr_1_array(CACTParser::Expr_1_arrayContext *context) {
   for (int i = (int)array_size.size() - 2; i >= 0; --i) {
     array_size[i] = array_size[i + 1] * arr.arraySize()[i + 1];
   }
-  std::string offset = createVar(Int, false);
-  std::string tmp = createVar(Int, false);
-  std::cout << "@var %" << offset << std::endl;
-  std::cout << "@var %" << tmp << std::endl;
-  std::cout << "assign %" << offset << " 0" << std::endl;
+  std::string offset = "%" + createVar(Int, false);
+  std::string tmp = "%" + createVar(Int, false);
+  std::string arr_name = "%" + arr.name_in_IR();
+  std::cout << "@var " << offset << std::endl;
+  std::cout << "@var " << tmp << std::endl;
+  std::cout << "assign " << offset << " 0" << std::endl;
   for (int i = 0; i < (int)context->expr_8().size(); ++i) {
     context->expr_8()[i]->accept(this);
     if (context->expr_8()[i]->btype != Int ||
@@ -111,16 +112,16 @@ std::any Analyzer::visitExpr_1_array(CACTParser::Expr_1_arrayContext *context) {
       assert(0);
       return nullptr;
     }
-    std::cout << "Mul i %" << tmp << " " << context->expr_8()[i]->res
+    std::cout << "Mul i " << tmp << " " << context->expr_8()[i]->res
               << " " << array_size[i] << std::endl; // must be Int
-    std::cout << "Add i %" << offset << " %" << offset << " %" << tmp
+    std::cout << "Add i " << offset << " " << offset << " " << tmp
               << std::endl; // must be Int
   }
   if (arr.arraySize().size() == context->expr_8().size()) { // not array
     context->array_size = {};
     std::string res = "%" + createVar(context->btype, false);
     std::cout << "@var " << res << std::endl;
-    std::cout << "assign " << res << " %" << arr.name_in_IR() << "[%" << offset
+    std::cout << "assign " << res << " " << arr_name << "[" << offset
               << "]" << std::endl;
     context->res = res;
   } else {
@@ -130,7 +131,7 @@ std::any Analyzer::visitExpr_1_array(CACTParser::Expr_1_arrayContext *context) {
     }
     std::string res = "%" + createVar(context->btype, true);
     std::cout << "@var " << res << std::endl;
-    std::cout << "Addr " << res << " %" << arr.name_in_IR() << " %" << offset
+    std::cout << "Addr " << res << " " << arr_name << " " << offset
               << std::endl;
     context->res = res;
   }
@@ -773,27 +774,33 @@ Analyzer::visitExpr_7_expr_6(CACTParser::Expr_7_expr_6Context *context) {
 
 std::any Analyzer::visitExpr_7_dand(CACTParser::Expr_7_dandContext *context) {
   std::cerr << "Enter Expr_7_dand" << std::endl;
-  context->expr_7()->accept(this);
-  context->expr_6()->accept(this);
-  if (context->expr_7()->btype != Bool || context->expr_6()->btype != Bool) {
-    //
-    exit(3);
-    assert(0);
-    return nullptr;
-  }
-  if (!context->expr_7()->array_size.empty() ||
-      !context->expr_6()->array_size.empty()) {
-    //
-    exit(3);
-    assert(0);
-    return nullptr;
-  }
-  context->btype = Bool;
-  context->array_size = {};
   std::string res = "%" + createVar(Bool, false);
   std::cout << "@var " << res << std::endl;
-  std::cout << "DAnd " << res << " " << context->expr_7()->res << " "
-            << context->expr_6()->res << std::endl;
+  std::cout << "assign " << res << " true" << std::endl;
+  context->expr_7()->accept(this);
+  if (context->expr_7()->btype != Bool || !context->expr_7()->array_size.empty()) {
+    //
+    exit(3);
+    assert(0);
+    return nullptr;
+  }
+  std::string f_label = createLabel();
+  std::string nres = "%" + createVar(Bool, false);
+  std::cout << "@var " << nres << std::endl;
+  std::cout << "DAnd " << res << " " << res << " " << context->expr_7()->res << std::endl;
+  std::cout << "Not " << nres << " " << res << std::endl;
+  std::cout << "branch " << f_label << " " << nres << std::endl;
+  context->expr_6()->accept(this);
+  if (context->expr_6()->btype != Bool || !context->expr_6()->array_size.empty()) {
+    //
+    exit(3);
+    assert(0);
+    return nullptr;
+  }
+  std::cout << "DAnd " << res << " " << res << " " << context->expr_6()->res << std::endl;
+  std::cout << "label " << f_label << std::endl;
+  context->btype = Bool;
+  context->array_size = {};
   context->res = res;
   std::cerr << "Leave Expr_7_dand" << std::endl;
   return nullptr;
@@ -801,27 +808,30 @@ std::any Analyzer::visitExpr_7_dand(CACTParser::Expr_7_dandContext *context) {
 
 std::any Analyzer::visitExpr_8_dor(CACTParser::Expr_8_dorContext *context) {
   std::cerr << "Enter Expr_8_dor" << std::endl;
-  context->expr_8()->accept(this);
-  context->expr_7()->accept(this);
-  if (context->expr_8()->btype != Bool || context->expr_7()->btype != Bool) {
-    //
-    exit(3);
-    assert(0);
-    return nullptr;
-  }
-  if (!context->expr_8()->array_size.empty() ||
-      !context->expr_7()->array_size.empty()) {
-    //
-    exit(3);
-    assert(0);
-    return nullptr;
-  }
-  context->btype = Bool;
-  context->array_size = {};
   std::string res = "%" + createVar(Bool, false);
   std::cout << "@var " << res << std::endl;
-  std::cout << "DOr " << res << " " << context->expr_8()->res << " "
-            << context->expr_7()->res << std::endl;
+  std::cout << "assign " << res << " false" << std::endl;
+  context->expr_8()->accept(this);
+  if (context->expr_8()->btype != Bool || !context->expr_8()->array_size.empty()) {
+    //
+    exit(3);
+    assert(0);
+    return nullptr;
+  }
+  std::string t_label = createLabel();
+  std::cout << "DOr " << res << " " << res << " " << context->expr_8()->res << std::endl;
+  std::cout << "branch " << t_label << " " << res << std::endl;
+  context->expr_7()->accept(this);
+  if (context->expr_7()->btype != Bool || !context->expr_7()->array_size.empty()) {
+    //
+    exit(3);
+    assert(0);
+    return nullptr;
+  }
+  std::cout << "DOr " << res << " " << res << " " << context->expr_7()->res << std::endl;
+  std::cout << "label " << t_label << std::endl;
+  context->btype = Bool;
+  context->array_size = {};
   context->res = res;
   std::cerr << "Leave Expr_8_dor" << std::endl;
   return nullptr;
@@ -1236,7 +1246,6 @@ std::any Analyzer::visitDecl_var(CACTParser::Decl_varContext *context) {
   std::cerr << "Enter Decl_var" << std::endl;
   Btype btype = str_to_type(context->type()->getText());
   for (int i = 0; i < (int)context->var_def().size(); ++i) {
-    // if (context->is_global) std::cout << "!global ";
     context->var_def()[i]->is_global = context->is_global;
     context->var_def()[i]->need_type = btype;
     context->var_def()[i]->accept(this);
@@ -1249,7 +1258,6 @@ std::any Analyzer::visitDecl_const(CACTParser::Decl_constContext *context) {
   std::cerr << "Enter Decl_const" << std::endl;
   Btype btype = str_to_type(context->type()->getText());
   for (int i = 0; i < (int)context->const_def().size(); ++i) {
-    // if (context->is_global) std::cout << "!global ";
     context->const_def()[i]->is_global = context->is_global;
     context->const_def()[i]->need_type = btype;
     context->const_def()[i]->accept(this);
@@ -1318,8 +1326,7 @@ std::any Analyzer::visitVar_def(CACTParser::Var_defContext *context) {
   std::cerr << "Enter Var_def" << std::endl;
   std::string name = context->Ident()->getText();
   if (g_symtree.check(name)) {
-    //
-    // std::cout <<"!" << name << std::endl;
+    // 
     exit(3);
     assert(0);
     return nullptr;
@@ -1546,7 +1553,7 @@ std::any Analyzer::visitFunc_def(CACTParser::Func_defContext *context) {
   Btype retType = str_to_type(typeName);
 
   std::string funcName = context->Ident()->getText();
-  // std::cout << "!!!" << funcName << " " << retType << std::endl;
+  
   if (funcName == "main" && retType != Int) {
     //
     exit(3);

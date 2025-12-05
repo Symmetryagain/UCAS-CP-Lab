@@ -341,9 +341,5 @@ cplab/
 4. 构建解释器：`make -C ./interpreter`
 5. 运行解释器：`./interpreter/interpreter <ir-file> > <out-file>`
 
-### 小组成员
-
-
-
 ---
 报告撰写日期：2025年12月3日

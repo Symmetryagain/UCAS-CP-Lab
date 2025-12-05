@@ -17,6 +17,7 @@ do
 		if [[ $file == *[0-9]"_true"* ]]; then
 			echo "**Error!"
 			echo $OPT
+      exit 1
 		fi
 	fi
 done
@@ -32,3 +33,5 @@ do
     exit 1
 	fi
 done
+
+echo -e "\033[;32m All tests passed!\033[0m"
