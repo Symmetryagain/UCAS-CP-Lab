@@ -1,0 +1,10 @@
+int a = 1;
+bool func() {
+  a = a + 1;
+  return false;
+}
+int main() {
+  int b = 3;
+  if (b == 3 || func()) b = 10;
+  return a + b; // 11
+}

@@ -1,5 +1,7 @@
 #include "SymTable.h"
 #include "FuncTable.h"
+#include "tree/ParseTree.h"
+#include "Analyzer.h"
 
 int g_count = 0;
 std::string btype_string[] = {"", "i", "f", "d", "b", "v", ""};
@@ -40,7 +42,7 @@ Btype str_to_type(const std::string &s) {
   else if (s == "void") return Void;
   else {
     // 
-    assert(1);
+    assert(0);
     return Void;
   }
 }

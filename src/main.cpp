@@ -1,93 +1,54 @@
 #include <iostream>
 
 // #include "antlr4-runtime.h"
-#include "tree/ErrorNode.h"
+// #include "tree/ErrorNode.h"
 #include "tree/ParseTree.h"
-
+#include "utils.h"
 #include "Analyzer.h"
 
-using namespace antlr4;
+// using namespace antlr4;
 extern SymTree g_symtree;
 extern FuncTable g_functable;
 extern std::string special_funcname[];
 extern Btype special_funcType[];
 extern std::vector<FuncParamsType> special_funcParams[];
 
-// 添加树形打印功能
-void printTree(antlr4::tree::ParseTree *tree,
-               const std::vector<std::string> &ruleNames,
-               const std::string &indent = "", bool isLast = true) {
-  std::cerr << indent;
-
-  if (isLast) {
-    std::cerr << "└── ";
-  } else {
-    std::cerr << "├── ";
-  }
-
-  // 打印节点信息
-  if (tree->children.empty()) {
-    // 叶子节点（终结符）
-    std::cerr << tree->toString() << std::endl;
-  } else {
-    // 内部节点（非终结符）
-    auto *ctx = dynamic_cast<antlr4::ParserRuleContext *>(tree);
-    if (ctx) {
-      std::cerr << ruleNames[ctx->getRuleIndex()] << std::endl;
-    } else {
-      std::cerr << "Unknown" << std::endl;
-    }
-  }
-
-  // 递归打印子节点
-  std::string newIndent = indent + (isLast ? "    " : "│   ");
-  for (size_t i = 0; i < tree->children.size(); i++) {
-    printTree(tree->children[i], ruleNames, newIndent,
-              i == tree->children.size() - 1);
-  }
-}
-
 int main(int argc, const char *argv[]) {
-  std::ifstream stream;
-  if (argc > 1) {
-    stream.open(argv[1]);
-  } else {
-    std::cerr << "No input file specified" << std::endl;
+  if (argc < 2) {
+    std::cerr << "Usage: " << argv[0] << " input_file_name [--print-tokens] [--print-parser-tree] [--print-ast] [--syntax] [--emit-IR]" << std::endl;
     return 9;
   }
 
-  if (!stream.is_open()) {
-    std::cerr << "Failed to open file" << std::endl;
-    return 9;
-  }
+  std::string input_path = argv[1];
+  bool opt_print_tokens = false;
+  bool opt_print_parser_tree = false;
+  bool opt_print_ast = false;
+  bool opt_syntax_only = false;
 
-  ANTLRInputStream input(stream);
-  CACTLexer lexer(&input);
-  CommonTokenStream tokens(&lexer);
-
-  // 打印所有Token
-  std::cerr << "=== Token Stream ===" << std::endl;
-  tokens.fill();
-  for (auto token : tokens.getTokens()) {
-    if (token->getType() != antlr4::Token::EOF) {
-      std::cerr << "Line " << token->getLine() << ":"
-                << token->getCharPositionInLine() << " "
-                << lexer.getVocabulary().getSymbolicName(token->getType())
-                << " = '" << token->getText() << "'" << std::endl;
+  for (int i = 2; i < argc; ++i) {
+    std::string a = argv[i];
+    if (a == "--print-tokens") opt_print_tokens = true;
+    else if (a == "--print-parser-tree") opt_print_parser_tree = true;
+    else if (a == "--print-ast") opt_print_ast = true;
+    else if (a == "--syntax") opt_syntax_only = true;
+    else {
+      std::cerr << "Unknown option: " << a << std::endl;
+      return 9;
     }
   }
 
-  CACTParser parser(&tokens);
+  std::ifstream stream(input_path);
+  if (!stream.is_open()) {
+    std::cerr << "Failed to open file: " << input_path << std::endl;
+    return 9;
+  }
 
-  // 获取解析树
-  auto tree = parser.comp_units();
+  antlr4::ANTLRInputStream input(stream);
+  CACTLexer lexer(&input);
+  antlr4::CommonTokenStream tokens(&lexer);
 
-  // 打印解析树
-  std::cerr << "=== Parse Tree ===" << std::endl;
-  std::cerr << tree->toStringTree(&parser) << std::endl;
-
-  std::cerr << "\n=== Detailed AST ===" << std::endl;
-  printTree(tree, parser.getRuleNames());
+  // Force lexing
+  tokens.fill();
 
   if (lexer.getNumberOfSyntaxErrors() > 0) {
     std::cerr << "lex error: " << lexer.getNumberOfSyntaxErrors() << std::endl;
@@ -95,38 +56,60 @@ int main(int argc, const char *argv[]) {
     return 1;
   }
 
+  if (opt_print_tokens) {
+    std::cerr << "=== Token Stream ===" << std::endl;
+    printTokens(lexer, tokens);
+  }
+
+  CACTParser parser(&tokens);
+
+  // parse
+  antlr4::tree::ParseTree *tree = nullptr;
+  try {
+    tree = parser.comp_units();
+  } catch (...) {
+    std::cerr << "Parse failed with an exception" << std::endl;
+    return 2;
+  }
+
   if (parser.getNumberOfSyntaxErrors() > 0) {
-    std::cerr << "syntax error: " << parser.getNumberOfSyntaxErrors()
-              << std::endl;
+    std::cerr << "syntax error: " << parser.getNumberOfSyntaxErrors() << std::endl;
     std::cerr << "False" << std::endl;
     return 2;
   }
 
-  std::cerr << "=== End ===" << std::endl;
-  std::cerr << "Number of errors: "
-            << lexer.getNumberOfSyntaxErrors() +
-                   parser.getNumberOfSyntaxErrors()
-            << std::endl;
+  if (opt_print_parser_tree) {
+    std::cerr << "=== Parse Tree ===" << std::endl;
+    std::cerr << tree->toStringTree(&parser) << std::endl;
+  }
 
-  std::cerr << "True" << std::endl;
+  if (opt_print_ast) {
+    std::cerr << "\n=== Detailed AST ===" << std::endl;
+    printTree(tree, parser.getRuleNames(), "", true);
+  }
 
+  std::cerr << "=== Lex and Parse End ===" << std::endl;
+
+  if (opt_syntax_only) return 0;
+
+  // semantic analysis / visit
   Analyzer visitor;
   g_symtree.enterScope();
   for (int i = 0; i < 7; ++i) {
     if (!g_functable.define(
-      special_funcType[i],
-      special_funcname[i],
-      special_funcParams[i]
-    )) {
+        special_funcType[i],
+        special_funcname[i],
+        special_funcParams[i])) {
       // should not reach here
     }
   }
+
   visitor.visit(tree);
+
   if (!g_functable.check(special_funcname[7])) { // main
-    //
-    exit(1);  
-    assert(0);
+    return 3;
   }
   g_symtree.leaveScope();
-  return parser.getNumberOfSyntaxErrors() + lexer.getNumberOfSyntaxErrors();
+
+  return 0;
 }

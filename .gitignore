@@ -14,6 +14,10 @@ grammar/*.interp
 grammar/*.tokens
 .antlr
 
+test/ir_files
+
+interpreter/interpreter
+
 out
 scripts
 
