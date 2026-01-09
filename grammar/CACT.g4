@@ -3,6 +3,7 @@ grammar CACT;
 @header {
 #include <vector>
 #include <string>
+#include <variant>
 #include "btype.h"
 #include "FuncTable.h"
 #include "SymTable.h"
@@ -97,6 +98,7 @@ num_const
           locals [
             std::string value, 
             Btype btype,
+            std::variant<int, float, double> r_value,
           ]
           : intconst    # num_const_int
           | FloatConst  # num_const_float
@@ -107,6 +109,7 @@ const
       locals [
         std::string value,
         Btype btype,
+        std::variant<int, float, double, bool> r_value,
       ]
       : num_const # const_num_const
       | boolconst # const_bool_const
@@ -133,9 +136,6 @@ signed_const
               ;
   
 intconst  
-          locals [
-            Btype btype,
-          ]
           : DecConst    # int_constant
           | HexConst    # hex_constant
           | OctConst    # oct_constant
@@ -145,6 +145,7 @@ boolconst
           locals [
             std::string value,
             Btype btype,
+            bool r_value,
           ]
           : TRUE    # true_constant
           | FALSE   # false_constant
@@ -155,6 +156,9 @@ expr_1
             Btype btype,
             std::vector<size_t> array_size,
             std::string res,
+            bool is_const,
+            std::variant<int, float, double, bool> value,
+            std::string code,
           ]
           : Ident                     # expr_1_ident
           | const                     # expr_1_constant
@@ -168,6 +172,9 @@ expr_2
             Btype btype,
             std::vector<size_t> array_size,
             std::string res,
+            bool is_const,
+            std::variant<int, float, double, bool> value,
+            std::string code,
           ]
           : expr_1        # expr_2_expr_1
           | Plus expr_2   # expr_2_plus
@@ -180,6 +187,9 @@ expr_3
             Btype btype,
             std::vector<size_t> array_size,
             std::string res,
+            bool is_const,
+            std::variant<int, float, double, bool> value,
+            std::string code,
           ]
           : expr_2                # expr_3_expr_2
           | expr_3 Times expr_2   # expr_3_times
@@ -192,6 +202,9 @@ expr_4
             Btype btype,
             std::vector<size_t> array_size,
             std::string res,
+            bool is_const,
+            std::variant<int, float, double, bool> value,
+            std::string code,
           ]
           : expr_3              # expr_4_expr_3
           | expr_4 Plus expr_3  # expr_4_plus
@@ -203,6 +216,9 @@ expr_5
             Btype btype,
             std::vector<size_t> array_size,
             std::string res,
+            bool is_const,
+            std::variant<int, float, double, bool> value,
+            std::string code,
           ]
           : expr_4            # expr_5_expr_4
           | expr_5 LT expr_4  # expr_5_lt
@@ -216,6 +232,9 @@ expr_6
             Btype btype,
             std::vector<size_t> array_size,
             std::string res,
+            bool is_const,
+            std::variant<int, float, double, bool> value,
+            std::string code,
           ]
           : expr_5            # expr_6_expr_5
           | expr_6 EQ expr_5  # expr_6_eq
@@ -227,6 +246,9 @@ expr_7
             Btype btype,
             std::vector<size_t> array_size,
             std::string res,
+            bool is_const,
+            std::variant<int, float, double, bool> value,
+            std::string code,
           ]
           : expr_6              # expr_7_expr_6
           | expr_7 DAnd expr_6  # expr_7_dand
@@ -237,6 +259,9 @@ expr_8
             Btype btype,
             std::vector<size_t> array_size,
             std::string res,
+            bool is_const,
+            std::variant<int, float, double, bool> value,
+            std::string code,
           ]
           : expr_7            # expr_8_expr_7
           | expr_8 DOr expr_7 # expr_8_dor
@@ -246,6 +271,7 @@ func_call
           locals [
             Btype btype,
             std::string res,
+            std::string code,
           ]
           : Ident SBra (expr_8 (Comma expr_8)*)? SKet  # func_call_ident
           ;
@@ -269,7 +295,7 @@ stmt_assign   : l_value Assign expr_8 Semi
 l_value   
           locals [
             Btype btype,
-            std::string code,
+            std::string res,
           ]
           : Ident (MBra expr_8 MKet)*
           ;
@@ -390,7 +416,7 @@ block
 
 var_def   
           locals [
-			bool is_global,
+			      bool is_global,
             Btype need_type,
           ]
           : Ident (MBra intconst MKet)* (Assign array_signed_const)?
@@ -398,7 +424,7 @@ var_def
 
 const_def 
           locals [
-			bool is_global,
+			      bool is_global,
             Btype need_type,
           ] 
           : Ident (MBra intconst MKet)*  Assign array_signed_const
@@ -411,7 +437,7 @@ array_signed_const
                       std::string varName,
                       int offset,
                       bool at_top,
-					  bool is_global,
+					            bool is_global,
                     ]
                     : signed_const                                                # array_signed_const_const
                     | LBra (array_signed_const (Comma array_signed_const)*)? LKet # array_signed_const_array
@@ -423,7 +449,7 @@ func_def  : type Ident SBra (func_f_param (Comma func_f_param)*)? SKet block
 func_f_param  
               locals [
                 FuncParamsType params,
-                std::string code,
+                std::string res,
               ]
               : type Ident (MBra MKet)? (MBra intconst MKet)*
               ;
