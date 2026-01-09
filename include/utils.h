@@ -7,6 +7,8 @@
 #include "Analyzer.h"
 #include "global.h"
 
+extern inline std::ostream* global_out;
+
 Btype str_to_type(const std::string &s);
 
 int parse_int(const std::string &s);

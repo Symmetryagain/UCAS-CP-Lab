@@ -1,7 +1,5 @@
 #include "SymTable.h"
-
-extern int g_count;
-extern std::string btype_string[];
+#include "global.h"
 
 std::string Symbol::name_in_IR() { return _Name_in_IR; }
 Btype Symbol::bType() { return _b_type; }
