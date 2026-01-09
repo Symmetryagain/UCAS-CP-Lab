@@ -93,4 +93,4 @@ public:
   std::any visitComp_unit_func_def(CACTParser::Comp_unit_func_defContext *context) override;
 };
 
-#endif 
+#endif // _Analyzer_H

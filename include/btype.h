@@ -11,4 +11,4 @@ typedef enum {
   BTYPE_MAX
 } Btype;
 
-#endif
+#endif // _BTYPE_H

@@ -3,6 +3,7 @@
 #include "FuncTable.h"
 #include "tree/ParseTree.h"
 #include "Analyzer.h"
+#include "global.h"
 
 extern int g_count;
 extern std::string btype_string[];
@@ -74,3 +75,36 @@ void printTokens(CACTLexer &lexer, antlr4::CommonTokenStream &tokens) {
     }
   }
 }
+
+
+// template<typename... Args>
+// void dbg(Args&&... args) {
+//     [](auto&&... params) {
+//         std::size_t n = 0;
+//         ((std::cerr << params << (++n != sizeof...(params) ? " " : "")), ...);
+//     }(std::forward<Args>(args)...);
+    
+//     std::cerr << std::endl;
+// }
+
+// template<typename... Args>
+// void dbg(const Args&... args) {
+//     bool first = true;
+//     ((std::cerr << (first ? first = false, "" : " ") << args), ...);
+//     std::cerr << std::endl;
+// }
+
+// template<typename... Args>
+// std::string gen(const Args&... args) {
+//     std::ostringstream oss;
+//     bool first = true;
+//     ((oss << (first ? first = false, "" : " ") << args), ...);
+//     return oss.str();
+// }
+
+// template<typename... Args>
+// void out(const Args&... args) {
+//     bool first = true;
+//     ((*global_out << (first ? first = false, "" : " ") << args), ...);
+//     *global_out << std::endl;
+// }
