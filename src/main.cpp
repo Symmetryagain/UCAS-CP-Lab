@@ -1,17 +1,9 @@
 #include <iostream>
 
-// #include "antlr4-runtime.h"
-// #include "tree/ErrorNode.h"
 #include "tree/ParseTree.h"
 #include "utils.h"
 #include "Analyzer.h"
-
-// using namespace antlr4;
-extern SymTree g_symtree;
-extern FuncTable g_functable;
-extern std::string special_funcname[];
-extern Btype special_funcType[];
-extern std::vector<FuncParamsType> special_funcParams[];
+#include "global.h"
 
 int main(int argc, const char *argv[]) {
   if (argc < 2) {

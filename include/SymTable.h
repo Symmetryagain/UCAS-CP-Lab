@@ -1,5 +1,5 @@
-#ifndef _SymTable_H
-#define _SymTable_H
+#ifndef _SYMTABLE_H
+#define _SYMTABLE_H
 
 #include <bits/stdc++.h>
 #include "btype.h"
@@ -54,4 +54,4 @@ public:
   );
 };
 
-#endif 
+#endif // _SYMTABLE_H

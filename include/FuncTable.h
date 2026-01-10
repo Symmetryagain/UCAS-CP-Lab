@@ -39,4 +39,4 @@ public:
   bool define(Btype retType, std::string &name, const std::vector<FuncParamsType> &funcParams);
 };
 
-#endif
+#endif // _FuncTable_H
