@@ -33,4 +33,3 @@ std::vector<FuncParamsType> special_funcParams[] = {
   {FuncParamsType(Bool, false)},
   {}, {}, {}
 };
-int merge_constant = 1;
