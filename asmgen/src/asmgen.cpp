@@ -16,8 +16,6 @@ map<string, size_t> ga_map;
 vector<Func>        f_list;
 map<string, size_t> f_map;
 
-map<string, vector<string>> o1_func_rely;
-
 string normalize_name(string prev_name)
 {
 	string new_name;
@@ -750,6 +748,8 @@ void init_extern_func()
 	add_func(get_double);
 }
 
+extern map<string, set<string>> o1_func_rely;
+
 void parse_ir()
 {
 	for(int ir_line_idx = 0; ir_line_idx < ir_lines.size(); ir_line_idx++)
@@ -883,7 +883,7 @@ void parse_ir()
 
 			if(tokens_jdx[0] == "call")
 			{
-				o1_func_rely[f.name].push_back(tokens_jdx[2]);
+				o1_func_rely[f.name].insert(tokens_jdx[2]);
 			}
 		}
 		while(f.sp_size % 16 != 0)
@@ -1490,22 +1490,16 @@ void o0_gen_asm()
 	}
 }
 
-void o1_gen_bb()
-{
-}
-
-void o1_comb_bb()
-{
-}
-
-void o1_simpify()
-{
-}
+extern set<string> o1_var_set;
 
 void put_global()
 {
 	for(GlobalVar gv : gv_list)
 	{
+		if(o1_var_set.count(gv.name) == 0)
+		{
+			continue;
+		}
 		string new_name = normalize_name(gv.name);
 		size_t var_size = TypeSize[gv.gtype];
 		if(gv.is_unused)
@@ -1543,6 +1537,10 @@ void put_global()
 	}
 	for(GlobalArr ga : ga_list)
 	{
+		if(o1_var_set.count(ga.name) == 0)
+		{
+			continue;
+		}
 		string new_name = normalize_name(ga.name);
 		size_t arr_lign = TypeSize[ga.gtype];
 		size_t arr_lens = ga.length;
@@ -1613,6 +1611,8 @@ void put_func()
 	}
 }
 
+map<string, set<string>> o1_func_rely;
+
 void o1_handle_func_rely()
 {
 	queue<string> qf;
@@ -1637,6 +1637,530 @@ void o1_handle_func_rely()
 	}
 }
 
+map<string, set<string>> o1_var_rely;
+set<string>              o1_var_set;
+
+void o1_build_var_rely()
+{
+	for(Func f : f_list)
+	{
+		string new_name = normalize_name(f.name);
+		if(!f.is_used || f.is_extern)
+		{
+			continue;
+		}
+		for(string ir_line : f.ir_lines)
+		{
+			string edited_line;
+			for(auto ch : ir_line)
+			{
+				if(ch == '[' || ch == ']')
+				{
+					ch = ' ';
+				}
+				edited_line += ch;
+			}
+			vector<string> tokens = split_string(edited_line);
+
+			if(tokens.size() == 0)
+			{
+				continue;
+			}
+			else if(tokens[0] == "@func")
+			{
+				continue;
+			}
+			else if(tokens[0] == "@endfunc")
+			{
+				continue;
+			}
+			else if(tokens[0] == "call")
+			{
+				for(size_t pos = 4; pos < tokens.size() - 1; pos++)
+				{
+					if(tokens[pos] == ",")
+					{
+						continue;
+					}
+					//assert(tokens[pos][0] == '%');
+					o1_var_set.insert(tokens[pos]);
+				}
+			}
+			else if(tokens[0] == "!global")
+			{
+				assert(false);
+			}
+			else if(tokens[0] == "assign")
+			{
+				assert(tokens[1][0] == '%');
+				for(size_t pos = 2; pos < tokens.size(); pos++)
+				{
+					if(tokens[pos][0] == '%')
+					{
+						o1_var_rely[tokens[1]].insert(tokens[pos]);
+					}
+				}
+			}
+			else if(tokens[0] == "@array")
+			{
+				continue;
+			}
+			else if(tokens[0] == "@var")
+			{
+				continue;
+			}
+			else if(tokens[0] == "DAnd")
+			{
+				if(tokens[2][0] == '%')
+				{
+					o1_var_rely[tokens[1]].insert(tokens[2]);
+				}
+				if(tokens[3][0] == '%')
+				{
+					o1_var_rely[tokens[1]].insert(tokens[3]);
+				}
+			}
+			else if(tokens[0] == "DOr")
+			{
+				if(tokens[2][0] == '%')
+				{
+					o1_var_rely[tokens[1]].insert(tokens[2]);
+				}
+				if(tokens[3][0] == '%')
+				{
+					o1_var_rely[tokens[1]].insert(tokens[3]);
+				}
+			}
+			else if(tokens[0] == "Add")
+			{
+				if(tokens[3][0] == '%')
+				{
+					o1_var_rely[tokens[2]].insert(tokens[3]);
+				}
+				if(tokens[4][0] == '%')
+				{
+					o1_var_rely[tokens[2]].insert(tokens[4]);
+				}
+			}
+			else if(tokens[0] == "Addr")
+			{
+				if(tokens[2][0] == '%')
+				{
+					o1_var_rely[tokens[1]].insert(tokens[2]);
+				}
+				if(tokens[3][0] == '%')
+				{
+					o1_var_rely[tokens[1]].insert(tokens[3]);
+				}
+			}
+			else if(tokens[0] == "Sub")
+			{
+				if(tokens[3][0] == '%')
+				{
+					o1_var_rely[tokens[2]].insert(tokens[3]);
+				}
+				if(tokens[4][0] == '%')
+				{
+					o1_var_rely[tokens[2]].insert(tokens[4]);
+				}
+			}
+			else if(tokens[0] == "Mul")
+			{
+				if(tokens[3][0] == '%')
+				{
+					o1_var_rely[tokens[2]].insert(tokens[3]);
+				}
+				if(tokens[4][0] == '%')
+				{
+					o1_var_rely[tokens[2]].insert(tokens[4]);
+				}
+			}
+			else if(tokens[0] == "Div")
+			{
+				if(tokens[3][0] == '%')
+				{
+					o1_var_rely[tokens[2]].insert(tokens[3]);
+				}
+				if(tokens[4][0] == '%')
+				{
+					o1_var_rely[tokens[2]].insert(tokens[4]);
+				}
+			}
+			else if(tokens[0] == "Rem")
+			{
+				if(tokens[2][0] == '%')
+				{
+					o1_var_rely[tokens[1]].insert(tokens[2]);
+				}
+				if(tokens[3][0] == '%')
+				{
+					o1_var_rely[tokens[1]].insert(tokens[3]);
+				}
+			}
+			else if(tokens[0] == "LT")
+			{
+				if(tokens[3][0] == '%')
+				{
+					o1_var_rely[tokens[2]].insert(tokens[3]);
+				}
+				if(tokens[4][0] == '%')
+				{
+					o1_var_rely[tokens[2]].insert(tokens[4]);
+				}
+			}
+			else if(tokens[0] == "LE")
+			{
+				if(tokens[3][0] == '%')
+				{
+					o1_var_rely[tokens[2]].insert(tokens[3]);
+				}
+				if(tokens[4][0] == '%')
+				{
+					o1_var_rely[tokens[2]].insert(tokens[4]);
+				}
+			}
+			else if(tokens[0] == "GT")
+			{
+				if(tokens[3][0] == '%')
+				{
+					o1_var_rely[tokens[2]].insert(tokens[3]);
+				}
+				if(tokens[4][0] == '%')
+				{
+					o1_var_rely[tokens[2]].insert(tokens[4]);
+				}
+			}
+			else if(tokens[0] == "GE")
+			{
+				if(tokens[3][0] == '%')
+				{
+					o1_var_rely[tokens[2]].insert(tokens[3]);
+				}
+				if(tokens[4][0] == '%')
+				{
+					o1_var_rely[tokens[2]].insert(tokens[4]);
+				}
+			}
+			else if(tokens[0] == "EQ")
+			{
+				if(tokens[3][0] == '%')
+				{
+					o1_var_rely[tokens[2]].insert(tokens[3]);
+				}
+				if(tokens[4][0] == '%')
+				{
+					o1_var_rely[tokens[2]].insert(tokens[4]);
+				}
+			}
+			else if(tokens[0] == "NE")
+			{
+				if(tokens[3][0] == '%')
+				{
+					o1_var_rely[tokens[2]].insert(tokens[3]);
+				}
+				if(tokens[4][0] == '%')
+				{
+					o1_var_rely[tokens[2]].insert(tokens[4]);
+				}
+			}
+			else if(tokens[0] == "Neg")
+			{
+				if(tokens[3][0] == '%')
+				{
+					o1_var_rely[tokens[2]].insert(tokens[3]);
+				}
+			}
+			else if(tokens[0] == "Not")
+			{
+				if(tokens[2][0] == '%')
+				{
+					o1_var_rely[tokens[1]].insert(tokens[2]);
+				}
+			}
+			else if(tokens[0] == "Pos")
+			{
+				assert(false);
+			}
+			else if(tokens[0] == "branch")
+			{
+				o1_var_set.insert(tokens[2]);
+			}
+			else if(tokens[0] == "label")
+			{
+				continue;
+			}
+			else if(tokens[0] == "return")
+			{
+				if(f.ftype != F_VOID)
+				{
+					o1_var_set.insert(tokens[1]);
+				}
+			}
+			else if(tokens[0] == "retire")
+			{
+				continue;
+			}
+			else
+			{
+				assert(false);
+			}
+		}
+	}
+}
+
+void o1_handle_var_rely()
+{
+	queue<string> qv;
+	for(auto uv : o1_var_set)
+	{
+		qv.push(uv);
+	}
+	while(!qv.empty())
+	{
+		string var_name = qv.front();
+		qv.pop();
+		for(string rely_name : o1_var_rely[var_name])
+		{
+			if(o1_var_set.count(rely_name) == 0)
+			{
+				o1_var_set.insert(rely_name);
+				qv.push(rely_name);
+			}
+		}
+	}
+}
+
+void o1_print_var_rely()
+{
+	for(auto uv : o1_var_set)
+	{
+		cerr << "used: " << uv << endl;
+	}
+	for(auto vr : o1_var_rely)
+	{
+		cerr << "rely: " << vr.first << ":" << endl;
+		for(auto rely_name : vr.second)
+		{
+			cerr << "  " << rely_name << endl;
+		}
+	}
+}
+
+void o1_use_var_rely()
+{
+	for(Func& f : f_list)
+	{
+		string new_name = normalize_name(f.name);
+		if(!f.is_used || f.is_extern)
+		{
+			continue;
+		}
+		for(size_t idx = 0; idx < f.ir_lines.size(); idx++)
+		{
+			string ir_line = f.ir_lines[idx];
+			string edited_line;
+			for(auto ch : ir_line)
+			{
+				if(ch == '[' || ch == ']')
+				{
+					ch = ' ';
+				}
+				edited_line += ch;
+			}
+			vector<string> tokens = split_string(edited_line);
+
+			if(tokens.size() == 0)
+			{
+				continue;
+			}
+			else if(tokens[0] == "@func")
+			{
+				continue;
+			}
+			else if(tokens[0] == "@endfunc")
+			{
+				continue;
+			}
+			else if(tokens[0] == "call")
+			{
+				continue;
+			}
+			else if(tokens[0] == "!global")
+			{
+				assert(false);
+			}
+			else if(tokens[0] == "assign")
+			{
+				if(o1_var_set.count(tokens[1]) == 0)
+				{
+					f.ir_lines[idx] = "";
+				}
+				continue;
+			}
+			else if(tokens[0] == "@array")
+			{
+				continue;
+			}
+			else if(tokens[0] == "@var")
+			{
+				continue;
+			}
+			else if(tokens[0] == "DAnd")
+			{
+				if(o1_var_set.count(tokens[1]) == 0)
+				{
+					f.ir_lines[idx] = "";
+				}
+				continue;
+			}
+			else if(tokens[0] == "DOr")
+			{
+				if(o1_var_set.count(tokens[1]) == 0)
+				{
+					f.ir_lines[idx] = "";
+				}
+				continue;
+			}
+			else if(tokens[0] == "Add")
+			{
+				if(o1_var_set.count(tokens[2]) == 0)
+				{
+					f.ir_lines[idx] = "";
+				}
+				continue;
+			}
+			else if(tokens[0] == "Addr")
+			{
+				if(o1_var_set.count(tokens[1]) == 0)
+				{
+					f.ir_lines[idx] = "";
+				}
+				continue;
+			}
+			else if(tokens[0] == "Sub")
+			{
+				if(o1_var_set.count(tokens[2]) == 0)
+				{
+					f.ir_lines[idx] = "";
+				}
+				continue;
+			}
+			else if(tokens[0] == "Mul")
+			{
+				if(o1_var_set.count(tokens[2]) == 0)
+				{
+					f.ir_lines[idx] = "";
+				}
+				continue;
+			}
+			else if(tokens[0] == "Div")
+			{
+				if(o1_var_set.count(tokens[2]) == 0)
+				{
+					f.ir_lines[idx] = "";
+				}
+				continue;
+			}
+			else if(tokens[0] == "Rem")
+			{
+				if(o1_var_set.count(tokens[2]) == 0)
+				{
+					f.ir_lines[idx] = "";
+				}
+				continue;
+			}
+			else if(tokens[0] == "LT")
+			{
+				if(o1_var_set.count(tokens[2]) == 0)
+				{
+					f.ir_lines[idx] = "";
+				}
+				continue;
+			}
+			else if(tokens[0] == "LE")
+			{
+				if(o1_var_set.count(tokens[2]) == 0)
+				{
+					f.ir_lines[idx] = "";
+				}
+				continue;
+			}
+			else if(tokens[0] == "GT")
+			{
+				if(o1_var_set.count(tokens[2]) == 0)
+				{
+					f.ir_lines[idx] = "";
+				}
+				continue;
+			}
+			else if(tokens[0] == "GE")
+			{
+				if(o1_var_set.count(tokens[2]) == 0)
+				{
+					f.ir_lines[idx] = "";
+				}
+				continue;
+			}
+			else if(tokens[0] == "EQ")
+			{
+				if(o1_var_set.count(tokens[2]) == 0)
+				{
+					f.ir_lines[idx] = "";
+				}
+				continue;
+			}
+			else if(tokens[0] == "NE")
+			{
+				if(o1_var_set.count(tokens[2]) == 0)
+				{
+					f.ir_lines[idx] = "";
+				}
+				continue;
+			}
+			else if(tokens[0] == "Neg")
+			{
+				if(o1_var_set.count(tokens[2]) == 0)
+				{
+					f.ir_lines[idx] = "";
+				}
+				continue;
+			}
+			else if(tokens[0] == "Not")
+			{
+				if(o1_var_set.count(tokens[1]) == 0)
+				{
+					f.ir_lines[idx] = "";
+				}
+				continue;
+			}
+			else if(tokens[0] == "Pos")
+			{
+				assert(false);
+			}
+			else if(tokens[0] == "branch")
+			{
+				continue;
+			}
+			else if(tokens[0] == "label")
+			{
+				continue;
+			}
+			else if(tokens[0] == "return")
+			{
+				continue;
+			}
+			else if(tokens[0] == "retire")
+			{
+				continue;
+			}
+			else
+			{
+				assert(false);
+			}
+		}
+	}
+}
+
 void asmgen()
 {
 	init_extern_func();
@@ -1645,6 +2169,13 @@ void asmgen()
 	if(optimize_level == 1)
 	{
 		o1_handle_func_rely();
+
+		o1_build_var_rely();
+		o1_print_var_rely();
+		o1_handle_var_rely();
+		o1_print_var_rely();
+		o1_use_var_rely();
+		show_ir();
 	}
 	o0_gen_asm();
 	put_global();
