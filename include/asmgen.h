@@ -89,7 +89,7 @@ struct LocalArr
 	size_t sp_pos;
 };
 
-struct Func
+struct Funct
 {
 	string              name;
 	FType               ftype;
@@ -108,7 +108,7 @@ struct Func
 	bool                is_used;
 };
 
-extern vector<Func>        f_list;
+extern vector<Funct>        f_list;
 extern map<string, size_t> f_map;
 
 

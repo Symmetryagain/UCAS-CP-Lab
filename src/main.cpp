@@ -4,14 +4,23 @@
 #include "global.h"
 #include "tree/ParseTree.h"
 #include "utils.h"
+#include "main.h"
 
-int merge_constant = 0;
+int            merge_constant = 0;
+int            optimize_level = 0;
+vector<string> ir_lines(0);
+vector<string> asm_lines = {
+    ".option nopic",
+    ".attribute  arch, \"rv64i2p0_m2p0_a2p0_f2p0_d2p0_c2p0\"",
+    ".attribute  unaligned_access, 0",
+    ".attribute  stack_align, 16"
+};
 
 int main(int argc, const char *argv[]) {
   if (argc < 2) {
     std::cerr << "Usage: " << argv[0]
               << " input_file_name [--print-tokens] [--print-parser-tree] "
-                 "[--print-ast] [--syntax] [--emit-IR] [-O1]"
+                 "[--print-ast] [--syntax] [--emit-IR] [-O1] output_file_name"
               << std::endl;
     return 9;
   }
@@ -21,6 +30,16 @@ int main(int argc, const char *argv[]) {
   bool opt_print_parser_tree = false;
   bool opt_print_ast = false;
   bool opt_syntax_only = false;
+  bool opt_emit_IR = false;
+
+  std::string raw_path = input_path;
+  size_t pos = raw_path.rfind(".cact");
+  if (pos != std::string::npos) {
+    raw_path = raw_path.substr(0, pos);
+  }
+
+  std::string ir_path, output_path;
+  bool opt_out_file_provided = false;
 
   for (int i = 2; i < argc; ++i) {
     std::string a = argv[i];
@@ -33,16 +52,27 @@ int main(int argc, const char *argv[]) {
     else if (a == "--syntax")
       opt_syntax_only = true;
     else if (a == "-O1")
-      merge_constant = 1;
-    else {
-      std::cerr << "Unknown option: " << a << std::endl;
-      return 9;
+      merge_constant = optimize_level = 1;
+    else if (a == "--emit-IR")
+      opt_emit_IR = true;
+    else { // output file
+      opt_out_file_provided = true;
+      ir_path = output_path = a;
     }
+  }
+  if (!opt_out_file_provided || !opt_emit_IR) {
+    ir_path = raw_path + ".ir";
   }
 
   std::ifstream stream(input_path);
   if (!stream.is_open()) {
     std::cerr << "Failed to open file: " << input_path << std::endl;
+    return 9;
+  }
+
+  std::ofstream outfile(ir_path);
+  if (!outfile.is_open()) {
+    std::cerr << "Failed to open output file: " << ir_path << std::endl;
     return 9;
   }
 
@@ -107,6 +137,8 @@ int main(int argc, const char *argv[]) {
     }
   }
 
+  global_out = &outfile;
+
   visitor.visit(tree);
 
   if (!g_functable.check(special_funcname[7])) { // main
@@ -114,5 +146,57 @@ int main(int argc, const char *argv[]) {
   }
   g_symtree.leaveScope();
 
+  if (opt_emit_IR) 
+    return 0;
+
+  stream.close();
+  outfile.close();
+
+  if (!opt_out_file_provided) {
+    output_path = raw_path + ".s";
+  }
+  // open ir file as input
+  std::ifstream ir_file(ir_path);
+  if (!ir_file.is_open()) {
+    std::cerr << "Failed to open IR file: " << ir_path << std::endl;
+    return 9;
+  }
+
+  // open asm file as output
+  std::ofstream asm_file(output_path);
+  if (!asm_file.is_open()) {
+    std::cerr << "Failed to open output file: " << output_path << std::endl;
+    return 9;
+  }
+
+  // input
+	std::cerr << "Reading IR file..." << std::endl;
+
+	string ir_str;
+	while(getline(ir_file, ir_str))
+	{
+		ir_lines.push_back(ir_str);
+	}
+	ir_file.close();
+
+  // delete ir file
+  system(("rm " + ir_path).c_str());
+
+	std::cerr << "IR file read finished." << std::endl;
+	std::cerr << "Number of lines: " << ir_lines.size() << std::endl;
+
+	// asmgen
+	std::cerr << "Starting ASM generate..." << std::endl;
+	asmgen();
+	std::cerr << "ASM generated finished." << std::endl;
+
+	// output
+	std::cerr << "Writing ASM file..." << std::endl;
+	for(auto line : asm_lines)
+	{
+		asm_file << line << std::endl;
+	}
+	asm_file.close();
+	std::cerr << "ASM file written finished." << std::endl;
   return 0;
 }

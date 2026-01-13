@@ -13,7 +13,7 @@ vector<GlobalVar>   gv_list;
 map<string, size_t> gv_map;
 vector<GlobalArr>   ga_list;
 map<string, size_t> ga_map;
-vector<Func>        f_list;
+vector<Funct>        f_list;
 map<string, size_t> f_map;
 
 string normalize_name(string prev_name)
@@ -227,14 +227,14 @@ void add_global_arr(GlobalArr ga)
 	ga_list.push_back(ga);
 }
 
-void add_func(Func f)
+void add_func(Funct f)
 {
 	assert(f_map.count(f.name) == 0);
 	f_map[f.name] = f_list.size();
 	f_list.push_back(f);
 }
 
-void func_add_param(Func& f, string p_name)
+void func_add_param(Funct& f, string p_name)
 {
 	assert(f.p_map.count(p_name) == 0);
 	PType  ptype = get_ptype_from_string(p_name);
@@ -254,7 +254,7 @@ void func_add_param(Func& f, string p_name)
 	f.p_list.push_back(p);
 }
 
-void func_add_local_var(Func& f, string lv_name)
+void func_add_local_var(Funct& f, string lv_name)
 {
 	assert(f.lv_map.count(lv_name) == 0);
 	PType  ptype  = get_ptype_from_string(lv_name);
@@ -270,7 +270,7 @@ void func_add_local_var(Func& f, string lv_name)
 	f.sp_size = sp_pos + size;
 }
 
-void func_add_local_arr(Func& f, string la_name, size_t length)
+void func_add_local_arr(Funct& f, string la_name, size_t length)
 {
 	assert(f.la_map.count(la_name) == 0);
 	assert(la_name[0] == '%');
@@ -288,42 +288,42 @@ void func_add_local_arr(Func& f, string la_name, size_t length)
 	f.sp_size = sp_pos + TypeSize[gtype] * length;
 }
 
-void gen0r(Func& f, string op)
+void gen0r(Funct& f, string op)
 {
 	f.asm_lines.push_back(op);
 }
 
-void gen1r(Func& f, string op, string rd)
+void gen1r(Funct& f, string op, string rd)
 {
 	f.asm_lines.push_back(op + " " + rd);
 }
 
-void gen2r(Func& f, string op, string rd, string rs)
+void gen2r(Funct& f, string op, string rd, string rs)
 {
 	f.asm_lines.push_back(op + " " + rd + ", " + rs);
 }
 
-void gen3r(Func& f, string op, string rd, string rs, string rt)
+void gen3r(Funct& f, string op, string rd, string rs, string rt)
 {
 	f.asm_lines.push_back(op + " " + rd + ", " + rs + ", " + rt);
 }
 
-void gen_sp_expand(Func& f)
+void gen_sp_expand(Funct& f)
 {
 	gen3r(f, "addi", "sp", "sp", "-" + to_string(f.sp_size));
 }
 
-void gen_sp_shrink(Func& f)
+void gen_sp_shrink(Funct& f)
 {
 	gen3r(f, "addi", "sp", "sp", to_string(f.sp_size));
 }
 
-void func_call(Func& f, string func)
+void func_call(Funct& f, string func)
 {
 	gen1r(f, "call", normalize_name(func));
 }
 
-void ir2m(Func& f, string ireg, string memvar)
+void ir2m(Funct& f, string ireg, string memvar)
 {
 	assert(ireg == "ra" || ireg == "sp" || ireg[0] == 's' || ireg[0] == 'a' || ireg == "zero");
 	PType  ptype = get_ptype_from_string(memvar);
@@ -341,7 +341,7 @@ void ir2m(Func& f, string ireg, string memvar)
 	}
 }
 
-void fr2m(Func& f, string freg, string memvar)
+void fr2m(Funct& f, string freg, string memvar)
 {
 	assert(freg[0] == 'f' && (freg[1] == 's' || freg[1] == 'a'));
 	PType  ptype = get_ptype_from_string(memvar);
@@ -360,7 +360,7 @@ void fr2m(Func& f, string freg, string memvar)
 	}
 }
 
-void m2ir(Func& f, PType ptype, string memvar, string ireg)
+void m2ir(Funct& f, PType ptype, string memvar, string ireg)
 {
 	assert(ireg == "ra" || ireg == "sp" || ireg[0] == 's' || ireg[0] == 'a');
 	if(memvar[0] == '%' || memvar[0] == '$')
@@ -418,7 +418,7 @@ void m2ir(Func& f, PType ptype, string memvar, string ireg)
 	}
 }
 
-void m2fr(Func& f, PType ptype, string memvar, string freg)
+void m2fr(Funct& f, PType ptype, string memvar, string freg)
 {
 	assert(freg[0] == 'f' && (freg[1] == 's' || freg[1] == 'a'));
 	assert(ptype == P_FLOAT || ptype == P_DOUBLE);
@@ -460,7 +460,7 @@ void m2fr(Func& f, PType ptype, string memvar, string freg)
 	}
 }
 
-void gen_return(Func& f, string memvar)
+void gen_return(Funct& f, string memvar)
 {
 	switch(f.ftype)
 	{
@@ -487,7 +487,7 @@ void gen_return(Func& f, string memvar)
 	gen0r(f, "ret");
 }
 
-void gen_branch(Func& f, string label, string memvar)
+void gen_branch(Funct& f, string label, string memvar)
 {
 	if(memvar[0] == '%')
 	{
@@ -515,12 +515,12 @@ void gen_branch(Func& f, string label, string memvar)
 	}
 }
 
-void gen_label(Func& f, string label)
+void gen_label(Funct& f, string label)
 {
 	gen0r(f, normalize_name(label) + ":");
 }
 
-void gen_assign(Func& f, string dst, string src)
+void gen_assign(Funct& f, string dst, string src)
 {
 	assert(dst[0] == '%' || dst[0] == '$');
 	PType dsttype = get_ptype_from_string(dst);
@@ -706,7 +706,7 @@ void gen_assign(Func& f, string dst, string src)
 	}
 }
 
-void gen_addr(Func& f, string dst_p, string src_p, string offset)
+void gen_addr(Funct& f, string dst_p, string src_p, string offset)
 {
 	PType ptrtype = get_ptype_from_string(src_p);
 	assert(get_ptype_from_string(dst_p) == ptrtype);
@@ -765,7 +765,7 @@ void gen_addr(Func& f, string dst_p, string src_p, string offset)
 
 void init_extern_func()
 {
-	Func print_int = {.name      = "%print_int",
+	Funct print_int = {.name      = "%print_int",
 	                  .ftype     = F_VOID,
 	                  .p_list    = vector<Param>{{.name    = "%iiii",
 	                                              .ptype   = P_INT,
@@ -774,7 +774,7 @@ void init_extern_func()
 	                  .is_extern = true,
 	                  .is_used   = (optimize_level == 0)};
 	add_func(print_int);
-	Func print_bool = {.name      = "%print_bool",
+	Funct print_bool = {.name      = "%print_bool",
 	                   .ftype     = F_VOID,
 	                   .p_list    = vector<Param>{{.name    = "%bbbb",
 	                                               .ptype   = P_BOOL,
@@ -783,7 +783,7 @@ void init_extern_func()
 	                   .is_extern = true,
 	                   .is_used   = (optimize_level == 0)};
 	add_func(print_bool);
-	Func print_float = {.name      = "%print_float",
+	Funct print_float = {.name      = "%print_float",
 	                    .ftype     = F_VOID,
 	                    .p_list    = vector<Param>{{.name    = "%ffff",
 	                                                .ptype   = P_FLOAT,
@@ -792,7 +792,7 @@ void init_extern_func()
 	                    .is_extern = true,
 	                    .is_used   = (optimize_level == 0)};
 	add_func(print_float);
-	Func print_double = {.name      = "%print_double",
+	Funct print_double = {.name      = "%print_double",
 	                     .ftype     = F_VOID,
 	                     .p_list    = vector<Param>{{.name    = "%dddd",
 	                                                 .ptype   = P_DOUBLE,
@@ -801,21 +801,21 @@ void init_extern_func()
 	                     .is_extern = true,
 	                     .is_used   = (optimize_level == 0)};
 	add_func(print_double);
-	Func get_int = {.name      = "%get_int",
+	Funct get_int = {.name      = "%get_int",
 	                .ftype     = F_INT,
 	                .p_list    = vector<Param>{},
 	                .p_map     = map<string, size_t>{},
 	                .is_extern = true,
 	                .is_used   = (optimize_level == 0)};
 	add_func(get_int);
-	Func get_float = {.name      = "%get_float",
+	Funct get_float = {.name      = "%get_float",
 	                  .ftype     = F_FLOAT,
 	                  .p_list    = vector<Param>{},
 	                  .p_map     = map<string, size_t>{},
 	                  .is_extern = true,
 	                  .is_used   = (optimize_level == 0)};
 	add_func(get_float);
-	Func get_double = {.name      = "%get_double",
+	Funct get_double = {.name      = "%get_double",
 	                   .ftype     = F_DOUBLE,
 	                   .p_list    = vector<Param>{},
 	                   .p_map     = map<string, size_t>{},
@@ -904,7 +904,7 @@ void parse_ir()
 			continue;
 		}
 		assert(tokens[0] == "@func");
-		Func f;
+		Funct f;
 		f.name = tokens[1];
 		assert(f.name[0] == '%');
 		if(f.name == "%main")
@@ -994,7 +994,7 @@ void show_ir()
 			cerr << "    " << val << endl;
 		}
 	}
-	for(Func f : f_list)
+	for(Funct f : f_list)
 	{
 		cerr << "func " << f.name << endl;
 		cerr << "  type " << f.ftype << endl;
@@ -1049,7 +1049,7 @@ void show_ir()
 	}
 }
 
-void o0_gen_asm_func(Func& f)
+void o0_gen_asm_func(Funct& f)
 {
 	for(string ir_line : f.ir_lines)
 	{
@@ -1092,7 +1092,7 @@ void o0_gen_asm_func(Func& f)
 			// load gpr and fpr
 			string res_var   = tokens[1];
 			string func_name = tokens[2];
-			Func   g         = f_list[f_map[func_name]];
+			Funct   g         = f_list[f_map[func_name]];
 			size_t pas       = 0;
 			for(size_t pos = 4; pos < tokens.size() - 1; pos++)
 			{
@@ -1672,7 +1672,7 @@ void o0_gen_asm_func(Func& f)
 
 void o0_gen_asm()
 {
-	for(Func& f : f_list)
+	for(Funct& f : f_list)
 	{
 		if(!f.is_used || f.is_extern)
 		{
@@ -1778,7 +1778,7 @@ void put_global()
 
 void put_func()
 {
-	for(Func f : f_list)
+	for(Funct f : f_list)
 	{
 		string new_name = normalize_name(f.name);
 		if(!f.is_used)
@@ -1834,7 +1834,7 @@ set<string>              o1_var_set;
 
 void o1_build_var_rely()
 {
-	for(Func f : f_list)
+	for(Funct f : f_list)
 	{
 		string new_name = normalize_name(f.name);
 		if(!f.is_used || f.is_extern)
@@ -2140,7 +2140,7 @@ void o1_print_var_rely()
 
 void o1_use_var_rely()
 {
-	for(Func& f : f_list)
+	for(Funct& f : f_list)
 	{
 		string new_name = normalize_name(f.name);
 		if(!f.is_used || f.is_extern)
@@ -2357,7 +2357,7 @@ void asmgen()
 {
 	init_extern_func();
 	parse_ir();
-	// show_ir();
+	show_ir();
 	if(optimize_level == 1)
 	{
 		o1_handle_func_rely();
