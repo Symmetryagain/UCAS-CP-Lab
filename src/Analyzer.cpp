@@ -2013,7 +2013,6 @@ Analyzer::visitFunc_def(CACTParser::Func_defContext *context) {
 std::any 
 Analyzer::visitFunc_f_param(CACTParser::Func_f_paramContext *context) {
   dbg("Enter Func_f_param");
-
   Btype btype = str_to_type(context->type()->getText());
   std::string varName = context->Ident()->getText();
   std::vector<size_t> array_size;
@@ -2057,7 +2056,6 @@ std::any
 Analyzer::visitComp_units_more(CACTParser::Comp_units_moreContext *context) {
   dbg("Enter Comp_units_more");
   context->comp_unit()->accept(this);
-
   context->comp_units()->accept(this);
   dbg("Leave Comp_units_more");
   return nullptr;
