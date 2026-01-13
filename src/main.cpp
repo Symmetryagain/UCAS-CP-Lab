@@ -1,13 +1,18 @@
 #include <iostream>
 
-#include "tree/ParseTree.h"
-#include "utils.h"
 #include "Analyzer.h"
 #include "global.h"
+#include "tree/ParseTree.h"
+#include "utils.h"
+
+int merge_constant = 0;
 
 int main(int argc, const char *argv[]) {
   if (argc < 2) {
-    std::cerr << "Usage: " << argv[0] << " input_file_name [--print-tokens] [--print-parser-tree] [--print-ast] [--syntax] [--emit-IR]" << std::endl;
+    std::cerr << "Usage: " << argv[0]
+              << " input_file_name [--print-tokens] [--print-parser-tree] "
+                 "[--print-ast] [--syntax] [--emit-IR] [-O1]"
+              << std::endl;
     return 9;
   }
 
@@ -19,10 +24,16 @@ int main(int argc, const char *argv[]) {
 
   for (int i = 2; i < argc; ++i) {
     std::string a = argv[i];
-    if (a == "--print-tokens") opt_print_tokens = true;
-    else if (a == "--print-parser-tree") opt_print_parser_tree = true;
-    else if (a == "--print-ast") opt_print_ast = true;
-    else if (a == "--syntax") opt_syntax_only = true;
+    if (a == "--print-tokens")
+      opt_print_tokens = true;
+    else if (a == "--print-parser-tree")
+      opt_print_parser_tree = true;
+    else if (a == "--print-ast")
+      opt_print_ast = true;
+    else if (a == "--syntax")
+      opt_syntax_only = true;
+    else if (a == "-O1")
+      merge_constant = 1;
     else {
       std::cerr << "Unknown option: " << a << std::endl;
       return 9;
@@ -65,7 +76,8 @@ int main(int argc, const char *argv[]) {
   }
 
   if (parser.getNumberOfSyntaxErrors() > 0) {
-    std::cerr << "syntax error: " << parser.getNumberOfSyntaxErrors() << std::endl;
+    std::cerr << "syntax error: " << parser.getNumberOfSyntaxErrors()
+              << std::endl;
     std::cerr << "False" << std::endl;
     return 2;
   }
@@ -82,16 +94,15 @@ int main(int argc, const char *argv[]) {
 
   std::cerr << "=== Lex and Parse End ===" << std::endl;
 
-  if (opt_syntax_only) return 0;
+  if (opt_syntax_only)
+    return 0;
 
   // semantic analysis / visit
   Analyzer visitor;
   g_symtree.enterScope();
   for (int i = 0; i < 7; ++i) {
-    if (!g_functable.define(
-        special_funcType[i],
-        special_funcname[i],
-        special_funcParams[i])) {
+    if (!g_functable.define(special_funcType[i], special_funcname[i],
+                            special_funcParams[i])) {
       // should not reach here
     }
   }

@@ -2,7 +2,7 @@ import subprocess
 import os
 
 # Set the `lib_path` to [where "libcactio.a" is located]
-lib_path = "../../build"
+lib_path = "../../lib"
 # Set the `compler_path` to [where compiler is located]
 compiler_path = "../../build/compiler"
 # Set the `compiler_flags` to the flags passed to CACT compiler

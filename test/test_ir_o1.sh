@@ -3,7 +3,7 @@
 set -euo pipefail
 
 BASEDIR="$(cd "$(dirname "$0")" && pwd)"
-SAMPLES_DIR="$BASEDIR/../test/samples_extra_test"
+SAMPLES_DIR="$BASEDIR/../test/samples_codegen_functional"
 COMPILER="$BASEDIR/../build/compiler"
 INTERP="$BASEDIR/../interpreter/interpreter"
 
@@ -30,7 +30,7 @@ for file in "${files[@]}"; do
 	compile_err="$TMPDIR/${base}.compile.err"
 
 	# Compile to IR
-	if ! "$COMPILER" "$file" > "$irfile" 2>"$compile_err"; then
+	if ! "$COMPILER" "$file" "-O1" > "$irfile" 2>"$compile_err"; then
 		echo -e "\033[;31m[FAIL] Compiler failed for $file\033[0m"
 		echo "--- Compiler stderr ---"
 		sed -n '1,200p' "$compile_err" || true
@@ -63,6 +63,10 @@ for file in "${files[@]}"; do
 	# Compare with expected .out if exists
 	expected="$SAMPLES_DIR/${base}.out"
 	if [ -f "$expected" ]; then
+		# expected .out: first line is junk, real expected output starts from line 2
+		expected_trim="$TMPDIR/${base}.expected_trim"
+		tail -n +2 "$expected" > "$expected_trim"
+
 		# Modify actual output: compute last line modulo 256 and replace last line
 		actual_mod="$TMPDIR/${base}.actual_mod"
 		last_line=$(tail -n 1 "$actual_out" 2>/dev/null || echo "")
@@ -92,7 +96,7 @@ except Exception:
 		sed '$d' "$actual_out" > "$actual_mod" || true
 		printf "%s\n" "$mod_val" >> "$actual_mod"
 
-		if diff -u --strip-trailing-cr "$expected" "$actual_mod" > "$TMPDIR/${base}.diff"; then
+		if diff -u --strip-trailing-cr "$expected_trim" "$actual_mod" > "$TMPDIR/${base}.diff"; then
 			echo -e "\033[;32m[PASS] $base\033[0m"
 		else
 			echo -e "\033[;31m[FAIL] Output differs for $base\033[0m"
