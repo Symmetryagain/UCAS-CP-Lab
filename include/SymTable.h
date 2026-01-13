@@ -11,6 +11,7 @@ private:
   bool _is_array;
   bool _is_const;
   std::vector<size_t> _Array_Size;
+  std::variant<int, float, double, bool> _value;
 public:
   Symbol() {}
   explicit Symbol(
@@ -26,6 +27,8 @@ public:
   bool isArray();
   bool isConst();
   std::vector<size_t> arraySize();
+  std::variant<int, float, double, bool> value();
+  void modify_value(std::variant<int, float, double, bool> value);
 };
 
 class SymTable {
@@ -35,6 +38,10 @@ public:
   bool checkLocal(const std::string &name);
   std::optional<Symbol> resolveLocal(const std::string &name);
   bool defineLocal(const std::string name, const Symbol &sym);
+  void modify_value(
+    std::string name, 
+    std::variant<int, float, double, bool> value
+  );
 };
 
 class SymTree {
@@ -51,6 +58,10 @@ public:
     bool isArray,
     bool isConst,
     std::vector<size_t> arraySize
+  );
+  void modify_value(
+    std::string name,
+    std::variant<int, float, double, bool> value
   );
 };
 

@@ -68,7 +68,7 @@ Analyzer::visitConst_bool_const(CACTParser::Const_bool_constContext *context) {
   dbg("Enter Const_bool_const");
   context->btype = Bool;
   context->value = context->boolconst()->getText();
-  context->r_value = (context->boolconst()->getText() == "true");
+  context->r_value = context->boolconst()->r_value;
   dbg("Leave Const_bool_const");
   return nullptr;
 }
@@ -80,6 +80,7 @@ Analyzer::visitSigned_const_const(CACTParser::Signed_const_constContext *context
   context->btype = context->num_const()->btype;
   context->value = context->num_const()->value;
   context->sign = false;
+  context->r_value = context->num_const()->r_value;
   dbg("Leave Signed_const_const");
   return nullptr;
 }
@@ -91,6 +92,7 @@ Analyzer::visitSigned_const_plus(CACTParser::Signed_const_plusContext *context) 
   context->btype = context->signed_num_const()->btype;
   context->value = context->signed_num_const()->value;
   context->sign = context->signed_num_const()->sign;
+  context->r_value = context->signed_num_const()->r_value;
   dbg("Leave Signed_const_plus");
   return nullptr;
 }
@@ -102,6 +104,19 @@ Analyzer::visitSigned_const_minus(CACTParser::Signed_const_minusContext *context
   context->btype = context->signed_num_const()->btype;
   context->value = context->signed_num_const()->value;
   context->sign = !context->signed_num_const()->sign;
+  switch(context->signed_num_const()->btype) {
+    case Int:
+      context->r_value = -std::get<int>(context->signed_num_const()->r_value);
+      break;
+    case Float:
+      context->r_value = -std::get<float>(context->signed_num_const()->r_value);
+      break;
+    case Double:
+      context->r_value = -std::get<double>(context->signed_num_const()->r_value);
+      break;
+    default:
+      exit(3);
+  }
   dbg("Leave Signed_const_minus");
   return nullptr;
 }
@@ -115,6 +130,19 @@ Analyzer::visitSigned_const_num_const(CACTParser::Signed_const_num_constContext 
     context->value = "-" + context->signed_num_const()->value;
   else
     context->value = context->signed_num_const()->value;
+  switch(context->signed_num_const()->btype) {
+    case Int:
+      context->r_value = std::get<int>(context->signed_num_const()->r_value);
+      break;
+    case Float:
+      context->r_value = std::get<float>(context->signed_num_const()->r_value);
+      break;
+    case Double:
+      context->r_value = std::get<double>(context->signed_num_const()->r_value);
+      break;
+    default:
+      exit(3);
+  }
   dbg("Leave Signed_const_num_const");
   return nullptr;
 }
@@ -124,6 +152,7 @@ Analyzer::visitSigned_const_bool_const(CACTParser::Signed_const_bool_constContex
   dbg("Enter Signed_const_bool_const");
   context->btype = Bool;
   context->value = context->boolconst()->getText();
+  context->r_value = context->boolconst()->r_value;
   dbg("Leave Signed_const_bool_const");
   return nullptr;
 }
@@ -155,7 +184,7 @@ Analyzer::visitOct_constant(CACTParser::Oct_constantContext *context) {
 std::any
 Analyzer::visitTrue_constant(CACTParser::True_constantContext *context) {
   dbg("Enter True_constant");
-
+  context->r_value = true;
   dbg("Leave True_constant");
   return nullptr;
 }
@@ -163,7 +192,7 @@ Analyzer::visitTrue_constant(CACTParser::True_constantContext *context) {
 std::any
 Analyzer::visitFalse_constant(CACTParser::False_constantContext *context) {
   dbg("Enter False_constant");
-
+  context->r_value = false;
   dbg("Leave False_constant");
   return nullptr;
 }
@@ -186,7 +215,9 @@ Analyzer::visitExpr_1_ident(CACTParser::Expr_1_identContext *context) {
     context->array_size = var.arraySize();
   else
     context->array_size = {};
-  context->is_const = false;
+  context->is_const = var.isConst();
+  if (context->is_const) 
+    context->value = var.value();
   context->code = "";
   dbg("Leave Expr_1_ident");
   return nullptr;
@@ -1751,6 +1782,7 @@ Analyzer::visitConst_def(CACTParser::Const_defContext *context) {
   std::vector<size_t> array_size;
   array_size.clear();
   std::string res;
+  std::string save_name = name;
   if (context->intconst().empty()) { // variant
     if (!g_symtree.define(context->need_type, name, false, true, {})) {
       //
@@ -1789,6 +1821,9 @@ Analyzer::visitConst_def(CACTParser::Const_defContext *context) {
   context->array_signed_const()->at_top = true;
   context->array_signed_const()->is_global = context->is_global;
   context->array_signed_const()->accept(this);
+  if (context->intconst().empty()) { // variant
+    g_symtree.modify_value(save_name, context->array_signed_const()->r_value);
+  }
   dbg("Leave Const_def");
   return nullptr;
 }
@@ -1820,6 +1855,7 @@ Analyzer::visitArray_signed_const_const(CACTParser::Array_signed_const_constCont
       out(GLOBAL, ASSIGN, res, context->signed_const()->value);
     else
       out(ASSIGN, res, context->signed_const()->value);
+    context->r_value = context->signed_const()->r_value;
   }
   dbg("Leave Array_signed_const_const");
   return nullptr;
