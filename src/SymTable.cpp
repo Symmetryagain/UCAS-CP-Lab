@@ -6,6 +6,10 @@ Btype Symbol::bType() { return _b_type; }
 bool Symbol::isArray() { return _is_array; }
 bool Symbol::isConst() { return _is_const; }
 std::vector<size_t> Symbol::arraySize() { return _Array_Size; }
+std::variant<int, float, double, bool> Symbol::value() { return _value; }
+void Symbol::modify_value(std::variant<int, float, double, bool> value) {
+  _value = value;
+}
 
 bool SymTable::checkLocal(const std::string &name) {
   return table.count(name) ? true : false;
@@ -26,6 +30,20 @@ bool SymTable::defineLocal(const std::string name, const Symbol &sym) {
   }
   table[name] = sym;
   return true;
+}
+
+void SymTable::modify_value(
+  std::string name, 
+  std::variant<int, float, double, bool> value
+) {
+  auto it = table.find(name);
+  if (it == table.end()) {
+    // should not reach here
+    exit(1);
+  }
+  else {
+    it->second.modify_value(value);
+  }
 }
 
 void SymTree::enterScope() {
@@ -75,4 +93,12 @@ bool SymTree::define(
   if (!sym_top.defineLocal(name, sym)) return false;
   name = name_in_IR;
   return true;
+}
+
+void SymTree::modify_value(
+  std::string name,
+  std::variant<int, float, double, bool> value
+) {
+  auto &sym_top = _sym_stack.back();
+  sym_top.modify_value(name, value);
 }

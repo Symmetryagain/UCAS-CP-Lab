@@ -120,6 +120,7 @@ signed_num_const
                     std::string value,
                     Btype btype,
                     bool sign,
+                    std::variant<int, float, double> r_value,
                   ]
                   : num_const               # signed_const_const
                   | Plus signed_num_const   # signed_const_plus
@@ -130,6 +131,7 @@ signed_const
               locals [
                 std::string value,
                 Btype btype,
+                std::variant<int, float, double, bool> r_value,
               ]       
               : signed_num_const  # signed_const_num_const
               | boolconst         # signed_const_bool_const
@@ -438,6 +440,7 @@ array_signed_const
                       int offset,
                       bool at_top,
 					            bool is_global,
+                      std::variant<int, float, double, bool> r_value,
                     ]
                     : signed_const                                                # array_signed_const_const
                     | LBra (array_signed_const (Comma array_signed_const)*)? LKet # array_signed_const_array
