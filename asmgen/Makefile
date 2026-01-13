@@ -11,7 +11,7 @@ BUILD_DIR = ./build
 TEMP_DIR = $(BUILD_DIR)/temp
 
 # 默认参数
-IR_FILE ?= /home/skyhgzsh/cplab/fib.ir
+IR_FILE ?= /home/skyhgzsh/cplab/tim.ir
 ASM_FILE ?= $(TEMP_DIR)/test.s
 ELF_FILE ?= $(TEMP_DIR)/test.elf
 

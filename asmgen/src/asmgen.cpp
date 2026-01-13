@@ -16,6 +16,8 @@ map<string, size_t> ga_map;
 vector<Func>        f_list;
 map<string, size_t> f_map;
 
+map<string, vector<string>> o1_func_rely;
+
 string normalize_name(string prev_name)
 {
 	string new_name;
@@ -765,8 +767,8 @@ void parse_ir()
 				gv.name = tokens[2];
 				assert(tokens[2][0] == '%');
 				gv.gtype     = get_gtype_from_char(tokens[2][1]);
-				gv.is_const  = (optimize_level > 0);
-				gv.is_unused = (optimize_level > 0);
+				gv.is_const  = 0; // TODO
+				gv.is_unused = 0; // TODO
 				gv.is_bss    = (optimize_level > 0);
 				gv.value     = 0;
 				add_global_var(gv);
@@ -780,8 +782,8 @@ void parse_ir()
 				assert(tokens[2][1] == 'a');
 				ga.gtype     = get_gtype_from_char(tokens[2][2]);
 				ga.length    = stoi(tokens[3], 0, 0);
-				ga.is_const  = (optimize_level > 0);
-				ga.is_unused = (optimize_level > 0);
+				ga.is_const  = 0; // TODO
+				ga.is_unused = 0; // TODO
 				ga.is_bss    = (optimize_level > 0);
 				ga.values    = vector<uint64_t>(ga.length, 0);
 				add_global_arr(ga);
@@ -877,6 +879,11 @@ void parse_ir()
 			if(tokens_jdx[0] == "@array")
 			{
 				func_add_local_arr(f, tokens_jdx[1], stoi(tokens_jdx[2], 0, 0));
+			}
+
+			if(tokens_jdx[0] == "call")
+			{
+				o1_func_rely[f.name].push_back(tokens_jdx[2]);
 			}
 		}
 		while(f.sp_size % 16 != 0)
@@ -1475,6 +1482,10 @@ void o0_gen_asm()
 {
 	for(Func& f : f_list)
 	{
+		if(!f.is_used || f.is_extern)
+		{
+			continue;
+		}
 		o0_gen_asm_func(f);
 	}
 }
@@ -1514,11 +1525,14 @@ void put_global()
 			asm_lines.push_back(".data");
 		}
 		asm_lines.push_back(".balign " + to_string(var_size));
-		asm_lines.push_back(".size " + new_name + ", " + to_string(var_size));
 		if(gv.is_bss)
 		{
+			asm_lines.push_back(".lcomm " + new_name + ", " +
+			                    to_string(var_size));
 			continue;
 		}
+		asm_lines.push_back(".global " + new_name);
+		asm_lines.push_back(".size " + new_name + ", " + to_string(var_size));
 		asm_lines.push_back(new_name + ":");
 		for(int i = 0; i < var_size; i++)
 		{
@@ -1549,12 +1563,16 @@ void put_global()
 			asm_lines.push_back(".data");
 		}
 		asm_lines.push_back(".balign " + to_string(arr_lign));
-		asm_lines.push_back(".size " + new_name + ", " +
-		                    to_string(arr_lens * arr_lign));
 		if(ga.is_bss)
 		{
+			asm_lines.push_back(".lcomm " + new_name + ", " +
+			                    to_string(arr_lens * arr_lign));
 			continue;
 		}
+		asm_lines.push_back(".global " + new_name);
+		asm_lines.push_back(".size " + new_name + ", " +
+		                    to_string(arr_lens * arr_lign));
+
 		asm_lines.push_back(new_name + ":");
 		for(int i = 0; i < arr_lens; i++)
 		{
@@ -1595,26 +1613,40 @@ void put_func()
 	}
 }
 
+void o1_handle_func_rely()
+{
+	queue<string> qf;
+	qf.push("%main");
+	f_list[f_map["%main"]].is_used = true;
+
+	while(!qf.empty())
+	{
+		string func_name = qf.front();
+		assert(f_map.count(func_name) != 0);
+		qf.pop();
+
+		for(string sub_name : o1_func_rely[func_name])
+		{
+			assert(f_map.count(sub_name) != 0);
+			if(f_list[f_map[sub_name]].is_used == false)
+			{
+				f_list[f_map[sub_name]].is_used = true;
+				qf.push(sub_name);
+			}
+		}
+	}
+}
+
 void asmgen()
 {
 	init_extern_func();
 	parse_ir();
-	if(optimize_level == 0)
+	show_ir();
+	if(optimize_level == 1)
 	{
-		show_ir();
-		o0_gen_asm();
+		o1_handle_func_rely();
 	}
-	else if(optimize_level == 1)
-	{
-		cerr << "optimize level 1 not implemented yet" << endl;
-		// o1_gen_bb();
-		// o1_comb_bb();
-		// o1_simpify();
-	}
-	else if(optimize_level == 2)
-	{
-		cerr << "optimize level 2 not implemented yet" << endl;
-	}
+	o0_gen_asm();
 	put_global();
 	put_func();
 }
