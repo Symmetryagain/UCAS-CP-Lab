@@ -325,7 +325,7 @@ void func_call(Func& f, string func)
 
 void ir2m(Func& f, string ireg, string memvar)
 {
-	assert(ireg == "ra" || ireg == "sp" || ireg[0] == 's' || ireg[0] == 'a');
+	assert(ireg == "ra" || ireg == "sp" || ireg[0] == 's' || ireg[0] == 'a' || ireg == "zero");
 	PType  ptype = get_ptype_from_string(memvar);
 	size_t size  = TypeSize[ptype];
 	if(f.lv_map.count(memvar) != 0)
@@ -596,10 +596,36 @@ void gen_assign(Func& f, string dst, string src)
 				string src_arr = src.substr(0, name_idx);
 				string src_idx =
 				    src.substr(name_idx + 1, src.size() - name_idx - 2);
-				m2ir(f, P_INT, src_idx, "s0");
 				size_t size = TypeSize[srcvtype];
-				m2ir(f, P_INT, to_string(size), "s1");
-				gen3r(f, "mulw", "s2", "s0", "s1");
+				if(optimize_level > 0)
+				{
+					switch(size)
+					{
+					case 1:
+						m2ir(f, P_INT, src_idx, "s2");
+						break;
+					case 2:
+						m2ir(f, P_INT, src_idx, "s0");
+						gen3r(f, "slliw", "s2", "s0", "1");
+						break;
+					case 4:
+						m2ir(f, P_INT, src_idx, "s0");
+						gen3r(f, "slliw", "s2", "s0", "2");
+						break;
+					case 8:
+						m2ir(f, P_INT, src_idx, "s0");
+						gen3r(f, "slliw", "s2", "s0", "3");
+						break;
+					default:
+						assert(false);
+					}
+				}
+				else
+				{
+					m2ir(f, P_INT, src_idx, "s0");
+					m2ir(f, P_INT, to_string(size), "s1");
+					gen3r(f, "mulw", "s2", "s0", "s1");
+				}
 				m2ir(f, srctype, src_arr, "s3");
 				gen3r(f, "add", "s4", "s3", "s2");
 				gen2r(f, inst_load_i(size), "s5", "0(s4)");
@@ -642,10 +668,34 @@ void gen_assign(Func& f, string dst, string src)
 			string dst_arr = dst.substr(0, name_idx);
 			string dst_idx =
 			    dst.substr(name_idx + 1, dst.size() - name_idx - 2);
-			m2ir(f, P_INT, dst_idx, "s6");
 			size_t size = TypeSize[dstvtype];
-			m2ir(f, P_INT, to_string(size), "s7");
-			gen3r(f, "mulw", "s8", "s6", "s7");
+			if(optimize_level > 0)
+			{
+				switch(size)
+				{
+				case 1:
+					m2ir(f, P_INT, dst_idx, "s8");
+					break;
+				case 2:
+					m2ir(f, P_INT, dst_idx, "s6");
+					gen3r(f, "slliw", "s8", "s6", "1");
+					break;
+				case 4:
+					m2ir(f, P_INT, dst_idx, "s6");
+					gen3r(f, "slliw", "s8", "s6", "2");
+					break;
+				case 8:
+					m2ir(f, P_INT, dst_idx, "s6");
+					gen3r(f, "slliw", "s8", "s6", "3");
+					break;
+				}
+			}
+			else
+			{
+				m2ir(f, P_INT, dst_idx, "s6");
+				m2ir(f, P_INT, to_string(size), "s7");
+				gen3r(f, "mulw", "s8", "s6", "s7");
+			}
 			m2ir(f, dsttype, dst_arr, "s9");
 			gen3r(f, "add", "s10", "s9", "s8");
 			gen2r(f, inst_store_i(size), "s5", "0(s10)");
@@ -658,7 +708,6 @@ void gen_assign(Func& f, string dst, string src)
 
 void gen_addr(Func& f, string dst_p, string src_p, string offset)
 {
-	m2ir(f, P_INT, offset, "s0");
 	PType ptrtype = get_ptype_from_string(src_p);
 	assert(get_ptype_from_string(dst_p) == ptrtype);
 	PType ptype;
@@ -680,8 +729,35 @@ void gen_addr(Func& f, string dst_p, string src_p, string offset)
 		assert(0);
 	}
 	size_t size = TypeSize[ptype];
-	m2ir(f, P_INT, to_string(size), "s1");
-	gen3r(f, "mulw", "s2", "s0", "s1");
+	if(optimize_level > 0)
+	{
+		switch(size)
+		{
+		case 1:
+			m2ir(f, P_INT, offset, "s2");
+			break;
+		case 2:
+			m2ir(f, P_INT, offset, "s0");
+			gen3r(f, "slliw", "s2", "s0", "1");
+			break;
+		case 4:
+			m2ir(f, P_INT, offset, "s0");
+			gen3r(f, "slliw", "s2", "s0", "2");
+			break;
+		case 8:
+			m2ir(f, P_INT, offset, "s0");
+			gen3r(f, "slliw", "s2", "s0", "3");
+			break;
+		default:
+			assert(false);
+		}
+	}
+	else
+	{
+		m2ir(f, P_INT, offset, "s0");
+		m2ir(f, P_INT, to_string(size), "s1");
+		gen3r(f, "mulw", "s2", "s0", "s1");
+	}
 	m2ir(f, ptrtype, src_p, "s3");
 	gen3r(f, "add", "s4", "s3", "s2");
 	ir2m(f, "s4", dst_p);
@@ -767,8 +843,8 @@ void parse_ir()
 				gv.name = tokens[2];
 				assert(tokens[2][0] == '%');
 				gv.gtype     = get_gtype_from_char(tokens[2][1]);
-				gv.is_const  = 0; // TODO
-				gv.is_unused = 0; // TODO
+				gv.is_const  = 0;
+				gv.is_unused = 0;
 				gv.is_bss    = (optimize_level > 0);
 				gv.value     = 0;
 				add_global_var(gv);
@@ -782,8 +858,8 @@ void parse_ir()
 				assert(tokens[2][1] == 'a');
 				ga.gtype     = get_gtype_from_char(tokens[2][2]);
 				ga.length    = stoi(tokens[3], 0, 0);
-				ga.is_const  = 0; // TODO
-				ga.is_unused = 0; // TODO
+				ga.is_const  = 0;
+				ga.is_unused = 0;
 				ga.is_bss    = (optimize_level > 0);
 				ga.values    = vector<uint64_t>(ga.length, 0);
 				add_global_arr(ga);
@@ -1097,6 +1173,20 @@ void o0_gen_asm_func(Func& f)
 			{
 			case 'i':
 				{
+					if(optimize_level > 0)
+					{
+						if(tokens[4][0] != '%')
+						{
+							int imm = stoi(tokens[4], 0, 0);
+							if(imm < 2048 && imm >= -2048)
+							{
+								m2ir(f, P_INT, tokens[3], "s0");
+								gen3r(f, "addi", "s1", "s0", to_string(imm));
+								ir2m(f, "s1", tokens[2]);
+								break;
+							}
+						}
+					};
 					m2ir(f, P_INT, tokens[3], "s0");
 					m2ir(f, P_INT, tokens[4], "s1");
 					gen3r(f, "addw", "s2", "s0", "s1");
@@ -1133,6 +1223,20 @@ void o0_gen_asm_func(Func& f)
 			{
 			case 'i':
 				{
+					if(optimize_level > 0)
+					{
+						if(tokens[4][0] != '%')
+						{
+							int imm = -stoi(tokens[4], 0, 0);
+							if(imm < 2048 && imm >= -2048)
+							{
+								m2ir(f, P_INT, tokens[3], "s0");
+								gen3r(f, "addi", "s1", "s0", to_string(imm));
+								ir2m(f, "s1", tokens[2]);
+								break;
+							}
+						}
+					};
 					m2ir(f, P_INT, tokens[3], "s0");
 					m2ir(f, P_INT, tokens[4], "s1");
 					gen3r(f, "sub", "s2", "s0", "s1");
@@ -1165,6 +1269,49 @@ void o0_gen_asm_func(Func& f)
 			{
 			case 'i':
 				{
+					if(optimize_level > 0)
+					{
+						if(tokens[4][0] != '%')
+						{
+							if(stoi(tokens[4], 0, 0) == 0 ||
+							   (tokens[3][0] != '%' &&
+							    stoi(tokens[3], 0, 0) == 0))
+							{
+								ir2m(f, "zero", tokens[2]);
+								break;
+							}
+							if(tokens[3][0] != '%')
+							{
+								int imm4 = stoi(tokens[4], 0, 0);
+								int imm3 = stoi(tokens[3], 0, 0);
+								int res  = imm3 * imm4;
+								assert(res != 0);
+								gen2r(f, "li", "s0", to_string(res));
+								ir2m(f, "s0", tokens[2]);
+								break;
+							}
+							int imm4 = stoi(tokens[4], 0, 0);
+							if(imm4 == 1)
+							{
+								m2ir(f, P_INT, tokens[3], "s0");
+								ir2m(f, "s0", tokens[2]);
+								break;
+							}
+							if(imm4 > 0 && (imm4 & (imm4 - 1)) == 0)
+							{
+								int shift = 0;
+								while(imm4 != 1)
+								{
+									imm4 >>= 1;
+									shift++;
+								}
+								m2ir(f, P_INT, tokens[3], "s0");
+								gen3r(f, "slliw", "s1", "s0", to_string(shift));
+								ir2m(f, "s1", tokens[2]);
+								break;
+							}
+						}
+					};
 					m2ir(f, P_INT, tokens[3], "s0");
 					m2ir(f, P_INT, tokens[4], "s1");
 					gen3r(f, "mulw", "s2", "s0", "s1");
@@ -1197,6 +1344,32 @@ void o0_gen_asm_func(Func& f)
 			{
 			case 'i':
 				{
+					if(optimize_level > 0)
+					{
+						if(tokens[4][0] != '%')
+						{
+							int imm4 = stoi(tokens[4], 0, 0);
+							if(imm4 == 1)
+							{
+								m2ir(f, P_INT, tokens[3], "s0");
+								ir2m(f, "s0", tokens[2]);
+								break;
+							}
+							if(imm4 > 0 && (imm4 & (imm4 - 1)) == 0)
+							{
+								int shift = 0;
+								while(imm4 != 1)
+								{
+									imm4 >>= 1;
+									shift++;
+								}
+								m2ir(f, P_INT, tokens[3], "s0");
+								gen3r(f, "srliw", "s1", "s0", to_string(shift));
+								ir2m(f, "s1", tokens[2]);
+								break;
+							}
+						}
+					}
 					m2ir(f, P_INT, tokens[3], "s0");
 					m2ir(f, P_INT, tokens[4], "s1");
 					gen3r(f, "divw", "s2", "s0", "s1");
@@ -1225,6 +1398,25 @@ void o0_gen_asm_func(Func& f)
 		}
 		else if(tokens[0] == "Rem")
 		{
+			if(optimize_level > 0)
+			{
+				if(tokens[3][0] != '%')
+				{
+					int imm3 = stoi(tokens[3], 0, 0);
+					if(imm3 == 1)
+					{
+						ir2m(f, "zero", tokens[1]);
+						break;
+					}
+					if(imm3 > 0 && (imm3 & (imm3 - 1)) == 0 && imm3 < 2048)
+					{
+						m2ir(f, P_INT, tokens[2], "s0");
+						gen3r(f, "andi", "s1", "s0", to_string(imm3 - 1));
+						ir2m(f, "s1", tokens[1]);
+						break;
+					}
+				}
+			}
 			m2ir(f, P_INT, tokens[2], "s0");
 			m2ir(f, P_INT, tokens[3], "s1");
 			gen3r(f, "remw", "s2", "s0", "s1");
@@ -1682,7 +1874,7 @@ void o1_build_var_rely()
 					{
 						continue;
 					}
-					//assert(tokens[pos][0] == '%');
+					// assert(tokens[pos][0] == '%');
 					o1_var_set.insert(tokens[pos]);
 				}
 			}
@@ -2165,17 +2357,17 @@ void asmgen()
 {
 	init_extern_func();
 	parse_ir();
-	show_ir();
+	// show_ir();
 	if(optimize_level == 1)
 	{
 		o1_handle_func_rely();
 
 		o1_build_var_rely();
-		o1_print_var_rely();
+		// o1_print_var_rely();
 		o1_handle_var_rely();
-		o1_print_var_rely();
+		// o1_print_var_rely();
 		o1_use_var_rely();
-		show_ir();
+		// show_ir();
 	}
 	o0_gen_asm();
 	put_global();
