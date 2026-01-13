@@ -62,7 +62,7 @@ for file in "${files[@]}"; do
     
     # 1. 编译Cact文件生成IR（总是重新生成）
     echo "  1. Compiling to IR..."
-    if ! "$COMPILER" "$file" > "$irfile" 2>"$compile_err"; then
+    if ! "$COMPILER" "$file" "-O1" > "$irfile" 2>"$compile_err"; then
         echo -e "\033[;31m[FAIL] Compiler failed for $file\033[0m"
         echo "   --- Compiler stderr ---"
         sed -n '1,200p' "$compile_err" || true
