@@ -33,12 +33,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	if(argc > 3 && strcmp(argv[3], "-O2") == 0)
-	{
-		cerr << "Optimization level 2 enabled." << endl;
-		optimize_level = 2;
-	}
-	else if(argc > 3 && strcmp(argv[3], "-O1") == 0)
+	if(argc > 3 && strcmp(argv[3], "-O1") == 0)
 	{
 		cerr << "Optimization level 1 enabled." << endl;
 		optimize_level = 1;
