@@ -490,7 +490,14 @@ Analyzer::visitExpr_3_divide(CACTParser::Expr_3_divideContext *context) {
   context->is_const = context->expr_3()->is_const && context->expr_2()->is_const;
   if (context->is_const) {
     switch(context->btype) {
-      case Int: context->value = std::get<int>(context->expr_3()->value) / std::get<int>(context->expr_2()->value); break;
+      case Int:
+        if (std::get<int>(context->expr_2()->value) == 0) {
+          std::cerr << "warning: division by zero [-Wdiv-by-zero]" << std::endl;
+          context->is_const = false;
+        } else {
+          context->value = std::get<int>(context->expr_3()->value) / std::get<int>(context->expr_2()->value);
+        }
+        break;
       case Float: context->value = std::get<float>(context->expr_3()->value) / std::get<float>(context->expr_2()->value); break;
       case Double: context->value = std::get<double>(context->expr_3()->value) / std::get<double>(context->expr_2()->value); break;
       default: exit(3);
@@ -593,7 +600,12 @@ Analyzer::visitExpr_3_remain(CACTParser::Expr_3_remainContext *context) {
   context->array_size = {};
   context->is_const = context->expr_3()->is_const && context->expr_2()->is_const;
   if (context->is_const) {
-    context->value = std::get<int>(context->expr_3()->value) % std::get<int>(context->expr_2()->value);
+    if (std::get<int>(context->expr_2()->value) == 0) {
+      std::cerr << "warning: division by zero [-Wdiv-by-zero]" << std::endl;
+      context->is_const = false;
+    } else {
+      context->value = std::get<int>(context->expr_3()->value) % std::get<int>(context->expr_2()->value);
+    }
   }
   context->code = "";
   if (merge_constant && context->is_const) {
