@@ -30,7 +30,7 @@ for file in "${files[@]}"; do
 	compile_err="$TMPDIR/${base}.compile.err"
 
 	# Compile to IR
-	if ! "$COMPILER" "$file" "--emit-IR" "$irfile" 2>"$compile_err"; then
+	if ! "$COMPILER" "$file" "--emit-IR" -o "$irfile" 2>"$compile_err"; then
 		echo -e "\033[;31m[FAIL] Compiler failed for $file\033[0m"
 		echo "--- Compiler stderr ---"
 		sed -n '1,200p' "$compile_err" || true

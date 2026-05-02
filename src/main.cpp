@@ -24,9 +24,14 @@ vector<string> asm_lines = {
 int main(int argc, const char *argv[]) {
   if (argc < 2) {
     std::cerr << "Usage: " << argv[0]
-              << " input_file_name [--print-tokens] [--print-parser-tree] "
-                 "[--print-ast] [--syntax] [--emit-IR] [-O1] output_file_name"
-              << std::endl;
+              << " input_file_name [options] [-o output_file]" << std::endl
+              << "  --syntax            Stop after lexing and parsing" << std::endl
+              << "  --emit-IR           Generate IR only, skip assembly" << std::endl
+              << "  --print-tokens      Print token stream to stderr" << std::endl
+              << "  --print-parser-tree Print parse tree to stderr" << std::endl
+              << "  --print-ast         Print AST to stderr" << std::endl
+              << "  -O1                 Enable optimizations" << std::endl
+              << "  -o <file>           Output file path" << std::endl;
     return 9;
   }
 
@@ -60,9 +65,17 @@ int main(int argc, const char *argv[]) {
       merge_constant = optimize_level = 1;
     else if (a == "--emit-IR")
       opt_emit_IR = true;
-    else { // output file
-      opt_out_file_provided = true;
-      ir_path = output_path = a;
+    else if (a == "-o") {
+      if (i + 1 < argc) {
+        opt_out_file_provided = true;
+        ir_path = output_path = argv[++i];
+      } else {
+        std::cerr << "Error: -o requires a file argument" << std::endl;
+        return 9;
+      }
+    } else {
+      std::cerr << "Error: unknown option '" << a << "'" << std::endl;
+      return 9;
     }
   }
   if (!opt_out_file_provided || !opt_emit_IR) {
@@ -75,17 +88,10 @@ int main(int argc, const char *argv[]) {
     return 9;
   }
 
-  std::ofstream outfile(ir_path);
-  if (!outfile.is_open()) {
-    std::cerr << "Failed to open output file: " << ir_path << std::endl;
-    return 9;
-  }
-
   antlr4::ANTLRInputStream input(stream);
   CACTLexer lexer(&input);
   antlr4::CommonTokenStream tokens(&lexer);
 
-  // Force lexing
   tokens.fill();
 
   if (lexer.getNumberOfSyntaxErrors() > 0) {
@@ -101,7 +107,6 @@ int main(int argc, const char *argv[]) {
 
   CACTParser parser(&tokens);
 
-  // parse
   antlr4::tree::ParseTree *tree = nullptr;
   try {
     tree = parser.comp_units();
@@ -131,6 +136,13 @@ int main(int argc, const char *argv[]) {
 
   if (opt_syntax_only)
     return 0;
+
+  // Open output file only when proceeding past syntax check
+  std::ofstream outfile(ir_path);
+  if (!outfile.is_open()) {
+    std::cerr << "Failed to open output file: " << ir_path << std::endl;
+    return 9;
+  }
 
   // semantic analysis / visit
   Analyzer visitor;
