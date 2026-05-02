@@ -1,5 +1,7 @@
 # CACT Compiler
 
+**English** | [**中文**](README_CN.md)
+
 A compiler for **CACT** (_C A C T_), a simplified C-like language, targeting **RISC-V 64** (RV64). Built with C++17 and ANTLR4, the project covers the full compilation pipeline: lexing, parsing, semantic analysis, intermediate representation (IR) generation, and assembly code generation. A standalone IR interpreter is included for validation.
 
 ## Language Overview
