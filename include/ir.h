@@ -1,19 +1,7 @@
-#ifndef _GLOBAL_H
-#define _GLOBAL_H
+#ifndef CACT_IR_H
+#define CACT_IR_H
 
-#include "utils.h"
-
-inline std::ostream* global_out = &std::cout;
-
-extern int                          g_count;
-extern std::string                  btype_string[];
-extern SymTree                      g_symtree;
-extern FuncTable                    g_functable;
-extern std::string                  special_funcname[];
-extern Btype                        special_funcType[];
-extern std::vector<FuncParamsType>  special_funcParams[];
-extern int                          merge_constant;
-
+// IR opcodes shared between compiler (Analyzer) and asmgen
 #define NPRE    "%"
 #define GLOBAL  "!global"
 #define VAR     "@var"
@@ -43,4 +31,4 @@ extern int                          merge_constant;
 #define DOR     "DOr"
 #define ADDR    "Addr"
 
-#endif // _GLOBAL_H
+#endif // CACT_IR_H

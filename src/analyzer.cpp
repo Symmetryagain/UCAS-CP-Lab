@@ -1,8 +1,11 @@
-#include "Analyzer.h"
-#include "FuncTable.h"
-#include "SymTable.h"
+#include "analyzer.h"
+#include "func_table.h"
+#include "sym_table.h"
+#include "context.h"
+#include "ir.h"
 #include "utils.h"
-#include "global.h"
+
+using namespace std;
 
 std::any
 Analyzer::visitTest(CACTParser::TestContext *context) { // will not reach here

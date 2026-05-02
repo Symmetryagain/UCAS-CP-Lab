@@ -1,7 +1,4 @@
-#include "SymTable.h"
-#include "FuncTable.h"
-#include "tree/ParseTree.h"
-#include "Analyzer.h"
+#include "context.h"
 
 int g_count = 0;
 std::string btype_string[] = {"", "i", "f", "d", "b", "v", ""};

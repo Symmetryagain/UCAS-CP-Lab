@@ -1,10 +1,15 @@
+#include <fstream>
 #include <iostream>
+#include <string>
 
-#include "Analyzer.h"
-#include "global.h"
+#include "analyzer.h"
+#include "asm_gen.h"
+#include "context.h"
 #include "tree/ParseTree.h"
 #include "utils.h"
-#include "main.h"
+#include "utils_debug.h"
+
+using namespace std;
 
 int            merge_constant = 0;
 int            optimize_level = 0;

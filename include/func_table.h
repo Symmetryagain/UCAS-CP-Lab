@@ -1,7 +1,11 @@
-#ifndef _FuncTable_H
-#define _FuncTable_H
+#ifndef CACT_FUNCTABLE_H
+#define CACT_FUNCTABLE_H
 
-#include <bits/stdc++.h>
+#include <optional>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
 #include "btype.h"
 
 struct FuncParamsType {
@@ -21,8 +25,8 @@ private:
 public:
   Func() {}
   explicit Func(
-    std::string name, 
-    Btype retType, 
+    std::string name,
+    Btype retType,
     std::vector<FuncParamsType> params
   ) :_name_in_IR(name), _retvalType(retType), _params(params) {}
   std::string name_in_IR();
@@ -39,4 +43,4 @@ public:
   bool define(Btype retType, std::string &name, const std::vector<FuncParamsType> &funcParams);
 };
 
-#endif // _FuncTable_H
+#endif // CACT_FUNCTABLE_H

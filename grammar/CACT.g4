@@ -5,8 +5,8 @@ grammar CACT;
 #include <string>
 #include <variant>
 #include "btype.h"
-#include "FuncTable.h"
-#include "SymTable.h"
+#include "func_table.h"
+#include "sym_table.h"
 }
 
 // Lexical Keywords

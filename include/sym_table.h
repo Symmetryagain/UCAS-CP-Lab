@@ -1,7 +1,12 @@
-#ifndef _SYMTABLE_H
-#define _SYMTABLE_H
+#ifndef CACT_SYMTABLE_H
+#define CACT_SYMTABLE_H
 
-#include <bits/stdc++.h>
+#include <optional>
+#include <string>
+#include <unordered_map>
+#include <variant>
+#include <vector>
+
 #include "btype.h"
 
 class Symbol {
@@ -15,8 +20,8 @@ private:
 public:
   Symbol() {}
   explicit Symbol(
-    std::string _nameInIR, 
-    Btype _bType, 
+    std::string _nameInIR,
+    Btype _bType,
     bool _isArray,
     bool _isConst,
     std::vector<size_t> _arraySize
@@ -39,7 +44,7 @@ public:
   std::optional<Symbol> resolveLocal(const std::string &name);
   bool defineLocal(const std::string name, const Symbol &sym);
   void modify_value(
-    std::string name, 
+    std::string name,
     std::variant<int, float, double, bool> value
   );
 };
@@ -53,7 +58,7 @@ public:
   bool check(const std::string &name);
   std::optional<Symbol> resolve(const std::string &name);
   bool define(
-    Btype bType, 
+    Btype bType,
     std::string &name,
     bool isArray,
     bool isConst,
@@ -65,4 +70,4 @@ public:
   );
 };
 
-#endif // _SYMTABLE_H
+#endif // CACT_SYMTABLE_H

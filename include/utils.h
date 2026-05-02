@@ -1,13 +1,11 @@
-#ifndef _UTILS_H
-#define _UTILS_H
+#ifndef CACT_UTILS_H
+#define CACT_UTILS_H
+
+#include <iostream>
+#include <sstream>
+#include <string>
 
 #include "btype.h"
-#include "tree/ParseTree.h"
-#include <bits/stdc++.h>
-#include "Analyzer.h"
-#include "global.h"
-
-extern inline std::ostream* global_out;
 
 Btype str_to_type(const std::string &s);
 
@@ -17,11 +15,7 @@ std::string createLabel();
 
 std::string createVar(const Btype &b, bool is_array);
 
-void printTree(antlr4::tree::ParseTree *tree,
-               const std::vector<std::string> &ruleNames,
-               const std::string &indent, bool isLast);
-               
-void printTokens(CACTLexer &lexer, antlr4::CommonTokenStream &tokens);
+extern std::ostream* global_out;
 
 template<typename... Args>
 void dbg(const Args&... args) {
@@ -46,4 +40,4 @@ void out(const Args&... args) {
     *global_out << std::endl;
 }
 
-#endif // _UTILS_H
+#endif // CACT_UTILS_H

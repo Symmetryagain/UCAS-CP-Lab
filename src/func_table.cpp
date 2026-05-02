@@ -1,4 +1,4 @@
-#include "FuncTable.h"
+#include "func_table.h"
 
 extern int g_count;
 extern std::string btype_string[];

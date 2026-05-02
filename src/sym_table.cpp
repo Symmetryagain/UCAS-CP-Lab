@@ -1,5 +1,5 @@
-#include "SymTable.h"
-#include "global.h"
+#include "sym_table.h"
+#include "context.h"
 
 std::string Symbol::name_in_IR() { return _Name_in_IR; }
 Btype Symbol::bType() { return _b_type; }

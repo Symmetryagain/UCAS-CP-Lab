@@ -1,9 +1,9 @@
 #include "utils.h"
-#include "SymTable.h"
-#include "FuncTable.h"
+#include "utils_debug.h"
+
+#include "context.h"
 #include "tree/ParseTree.h"
-#include "Analyzer.h"
-#include "global.h"
+#include "analyzer.h"
 
 Btype str_to_type(const std::string &s) {
   if (s == "int") return Int;
