@@ -5,7 +5,7 @@ set -euo pipefail
 BASEDIR="$(cd "$(dirname "$0")" && pwd)"
 SAMPLES_DIR="$BASEDIR/../test/samples_codegen_functional"
 COMPILER="$BASEDIR/../build/compiler"
-INTERP="$BASEDIR/../interpreter/interpreter"
+INTERP="$BASEDIR/../build/interpreter"
 
 TMPDIR=$(mktemp -d)
 trap 'rm -rf "$TMPDIR"' EXIT

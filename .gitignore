@@ -7,9 +7,10 @@ cmake-build-debug
 .idea
 .clang-format
 .cache
+.claude
 
-grammar/*.cpp
-grammar/*.h
+generated/grammar/*.cpp
+generated/grammar/*.h
 grammar/*.interp
 grammar/*.tokens
 .antlr
@@ -17,10 +18,5 @@ grammar/*.tokens
 test/ir_files
 test/asm_files
 test/elf_files
-
-interpreter/interpreter
-
-out
-scripts
 
 compile_commands.json
