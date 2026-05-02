@@ -11,7 +11,6 @@ set(CMAKE_BUILD_TYPE Debug)
 include_directories(deps/antlr4-runtime/)
 include_directories(generated/grammar)
 include_directories(include)
-include_directories(src/interpreter)
 
 # Source files
 file(GLOB COMPILER_SRC "src/*.cpp")
