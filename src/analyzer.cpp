@@ -1765,18 +1765,14 @@ Analyzer::visitVar_def(CACTParser::Var_defContext *context) {
     context->array_signed_const()->at_top = true;
     context->array_signed_const()->is_global = context->is_global;
     context->array_signed_const()->accept(this);
-  } else {                             // no value, assign to 0
-    if (context->intconst().empty()) { // variant
-      if (context->is_global)
-        out(GLOBAL, ASSIGN, res, "0");
-      else
+  } else {                             // no initializer
+    if (!context->is_global) {         // globals default to zero (bss)
+      if (context->intconst().empty()) { // scalar
         out(ASSIGN, res, "0");
-    } else { // array
-      for (int i = 0; i < total_size; ++i) {
-        if (context->is_global)
-          out(GLOBAL, ASSIGN, res + "[" + std::to_string(i) + "]", "0");
-        else
+      } else { // array
+        for (int i = 0; i < total_size; ++i) {
           out(ASSIGN, res + "[" + std::to_string(i) + "]", "0");
+        }
       }
     }
   }
@@ -1860,7 +1856,21 @@ Analyzer::visitArray_signed_const_const(CACTParser::Array_signed_const_constCont
     return nullptr;
   }
   std::string res = NPRE + context->varName;
-  if (context->varName[0] == 'a') {
+  // For globals, skip zero-valued assigns: the variable defaults to zero in bss.
+  bool is_init_zero = false;
+  if (context->is_global) {
+    const auto &val = context->signed_const()->value;
+    switch (context->signed_const()->btype) {
+      case Bool:   is_init_zero = (val == "false"); break;
+      case Int:    is_init_zero = (std::stoi(val) == 0); break;
+      case Float:  is_init_zero = (std::stof(val) == 0.0f); break;
+      case Double: is_init_zero = (std::stod(val) == 0.0); break;
+      default: break;
+    }
+  }
+  if (is_init_zero) {
+    // skip: zero is the default
+  } else if (context->varName[0] == 'a') {
     if (context->is_global)
       out(GLOBAL, ASSIGN, res + "[" + std::to_string(context->offset) + "]", context->signed_const()->value);
     else
@@ -1913,11 +1923,10 @@ Analyzer::visitArray_signed_const_array(CACTParser::Array_signed_const_arrayCont
         context->array_signed_const()[i]->is_global = context->is_global;
         context->array_signed_const()[i]->accept(this);
       }
-      for (int i = (int)context->array_signed_const().size(); i < sz; ++i) {
-        if (context->is_global)
-          out(GLOBAL, ASSIGN, res + "[" + std::to_string(i) + "]", 0);
-        else
-          out(ASSIGN, res + "[" + std::to_string(i) + "]", 0);
+      if (!context->is_global) {
+        for (int i = (int)context->array_signed_const().size(); i < sz; ++i) {
+          out(ASSIGN, res + "[" + std::to_string(i) + "]", "0");
+        }
       }
       dbg("Leave Array_signed_const_array");
       return nullptr;
@@ -1945,13 +1954,12 @@ Analyzer::visitArray_signed_const_array(CACTParser::Array_signed_const_arrayCont
     context->array_signed_const()[i]->accept(this);
   }
   if (context->array_signed_const().size() < context->array_size[0]) {
-    for (int i = context->array_signed_const().size() * sz;
-         i < (int)context->array_size[0] * sz; ++i) {
-      int offset = context->offset + i;
-      if (context->is_global)
-        out(GLOBAL, ASSIGN, res + "[" + std::to_string(offset) + "]", 0);
-      else
+    if (!context->is_global) {
+      for (int i = context->array_signed_const().size() * sz;
+           i < (int)context->array_size[0] * sz; ++i) {
+        int offset = context->offset + i;
         out(ASSIGN, res + "[" + std::to_string(offset) + "]", "0");
+      }
     }
   }
   dbg("Leave Array_signed_const_array");

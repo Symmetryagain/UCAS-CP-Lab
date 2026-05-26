@@ -97,7 +97,7 @@ void init_g_array(string lstr)
 	int size              = get_val_int(g_lstate, tokens[3]).ival;
 	gtable[name].name     = name;
 	gtable[name].val_type = get_var_type_by_prefix(tokens[2]);
-	gtable[name].val.aval = (Value *)malloc(sizeof(Value) * size);
+	gtable[name].val.aval = (Value *)calloc(size, sizeof(Value));
 }
 
 void init_g_var(string lstr)
@@ -112,6 +112,7 @@ void init_g_var(string lstr)
 	IdentType vtype       = get_var_type_by_prefix(tokens[2]);
 	gtable[name].name     = name;
 	gtable[name].val_type = vtype;
+	gtable[name].val.ival = 0;
 }
 
 void local_assign(Local_State &lstate, string name, Value val, IdentType vtype)
@@ -199,7 +200,7 @@ void init_array(Local_State &lstate, string lstr)
 	int size                     = get_val_int(lstate, tokens[2]).ival;
 	lstate.ltable[name].name     = name;
 	lstate.ltable[name].val_type = get_var_type_by_prefix(tokens[1]);
-	lstate.ltable[name].val.aval = (Value *)malloc(sizeof(Value) * size);
+	lstate.ltable[name].val.aval = (Value *)calloc(size, sizeof(Value));
 }
 
 void init_var(Local_State &lstate, string lstr)
@@ -214,6 +215,7 @@ void init_var(Local_State &lstate, string lstr)
 	IdentType vtype              = get_var_type_by_prefix(tokens[1]);
 	lstate.ltable[name].name     = name;
 	lstate.ltable[name].val_type = vtype;
+	lstate.ltable[name].val.ival = 0;
 }
 
 void init_arg(Local_State &lstate, string name, Value val)

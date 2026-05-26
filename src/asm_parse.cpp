@@ -316,7 +316,7 @@ void parse_ir()
 				gv.gtype     = get_gtype_from_char(tokens[2][1]);
 				gv.is_const  = 0;
 				gv.is_unused = 0;
-				gv.is_bss    = (optimize_level > 0);
+				gv.is_bss    = true;
 				gv.value     = 0;
 				add_global_var(gv);
 				continue;
@@ -331,7 +331,7 @@ void parse_ir()
 				ga.length    = stoi(tokens[3], 0, 0);
 				ga.is_const  = 0;
 				ga.is_unused = 0;
-				ga.is_bss    = (optimize_level > 0);
+				ga.is_bss    = true;
 				ga.values    = vector<uint64_t>(ga.length, 0);
 				add_global_arr(ga);
 				continue;
