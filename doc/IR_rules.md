@@ -10,9 +10,37 @@
         - 得到数组某处的指针：`Addr dest base offset`表示将 base+offset 存入dest，表示一个指针 
         - 得到数组在某处的值：`base[offset]`，例如 `%ad_6[%i_7]`或 `%ad_6[3]`
     
-2. 全局变量：声明时，在对应的变量声明语句前添加 `!global` 前缀即可。
-  
-    **局部变量和全局变量均拆成先定义后赋值**
+2. 全局变量
+    - 声明时，在对应的变量声明语句前添加 `!global` 前缀即可。
+    - 非 const 全局变量：
+      - 未初始化（或初始化为零）的全局变量**只声明，不输出 assign**。后端根据"缺少 assign"判定该变量为零初始化，放入 `.bss` 段。
+        ```
+        !global @var %i_1
+        ```
+      - 初始化为非零值的全局变量，在声明后紧跟 `!global assign` 指令。
+        ```
+        !global @var %i_1
+        !global assign %i_1 42
+        ```
+      - 全局数组同理：未初始化时不输出任何 assign；有非零初始值时仅输出非零元素的 assign，缺失索引由后端零填充。
+        ```
+        !global @array %ai_5 3
+        !global assign %ai_5[0] 1
+        !global assign %ai_5[2] 3
+        ```
+    - const 全局变量（`!global const`）：
+      - 声明时使用 `!global const` 前缀，表示该变量为只读常量，后端放入 `.rodata` 段。
+      - const 全局变量的初始值**始终输出 assign**（即使值为零），以确保进入 `.rodata` 而非 `.bss`。
+        ```
+        !global const @var %i_1
+        !global assign %i_1 0
+
+        !global const @array %ad_5 3
+        !global assign %ad_5[0] 1.0
+        !global assign %ad_5[1] 2.0
+        !global assign %ad_5[2] 3.0
+        ```
+    - 局部 const 变量**不加** `const` 标记，按普通局部变量处理。
 
 3. 函数
     - 定义格式：`@func 函数名 (参数1, 参数2, ...) 函数体 @endfunc`。其中，函数名格式为 返回值类型_id（void 为 v）。参数可以是一个数据类型，也可以是一个指针。例如：`@func %d_9 (%i_10, %f_11, %ad_12, %b_14)` 表示 `double d_9(int a, float b, double *c, bool *d)`。这里指针对应原代码中的数组，我们把任何维度的数组都展平成一维数组处理。
@@ -86,7 +114,6 @@ int main() {
   assign %ad_5[0] 1.0
   assign %ad_5[1] 2.0
   assign %ad_5[2] 4.5e-2
-  assign %ad_5[3] 0
   Addr %ad_6 %ad_5 0
   Addr %ad_7 %ad_5 2
   call %d_8 %d_1 ( %ad_6 , %ad_7 )
@@ -159,7 +186,49 @@ int main()
   assign %i_7 2
   retire %i_7
   return %i_2
- @endfunc
+@endfunc
+```
+
+5. 全局变量初始化示例：
+```
+int uninit_scalar;
+int zero_scalar = 0;
+int init_scalar = 42;
+int uninit_arr[100];
+int init_arr[3] = {1, 0, 3};
+const int const_scalar = 5;
+const int const_arr[2] = {10, 20};
+const int const_zero = 0;
+
+int main() {
+    return init_scalar;
+}
+```
+
+```
+; 未初始化 / 零值 → 无 assign，后端放 .bss
+!global @var %i_1
+!global @var %i_2
+; 非零 → 有 assign，后端放 .data
+!global @var %i_3
+!global assign %i_3 42
+; 大数组无 init → 无 assign，后端放 .bss（仅一行 IR）
+!global @array %ai_4 100
+; 有非零元素 → 有 assign，后端放 .data（仅输出非零元素）
+!global @array %ai_5 3
+!global assign %ai_5[0] 1
+!global assign %ai_5[2] 3
+; const → !global const，始终输出 assign，后端放 .rodata
+!global const @var %i_6
+!global assign %i_6 5
+!global const @array %ai_7 2
+!global assign %ai_7[0] 10
+!global assign %ai_7[1] 20
+!global const @var %i_8
+!global assign %i_8 0
+@func %main ( )
+  return %i_3
+@endfunc
 ```
 
 **注：IR 代码的不同部分之间加了充足的空格，方便输入给下游程序。**
