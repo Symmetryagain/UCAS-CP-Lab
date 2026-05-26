@@ -440,6 +440,7 @@ array_signed_const
                       int offset,
                       bool at_top,
 					            bool is_global,
+                      bool is_global_const,
                       std::variant<int, float, double, bool> r_value,
                     ]
                     : signed_const                                                # array_signed_const_const

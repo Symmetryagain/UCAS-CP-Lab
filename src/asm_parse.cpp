@@ -308,31 +308,35 @@ void parse_ir()
 		}
 		if(tokens[0] == "!global")
 		{
-			if(tokens[1] == "@var")
+			int tpos = 1;
+			bool is_global_const = false;
+			if(tokens[tpos] == "const") { is_global_const = true; tpos++; }
+
+			if(tokens[tpos] == "@var")
 			{
 				GlobalVar gv;
-				gv.name = tokens[2];
-				assert(tokens[2][0] == '%');
-				gv.gtype     = get_gtype_from_char(tokens[2][1]);
-				gv.is_const  = 0;
-				gv.is_unused = 0;
-				gv.is_bss    = true;
-				gv.value     = 0;
+				gv.name = tokens[tpos + 1];
+				assert(gv.name[0] == '%');
+				gv.gtype          = get_gtype_from_char(gv.name[1]);
+				gv.is_global_const = is_global_const;
+				gv.is_unused      = 0;
+				gv.is_bss         = is_global_const ? false : true;
+				gv.value          = 0;
 				add_global_var(gv);
 				continue;
 			}
-			if(tokens[1] == "@array")
+			if(tokens[tpos] == "@array")
 			{
 				GlobalArr ga;
-				ga.name = tokens[2];
-				assert(tokens[2][0] == '%');
-				assert(tokens[2][1] == 'a');
-				ga.gtype     = get_gtype_from_char(tokens[2][2]);
-				ga.length    = stoi(tokens[3], 0, 0);
-				ga.is_const  = 0;
-				ga.is_unused = 0;
-				ga.is_bss    = true;
-				ga.values    = vector<uint64_t>(ga.length, 0);
+				ga.name = tokens[tpos + 1];
+				assert(ga.name[0] == '%');
+				assert(ga.name[1] == 'a');
+				ga.gtype          = get_gtype_from_char(ga.name[2]);
+				ga.length         = stoi(tokens[tpos + 2], 0, 0);
+				ga.is_global_const = is_global_const;
+				ga.is_unused      = 0;
+				ga.is_bss         = is_global_const ? false : true;
+				ga.values         = vector<uint64_t>(ga.length, 0);
 				add_global_arr(ga);
 				continue;
 			}
@@ -448,7 +452,7 @@ void show_ir()
 	{
 		cerr << "global var " << gv.name << " " << gv.gtype << " " << gv.value
 		     << endl;
-		cerr << "  is_const " << (gv.is_const ? "true" : "false") << endl;
+		cerr << "  is_global_const " << (gv.is_global_const ? "true" : "false") << endl;
 		cerr << "  is_unused " << (gv.is_unused ? "true" : "false") << endl;
 		cerr << "  is_bss " << (gv.is_bss ? "true" : "false") << endl;
 	}
@@ -456,7 +460,7 @@ void show_ir()
 	{
 		cerr << "global arr " << ga.name << " " << ga.gtype << " " << ga.length
 		     << endl;
-		cerr << "  is_const " << (ga.is_const ? "true" : "false") << endl;
+		cerr << "  is_global_const " << (ga.is_global_const ? "true" : "false") << endl;
 		cerr << "  is_unused " << (ga.is_unused ? "true" : "false") << endl;
 		cerr << "  is_bss " << (ga.is_bss ? "true" : "false") << endl;
 		cerr << "  values " << endl;

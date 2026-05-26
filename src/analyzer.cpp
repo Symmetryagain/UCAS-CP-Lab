@@ -1764,6 +1764,7 @@ Analyzer::visitVar_def(CACTParser::Var_defContext *context) {
     context->array_signed_const()->offset = 0;
     context->array_signed_const()->at_top = true;
     context->array_signed_const()->is_global = context->is_global;
+    context->array_signed_const()->is_global_const = false;
     context->array_signed_const()->accept(this);
   } else {                             // no initializer
     if (!context->is_global) {         // globals default to zero (bss)
@@ -1803,7 +1804,7 @@ Analyzer::visitConst_def(CACTParser::Const_defContext *context) {
     }
     res = NPRE + name;
     if (context->is_global)
-      out(GLOBAL, VAR, res);
+      out(GLOBAL, "const", VAR, res);
     else
       out(VAR, res);
   } else { // array
@@ -1821,7 +1822,7 @@ Analyzer::visitConst_def(CACTParser::Const_defContext *context) {
     }
     res = NPRE + name;
     if (context->is_global)
-      out(GLOBAL, ARRAY, res, total_size);
+      out(GLOBAL, "const", ARRAY, res, total_size);
     else
       out(ARRAY, res, total_size);
   }
@@ -1831,6 +1832,7 @@ Analyzer::visitConst_def(CACTParser::Const_defContext *context) {
   context->array_signed_const()->offset = 0;
   context->array_signed_const()->at_top = true;
   context->array_signed_const()->is_global = context->is_global;
+  context->array_signed_const()->is_global_const = true;
   context->array_signed_const()->accept(this);
   if (context->intconst().empty()) { // variant
     g_symtree.modify_value(save_name, context->array_signed_const()->r_value);
@@ -1856,9 +1858,10 @@ Analyzer::visitArray_signed_const_const(CACTParser::Array_signed_const_constCont
     return nullptr;
   }
   std::string res = NPRE + context->varName;
-  // For globals, skip zero-valued assigns: the variable defaults to zero in bss.
+  // For non-const globals, skip zero-valued assigns: bss provides zero-init.
+  // Const globals must emit all assigns to land in .rodata.
   bool is_init_zero = false;
-  if (context->is_global) {
+  if (context->is_global && !context->is_global_const) {
     const auto &val = context->signed_const()->value;
     switch (context->signed_const()->btype) {
       case Bool:   is_init_zero = (val == "false"); break;
@@ -1921,6 +1924,7 @@ Analyzer::visitArray_signed_const_array(CACTParser::Array_signed_const_arrayCont
         context->array_signed_const()[i]->offset = i;
         context->array_signed_const()[i]->at_top = false;
         context->array_signed_const()[i]->is_global = context->is_global;
+        context->array_signed_const()[i]->is_global_const = context->is_global_const;
         context->array_signed_const()[i]->accept(this);
       }
       if (!context->is_global) {
@@ -1951,6 +1955,7 @@ Analyzer::visitArray_signed_const_array(CACTParser::Array_signed_const_arrayCont
     context->array_signed_const()[i]->varName = context->varName;
     context->array_signed_const()[i]->at_top = false;
     context->array_signed_const()[i]->is_global = context->is_global;
+    context->array_signed_const()[i]->is_global_const = context->is_global_const;
     context->array_signed_const()[i]->accept(this);
   }
   if (context->array_signed_const().size() < context->array_size[0]) {

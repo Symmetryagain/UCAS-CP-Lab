@@ -89,14 +89,16 @@ void init_g_array(string lstr)
 	cerr << "init_g_array: " << lstr << endl;
 	vector<string> tokens = splitString(lstr);
 	assert(tokens[0] == "!global");
-	assert(tokens[1] == "@array");
-	assert(tokens[2][0] == '%');
-	assert(tokens[2][1] == 'a');
-	string name = tokens[2];
+	int idx = 1;
+	if(tokens[idx] == "const") idx = 2;
+	assert(tokens[idx] == "@array");
+	string name = tokens[idx + 1];
+	assert(name[0] == '%');
+	assert(name[1] == 'a');
 	assert(gtable[name].val_type == IT_NONE);
-	int size              = get_val_int(g_lstate, tokens[3]).ival;
+	int size              = get_val_int(g_lstate, tokens[idx + 2]).ival;
 	gtable[name].name     = name;
-	gtable[name].val_type = get_var_type_by_prefix(tokens[2]);
+	gtable[name].val_type = get_var_type_by_prefix(name);
 	gtable[name].val.aval = (Value *)calloc(size, sizeof(Value));
 }
 
@@ -105,11 +107,13 @@ void init_g_var(string lstr)
 	cerr << "init_g_var: " << lstr << endl;
 	vector<string> tokens = splitString(lstr);
 	assert(tokens[0] == "!global");
-	assert(tokens[1] == "@var");
-	assert(tokens[2][0] == '%');
-	string name = tokens[2];
+	int idx = 1;
+	if(tokens[idx] == "const") idx = 2;
+	assert(tokens[idx] == "@var");
+	string name = tokens[idx + 1];
+	assert(name[0] == '%');
 	assert(gtable[name].val_type == IT_NONE);
-	IdentType vtype       = get_var_type_by_prefix(tokens[2]);
+	IdentType vtype       = get_var_type_by_prefix(name);
 	gtable[name].name     = name;
 	gtable[name].val_type = vtype;
 	gtable[name].val.ival = 0;

@@ -821,7 +821,7 @@ static void put_global()
 		size_t var_size = TypeSize[gv.gtype];
 		if(gv.is_unused) continue;
 		if(gv.is_bss)       asm_lines.push_back(".bss");
-		else if(gv.is_const) asm_lines.push_back(".rodata");
+		else if(gv.is_global_const) asm_lines.push_back(".rodata");
 		else                 asm_lines.push_back(".data");
 		asm_lines.push_back(".balign " + to_string(var_size));
 		if(gv.is_bss)
@@ -844,7 +844,7 @@ static void put_global()
 		size_t arr_lens = ga.length;
 		if(ga.is_unused) continue;
 		if(ga.is_bss)       asm_lines.push_back(".bss");
-		else if(ga.is_const) asm_lines.push_back(".rodata");
+		else if(ga.is_global_const) asm_lines.push_back(".rodata");
 		else                 asm_lines.push_back(".data");
 		asm_lines.push_back(".balign " + to_string(arr_lign));
 		if(ga.is_bss)

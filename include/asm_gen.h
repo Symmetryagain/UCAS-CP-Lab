@@ -24,7 +24,7 @@ struct GlobalVar
 	GType         gtype;
 	uint64_t      value;
 	bool          is_bss;
-	bool          is_const;
+	bool          is_global_const;
 	bool          is_unused;
 };
 
@@ -38,7 +38,7 @@ struct GlobalArr
 	size_t                     length;
 	std::vector<uint64_t>      values;
 	bool                       is_bss;
-	bool                       is_const;
+	bool                       is_global_const;
 	bool                       is_unused;
 };
 

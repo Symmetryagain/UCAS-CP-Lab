@@ -38,15 +38,17 @@ OpType get_op_type(string lstr)
 	else if(tokens[0] == "!global")
 	{
 		assert(tokens.size() > 1);
-		if(tokens[1] == "assign")
+		int idx = 1;
+		if(tokens[idx] == "const") idx = 2;
+		if(tokens[idx] == "assign")
 		{
 			return OP_G_ASSIGN;
 		}
-		else if(tokens[1] == "@array")
+		else if(tokens[idx] == "@array")
 		{
 			return OP_G_ARRAY;
 		}
-		else if(tokens[1] == "@var")
+		else if(tokens[idx] == "@var")
 		{
 			return OP_G_VAR;
 		}
