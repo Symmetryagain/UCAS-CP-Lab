@@ -1,10 +1,12 @@
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 #include "analyzer.h"
 #include "asm_gen.h"
 #include "context.h"
+#include "ir_dce.h"
 #include "tree/ParseTree.h"
 #include "utils.h"
 #include "utils_debug.h"
@@ -48,7 +50,7 @@ int main(int argc, const char *argv[]) {
     raw_path = raw_path.substr(0, pos);
   }
 
-  std::string ir_path, output_path;
+  std::string output_path;
   bool opt_out_file_provided = false;
 
   for (int i = 2; i < argc; ++i) {
@@ -68,7 +70,7 @@ int main(int argc, const char *argv[]) {
     else if (a == "-o") {
       if (i + 1 < argc) {
         opt_out_file_provided = true;
-        ir_path = output_path = argv[++i];
+        output_path = argv[++i];
       } else {
         std::cerr << "Error: -o requires a file argument" << std::endl;
         return 9;
@@ -77,9 +79,6 @@ int main(int argc, const char *argv[]) {
       std::cerr << "Error: unknown option '" << a << "'" << std::endl;
       return 9;
     }
-  }
-  if (!opt_out_file_provided || !opt_emit_IR) {
-    ir_path = raw_path + ".ir";
   }
 
   std::ifstream stream(input_path);
@@ -137,14 +136,9 @@ int main(int argc, const char *argv[]) {
   if (opt_syntax_only)
     return 0;
 
-  // Open output file only when proceeding past syntax check
-  std::ofstream outfile(ir_path);
-  if (!outfile.is_open()) {
-    std::cerr << "Failed to open output file: " << ir_path << std::endl;
-    return 9;
-  }
+  std::stringstream ir_stream;
+  global_out = &ir_stream;
 
-  // semantic analysis / visit
   Analyzer visitor;
   g_symtree.enterScope();
   for (int i = 0; i < 7; ++i) {
@@ -154,53 +148,52 @@ int main(int argc, const char *argv[]) {
     }
   }
 
-  global_out = &outfile;
-
   visitor.visit(tree);
 
   if (!g_functable.check(special_funcname[7])) { // main
     return 3;
   }
   g_symtree.leaveScope();
-
-  if (opt_emit_IR) 
-    return 0;
-
   stream.close();
-  outfile.close();
+
+  // Parse IR from memory into ir_lines
+  {
+    string ir_line;
+    while (std::getline(ir_stream, ir_line))
+      ir_lines.push_back(ir_line);
+  }
+  global_out = &std::cout;
+
+  // O1: dead code elimination
+  if (optimize_level == 1) {
+    std::cerr << "Running IR dead code elimination (" << ir_lines.size() << " lines)..." << std::endl;
+    ir_dce(ir_lines);
+    std::cerr << "IR DCE finished. Lines: " << ir_lines.size() << std::endl;
+  }
+
+  // Write IR file only when --emit-IR is specified
+  if (opt_emit_IR) {
+    string ir_path = opt_out_file_provided ? output_path : raw_path + ".ir";
+    std::ofstream ir_out(ir_path);
+    if (!ir_out.is_open()) {
+      std::cerr << "Failed to open IR file: " << ir_path << std::endl;
+      return 9;
+    }
+    for (const auto &line : ir_lines)
+      ir_out << line << "\n";
+    ir_out.close();
+    return 0;
+  }
 
   if (!opt_out_file_provided) {
     output_path = raw_path + ".s";
   }
-  // open ir file as input
-  std::ifstream ir_file(ir_path);
-  if (!ir_file.is_open()) {
-    std::cerr << "Failed to open IR file: " << ir_path << std::endl;
-    return 9;
-  }
 
-  // open asm file as output
   std::ofstream asm_file(output_path);
   if (!asm_file.is_open()) {
     std::cerr << "Failed to open output file: " << output_path << std::endl;
     return 9;
   }
-
-  // input
-	std::cerr << "Reading IR file..." << std::endl;
-
-	string ir_str;
-	while(getline(ir_file, ir_str))
-	{
-		ir_lines.push_back(ir_str);
-	}
-	ir_file.close();
-
-  // delete ir file
-  system(("rm " + ir_path).c_str());
-
-	std::cerr << "IR file read finished." << std::endl;
-	std::cerr << "Number of lines: " << ir_lines.size() << std::endl;
 
 	// asmgen
 	std::cerr << "Starting ASM generate..." << std::endl;

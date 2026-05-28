@@ -18,5 +18,7 @@ grammar/*.tokens
 test/ir_files
 test/asm_files
 test/elf_files
+test/asm_files_o1
+test/elf_files_o1
 
 compile_commands.json

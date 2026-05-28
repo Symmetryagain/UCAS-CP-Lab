@@ -495,7 +495,7 @@ Analyzer::visitExpr_3_divide(CACTParser::Expr_3_divideContext *context) {
     switch(context->btype) {
       case Int:
         if (std::get<int>(context->expr_2()->value) == 0) {
-          std::cerr << "warning: division by zero [-Wdiv-by-zero]" << std::endl;
+          dbg("warning: division by zero [-Wdiv-by-zero]");
           context->is_const = false;
         } else {
           context->value = std::get<int>(context->expr_3()->value) / std::get<int>(context->expr_2()->value);

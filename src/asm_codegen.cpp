@@ -693,21 +693,30 @@ static void o0_gen_asm_func(Funct& f)
 		}
 		else if(tokens[0] == "Rem")
 		{
+			bool done = false;
 			if(optimize_level > 0 && tokens[3][0] != '%')
 			{
 				int imm3 = stoi(tokens[3], 0, 0);
-				if(imm3 == 1) { ir2m(f, "zero", tokens[1]); break; }
-				if(imm3 > 0 && (imm3 & (imm3 - 1)) == 0 && imm3 < 2048)
+				if(imm3 == 1)
+				{
+					ir2m(f, "zero", tokens[1]);
+					done = true;
+				}
+				else if(imm3 > 0 && (imm3 & (imm3 - 1)) == 0 && imm3 < 2048)
 				{
 					m2ir(f, P_INT, tokens[2], "s0");
 					gen3r(f, "andi", "s1", "s0", to_string(imm3 - 1));
-					ir2m(f, "s1", tokens[1]); break;
+					ir2m(f, "s1", tokens[1]);
+					done = true;
 				}
 			}
-			m2ir(f, P_INT, tokens[2], "s0");
-			m2ir(f, P_INT, tokens[3], "s1");
-			gen3r(f, "remw", "s2", "s0", "s1");
-			ir2m(f, "s2", tokens[1]);
+			if(!done)
+			{
+				m2ir(f, P_INT, tokens[2], "s0");
+				m2ir(f, P_INT, tokens[3], "s1");
+				gen3r(f, "remw", "s2", "s0", "s1");
+				ir2m(f, "s2", tokens[1]);
+			}
 		}
 		else if(tokens[0] == "LT")
 		{
@@ -794,7 +803,7 @@ static void o0_gen_asm_func(Funct& f)
 		else if(tokens[0] == "Pos")     { assert(false); }
 		else if(tokens[0] == "branch")  { gen_branch(f, tokens[1], tokens[2]); }
 		else if(tokens[0] == "label")   { gen_label(f, tokens[1]); }
-		else if(tokens[0] == "return")  { gen_return(f, tokens[1]); }
+		else if(tokens[0] == "return")  { gen_return(f, tokens.size() > 1 ? tokens[1] : ""); }
 		else if(tokens[0] == "retire")  { continue; }
 		else { cerr << "unknown ir: " << ir_line << endl; }
 	}
@@ -809,19 +818,15 @@ static void o0_gen_asm()
 	}
 }
 
-// O1-specific state
-extern set<string> o1_var_set;
-
 static void put_global()
 {
 	for(GlobalVar gv : gv_list)
 	{
-		if(o1_var_set.count(gv.name) == 0) continue;
 		string new_name = normalize_name(gv.name);
 		size_t var_size = TypeSize[gv.gtype];
 		if(gv.is_unused) continue;
 		if(gv.is_bss)       asm_lines.push_back(".bss");
-		else if(gv.is_global_const) asm_lines.push_back(".rodata");
+		else if(gv.is_global_const) asm_lines.push_back(".section .rodata");
 		else                 asm_lines.push_back(".data");
 		asm_lines.push_back(".balign " + to_string(var_size));
 		if(gv.is_bss)
@@ -838,13 +843,12 @@ static void put_global()
 	}
 	for(GlobalArr ga : ga_list)
 	{
-		if(o1_var_set.count(ga.name) == 0) continue;
 		string new_name = normalize_name(ga.name);
 		size_t arr_lign = TypeSize[ga.gtype];
 		size_t arr_lens = ga.length;
 		if(ga.is_unused) continue;
 		if(ga.is_bss)       asm_lines.push_back(".bss");
-		else if(ga.is_global_const) asm_lines.push_back(".rodata");
+		else if(ga.is_global_const) asm_lines.push_back(".section .rodata");
 		else                 asm_lines.push_back(".data");
 		asm_lines.push_back(".balign " + to_string(arr_lign));
 		if(ga.is_bss)
@@ -905,131 +909,6 @@ static void o1_handle_func_rely()
 	}
 }
 
-map<string, set<string>> o1_var_rely;
-set<string>              o1_var_set;
-
-static void o1_build_var_rely()
-{
-	for(Funct f : f_list)
-	{
-		if(!f.is_used || f.is_extern) continue;
-		for(string ir_line : f.ir_lines)
-		{
-			string edited_line;
-			for(auto ch : ir_line) { if(ch == '[' || ch == ']') ch = ' '; edited_line += ch; }
-			vector<string> tokens = split_string(edited_line);
-			if(tokens.size() == 0) continue;
-
-			if(tokens[0] == "@func" || tokens[0] == "@endfunc") continue;
-			else if(tokens[0] == "call")
-			{
-				for(size_t pos = 4; pos < tokens.size() - 1; pos++)
-					if(tokens[pos] != ",") o1_var_set.insert(tokens[pos]);
-			}
-			else if(tokens[0] == "!global") assert(false);
-			else if(tokens[0] == "assign")
-			{
-				assert(tokens[1][0] == '%');
-				for(size_t pos = 2; pos < tokens.size(); pos++)
-					if(tokens[pos][0] == '%') o1_var_rely[tokens[1]].insert(tokens[pos]);
-			}
-			else if(tokens[0] == "@array" || tokens[0] == "@var") continue;
-			else if(tokens[0] == "DAnd")
-			{
-				if(tokens[2][0] == '%') o1_var_rely[tokens[1]].insert(tokens[2]);
-				if(tokens[3][0] == '%') o1_var_rely[tokens[1]].insert(tokens[3]);
-			}
-			else if(tokens[0] == "DOr")
-			{
-				if(tokens[2][0] == '%') o1_var_rely[tokens[1]].insert(tokens[2]);
-				if(tokens[3][0] == '%') o1_var_rely[tokens[1]].insert(tokens[3]);
-			}
-			else if(tokens[0] == "Add" || tokens[0] == "Sub" || tokens[0] == "Mul" || tokens[0] == "Div")
-			{
-				if(tokens[3][0] == '%') o1_var_rely[tokens[2]].insert(tokens[3]);
-				if(tokens[4][0] == '%') o1_var_rely[tokens[2]].insert(tokens[4]);
-			}
-			else if(tokens[0] == "Addr")
-			{
-				if(tokens[2][0] == '%') o1_var_rely[tokens[1]].insert(tokens[2]);
-				if(tokens[3][0] == '%') o1_var_rely[tokens[1]].insert(tokens[3]);
-			}
-			else if(tokens[0] == "Rem" || tokens[0] == "LT" || tokens[0] == "LE" ||
-			        tokens[0] == "GT" || tokens[0] == "GE" || tokens[0] == "EQ" || tokens[0] == "NE")
-			{
-				if(tokens[2][0] == '%') o1_var_rely[tokens[1]].insert(tokens[2]);
-				if(tokens[3][0] == '%') o1_var_rely[tokens[1]].insert(tokens[3]);
-			}
-			else if(tokens[0] == "Neg")
-			{
-				if(tokens[3][0] == '%') o1_var_rely[tokens[2]].insert(tokens[3]);
-			}
-			else if(tokens[0] == "Not")
-			{
-				if(tokens[2][0] == '%') o1_var_rely[tokens[1]].insert(tokens[2]);
-			}
-			else if(tokens[0] == "Pos") assert(false);
-			else if(tokens[0] == "branch") { o1_var_set.insert(tokens[2]); }
-			else if(tokens[0] == "label" || tokens[0] == "retire") continue;
-			else if(tokens[0] == "return")
-			{
-				if(f.ftype != F_VOID) o1_var_set.insert(tokens[1]);
-			}
-			else assert(false);
-		}
-	}
-}
-
-static void o1_handle_var_rely()
-{
-	queue<string> qv;
-	for(auto uv : o1_var_set) qv.push(uv);
-	while(!qv.empty())
-	{
-		string var_name = qv.front(); qv.pop();
-		for(string rely_name : o1_var_rely[var_name])
-		{
-			if(o1_var_set.count(rely_name) == 0)
-			{
-				o1_var_set.insert(rely_name);
-				qv.push(rely_name);
-			}
-		}
-	}
-}
-
-static void o1_use_var_rely()
-{
-	for(Funct& f : f_list)
-	{
-		if(!f.is_used || f.is_extern) continue;
-		for(size_t idx = 0; idx < f.ir_lines.size(); idx++)
-		{
-			string ir_line = f.ir_lines[idx];
-			string edited_line;
-			for(auto ch : ir_line) { if(ch == '[' || ch == ']') ch = ' '; edited_line += ch; }
-			vector<string> tokens = split_string(edited_line);
-			if(tokens.size() == 0 || tokens[0] == "@func" || tokens[0] == "@endfunc" ||
-			   tokens[0] == "call" || tokens[0] == "@array" || tokens[0] == "@var" ||
-			   tokens[0] == "branch" || tokens[0] == "label" || tokens[0] == "return" ||
-			   tokens[0] == "retire") continue;
-			if(tokens[0] == "!global") assert(false);
-
-			if(tokens[0] == "assign" || tokens[0] == "DAnd" || tokens[0] == "DOr" ||
-			   tokens[0] == "Add" || tokens[0] == "Addr" || tokens[0] == "Sub" ||
-			   tokens[0] == "Mul" || tokens[0] == "Div" || tokens[0] == "Rem" ||
-			   tokens[0] == "LT" || tokens[0] == "LE" || tokens[0] == "GT" ||
-			   tokens[0] == "GE" || tokens[0] == "EQ" || tokens[0] == "NE" ||
-			   tokens[0] == "Neg" || tokens[0] == "Not")
-			{
-				if(o1_var_set.count(tokens[1]) == 0) f.ir_lines[idx] = "";
-			}
-			else if(tokens[0] == "Pos") assert(false);
-			else assert(false);
-		}
-	}
-}
-
 // Main entry point
 void asmgen()
 {
@@ -1039,9 +918,6 @@ void asmgen()
 	if(optimize_level == 1)
 	{
 		o1_handle_func_rely();
-		o1_build_var_rely();
-		o1_handle_var_rely();
-		o1_use_var_rely();
 	}
 	o0_gen_asm();
 	put_global();
