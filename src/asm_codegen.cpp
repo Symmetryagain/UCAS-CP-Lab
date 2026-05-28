@@ -659,22 +659,18 @@ static void o0_gen_asm_func(Funct& f)
 			switch(tokens[1][0])
 			{
 			case 'i':
-				if(optimize_level > 0 && tokens[4][0] != '%')
+				if(optimize_level > 0 && tokens[4][0] != '%' && stoi(tokens[4], 0, 0) == 1)
 				{
-					int imm4 = stoi(tokens[4], 0, 0);
-					if(imm4 == 1) { m2ir(f, P_INT, tokens[3], "s0"); ir2m(f, "s0", tokens[2]); break; }
-					if(imm4 > 0 && (imm4 & (imm4 - 1)) == 0)
-					{
-						int shift = 0; while(imm4 != 1) { imm4 >>= 1; shift++; }
-						m2ir(f, P_INT, tokens[3], "s0");
-						gen3r(f, "srliw", "s1", "s0", to_string(shift));
-						ir2m(f, "s1", tokens[2]); break;
-					}
+					m2ir(f, P_INT, tokens[3], "s0");
+					ir2m(f, "s0", tokens[2]);
 				}
-				m2ir(f, P_INT, tokens[3], "s0");
-				m2ir(f, P_INT, tokens[4], "s1");
-				gen3r(f, "divw", "s2", "s0", "s1");
-				ir2m(f, "s2", tokens[2]);
+				else
+				{
+					m2ir(f, P_INT, tokens[3], "s0");
+					m2ir(f, P_INT, tokens[4], "s1");
+					gen3r(f, "divw", "s2", "s0", "s1");
+					ir2m(f, "s2", tokens[2]);
+				}
 				break;
 			case 'f':
 				m2fr(f, P_FLOAT, tokens[3], "fs0");
