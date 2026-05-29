@@ -1,5 +1,5 @@
-#ifndef INTERPRETER_H
-#define INTERPRETER_H
+#ifndef CACT_INTERPRETER_H
+#define CACT_INTERPRETER_H
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -8,78 +8,77 @@ vector<string> splitString(string const &str);
 
 enum IdentType
 {
-	IT_NONE,
-	IT_LABEL,
-	IT_INT,
-	IT_FLOAT,
-	IT_DOUBLE,
-	IT_BOOL,
-	IT_ARRAY_INT,
-	IT_ARRAY_FLOAT,
-	IT_ARRAY_DOUBLE,
-	IT_ARRAY_BOOL,
-	IT_FUNC_INT,
-	IT_FUNC_FLOAT,
-	IT_FUNC_DOUBLE,
-	IT_FUNC_BOOL,
-	IT_FUNC_VOID
+    IT_NONE,
+    IT_LABEL,
+    IT_INT,
+    IT_FLOAT,
+    IT_DOUBLE,
+    IT_BOOL,
+    IT_ARRAY_INT,
+    IT_ARRAY_FLOAT,
+    IT_ARRAY_DOUBLE,
+    IT_ARRAY_BOOL,
+    IT_FUNC_INT,
+    IT_FUNC_FLOAT,
+    IT_FUNC_DOUBLE,
+    IT_FUNC_BOOL,
+    IT_FUNC_VOID
 };
 
 enum OpType
 {
-	OP_EMPTY,
-	OP_FUNC_DEF,
-	OP_FUNC_END,
-	OP_FUNC_CALL,
-	OP_G_VAR,
-	OP_G_ASSIGN,
-	OP_G_ARRAY,
-	OP_VAR,
-	OP_ASSIGN,
-	OP_ARRAY,
-	OP_AND,
-	OP_OR,
-	OP_MUL,
-	OP_ADD,
-	OP_ADDR,
-	OP_SUB,
-	OP_DIV,
-	OP_REM,
-	OP_LT,
-	OP_GT,
-	OP_LE,
-	OP_GE,
-	OP_EQ,
-	OP_NE,
-	OP_POS,
-	OP_NEG,
-	OP_NOT,
-	OP_BRANCH,
-	OP_LABEL,
-	OP_RETURN,
-	OP_RETIRE
+    OP_EMPTY,
+    OP_FUNC_DEF,
+    OP_FUNC_END,
+    OP_FUNC_CALL,
+    OP_G_VAR,
+    OP_G_ASSIGN,
+    OP_G_ARRAY,
+    OP_VAR,
+    OP_ASSIGN,
+    OP_ARRAY,
+    OP_AND,
+    OP_OR,
+    OP_MUL,
+    OP_ADD,
+    OP_ADDR,
+    OP_SUB,
+    OP_DIV,
+    OP_REM,
+    OP_LT,
+    OP_GT,
+    OP_LE,
+    OP_GE,
+    OP_EQ,
+    OP_NE,
+    OP_POS,
+    OP_NEG,
+    OP_NOT,
+    OP_BRANCH,
+    OP_LABEL,
+    OP_RETURN,
+    OP_RETIRE
 };
 
 union Value
-
 {
-	int    line;
-	int    ival;
-	float  fval;
-	double dval;
-	bool   bval;
-	Value *aval;
+    int    line;
+    int    ival;
+    float  fval;
+    double dval;
+    bool   bval;
+    Value *aval;
 };
 
 struct Ident
 {
-	string    name;
-	IdentType val_type;
-	Value     val;
+    string    name;
+    IdentType val_type;
+    Value     val;
 
-	Ident() : val_type(IT_NONE)
-	{
-	}
+    Ident() : val_type(IT_NONE)
+    {
+    }
 };
 
 typedef map<string, Ident> Table;
@@ -88,9 +87,9 @@ extern Table gtable;
 
 struct Local_State
 {
-	int curline;
-	IdentType type;
-	Table ltable;
+    int curline;
+    IdentType type;
+    Table ltable;
 };
 
 Local_State const g_lstate = {0, IT_INT, Table()};
@@ -98,8 +97,7 @@ Local_State const g_lstate = {0, IT_INT, Table()};
 extern vector<string>              lstrs;
 extern map<string, vector<string>> func_params;
 
-void
-    func_init(string name, int line, IdentType ret_type, vector<string> params);
+void func_init(string name, int line, IdentType ret_type, vector<string> params);
 
 OpType    get_op_type(string lstr);
 IdentType vtype_var_to_array(IdentType vtype);
@@ -198,6 +196,5 @@ Value op_return(Local_State &lstate, string lstr);
 void local_assign(Local_State &lstate, string name, Value val, IdentType vtype);
 
 void gtable_init();
-
 
 #endif // INTERPRETER_H

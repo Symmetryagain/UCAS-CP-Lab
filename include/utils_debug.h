@@ -10,9 +10,11 @@
 class CACTLexer;
 namespace antlr4 { class CommonTokenStream; }
 
-void printTree(antlr4::tree::ParseTree *tree,
-               const std::vector<std::string> &ruleNames,
-               const std::string &indent, bool isLast);
+void printTree(
+    antlr4::tree::ParseTree *tree,
+    const std::vector<std::string> &ruleNames,
+    const std::string &indent, bool isLast
+);
 
 void printTokens(CACTLexer &lexer, antlr4::CommonTokenStream &tokens);
 
