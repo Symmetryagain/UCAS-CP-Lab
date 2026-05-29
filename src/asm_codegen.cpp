@@ -800,7 +800,6 @@ static void o0_gen_asm_func(Funct& f)
         else if(tokens[0] == "branch")  { gen_branch(f, tokens[1], tokens[2]); }
         else if(tokens[0] == "label")   { gen_label(f, tokens[1]); }
         else if(tokens[0] == "return")  { gen_return(f, tokens.size() > 1 ? tokens[1] : ""); }
-        else if(tokens[0] == "retire")  { continue; }
         else { cerr << "unknown ir: " << ir_line << endl; }
     }
 }

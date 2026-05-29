@@ -149,9 +149,5 @@ OpType get_op_type(string lstr)
     {
         return OP_RETURN;
     }
-    else if(tokens[0] == "retire")
-    {
-        return OP_RETIRE;
-    }
     assert(false);
 }

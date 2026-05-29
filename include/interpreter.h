@@ -56,8 +56,7 @@ enum OpType
     OP_NOT,
     OP_BRANCH,
     OP_LABEL,
-    OP_RETURN,
-    OP_RETIRE
+    OP_RETURN
 };
 
 union Value
@@ -190,7 +189,6 @@ void io_exec(Local_State &lstate, Value &val);
 
 void  op_branch(Local_State &lstate, string lstr);
 void  op_func_call(Local_State &lstate, string lstr);
-void  op_retire(Local_State &lstate, string lstr);
 Value op_return(Local_State &lstate, string lstr);
 
 void local_assign(Local_State &lstate, string name, Value val, IdentType vtype);

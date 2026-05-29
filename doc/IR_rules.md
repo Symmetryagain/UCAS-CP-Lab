@@ -60,7 +60,6 @@
     - 一地址代码。
       - 标签。形如 `label label_name`。表示创建一个名字叫 `label_name` 的标签，保证一个 IR 代码中标签名字不重复。
       - 返回值。形如 `return var_name`，用于函数内部，表示将 `var_name` 变量的值返回；如果没有返回值则为 `return`。
-      - 变量退出作用域。形如 `retire var_name`，表示该变量名之后不会再使用，用于优化生成汇编代码中的寄存器调度。在模拟器中可以省略。
 
 **保证所有 id 均互不相同，因此任意两个名字都不同。**
 
@@ -180,11 +179,9 @@ int main()
   branch l_5 %b_3
   assign %i_6 1
   Add i %i_1 %i_1 %i_6
-  retire %i_6
   branch l_3 1
   label l_5
   assign %i_7 2
-  retire %i_7
   return %i_2
 @endfunc
 ```

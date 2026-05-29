@@ -117,9 +117,6 @@ bool func_exec(Local_State &lstate, Value &ret)
     case OP_FUNC_CALL:
         op_func_call(lstate, lstr);
         break;
-    case OP_RETIRE:
-        op_retire(lstate, lstr);
-        break;
     default:
         assert(false);
     }
@@ -281,16 +278,6 @@ Value op_return(Local_State &lstate, string lstr)
         assert(false);
     }
     return ret;
-}
-
-void op_retire(Local_State &lstate, string lstr)
-{
-    lstate.curline++;
-    vector<string> tokens = splitString(lstr);
-    assert(tokens[0] == "retire");
-    assert(gtable[tokens[1]].val_type == IT_NONE);
-    assert(lstate.ltable[tokens[1]].val_type != IT_NONE);
-    lstate.ltable[tokens[1]].val_type = IT_NONE;
 }
 
 void op_rem(Local_State &lstate, string lstr)

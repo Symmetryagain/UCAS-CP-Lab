@@ -185,7 +185,7 @@ static bool is_removable(const vector<string> &tokens) {
     }
     if (op == "@var" || op == "@array") return false;
     if (op == "call" || op == "branch" || op == "return" ||
-        op == "label" || op == "retire") return false;
+        op == "label" ) return false;
     return true;
 }
 
@@ -286,7 +286,7 @@ static void compute_def_use(const vector<string> &func_lines,
 
             // Skip declarations and labels for def/use purposes
             if (tokens[0] == "@var" || tokens[0] == "@array" ||
-                tokens[0] == "label" || tokens[0] == "retire") continue;
+                tokens[0] == "label") continue;
 
             bool has_dest = !get_dest(tokens).empty();
 
@@ -381,8 +381,6 @@ static int eliminate_dead(const vector<string> &func_lines,
                 continue;
             }
 
-            // retire: just skip
-            if (tokens[0] == "retire") continue;
 
             // Removable instructions
             string dest = get_dest(tokens);
